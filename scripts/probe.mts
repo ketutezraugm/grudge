@@ -104,6 +104,15 @@ for (const category of ["btc-5m", "btc-15m"] as const) {
     );
     continue;
   }
+  const listed = (await sui().predict.read.markets()).some(
+    (m) => m.expiryMs === BigInt(window.endMs),
+  );
+  if (!listed) {
+    // DeepBook lists the 5m market for an end time only about 10 minutes ahead. A 15m window locks
+    // 8 minutes before it ends, so the market is always there by then.
+    console.log(`skip  deepbook ${label}  its 5m market is not listed yet (listed ~10 min ahead)`);
+    continue;
+  }
   await check(`deepbook ${label}`, async () => {
     const strike = await deepbookStrike(window);
     if (strike === null) throw new Error("strike not available");
