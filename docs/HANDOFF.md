@@ -1,63 +1,56 @@
 # Handoff
 
 > Living state of the build. Overwritten (not appended) by `/handoff`. A new session reads this first, then the PRD sections named under **Next**.
-> Last updated: 2026-11-07 16:10 UTC · Session 1 (foundation built, waiting on credentials for GATE 1)
+> Last updated: 2026-11-07 18:10 UTC · Session 1 (GATE 1 passed; database and worker next)
 
 ## Now
-- **Phase:** Day 0. The foundation is built and committed. GATE 1 (16:00 UTC) is **blocked on the user's credentials**: the probe cannot reach Tatum or Walrus without them.
+- **Phase:** Day 0. **GATE 1 passed** at about 18:02 UTC: every external dependency answered through the real credentials, and the first memory is on Walrus mainnet.
+- **Blocked:** no database yet. Supabase refuses to create a project (see Waiting on the user). The worker code does not need it to be written, only to run.
 - **Deadline:** submissions close 2026-11-10 17:00 UTC. Our own cutoff is 14:00 UTC.
-- **Checks right now:** `pnpm lint`, `pnpm typecheck`, `pnpm test` (50 tests) and `pnpm build` all pass.
+- **Checks right now:** `pnpm lint`, `pnpm typecheck`, `pnpm test` (53 tests) and `pnpm build` pass.
 - **Visual world:** Grudge Book (paper, ink, red pencil). See `docs/brand-guidelines.md` v2 and PRD §15.
 
 ## Done
-- Research and planning: PRD, brand v2, decision log, research archive. Plan review verified Tatum's gRPC methods and DeepBook's market lead times.
-- Repo: Next.js 16.4.5 app (strict TypeScript, Biome, Tailwind 4, Vitest), git history of small commits with no AI trailers, `.gitattributes` pinning LF.
-- Server foundation (`docs/ARCHITECTURE.md` describes each module):
-  - vocabulary, env, logger, singleton, Drizzle schema + first migration (`drizzle/0000_init.sql`, **not yet applied anywhere**);
-  - Tatum layer: shared 3 rps budget, throttled gRPC transport, Sui client with DeepBook Predict, BTC rate;
-  - engine: windows, scoring, resolution (pure, tested);
-  - voices: DeepBook, Polymarket, Kalshi (parsers tested against payloads recorded from the live venues);
-  - memory: codec (tested) and Walrus client (`writeBulk`, `recall`);
-  - `scripts/probe.mts` and `scripts/migrate.mts`.
-- Placeholder home page and brand icon.
+- Research, PRD, brand v2, decision log, research archive, as-built architecture doc.
+- Server foundation (`docs/ARCHITECTURE.md` describes each module): vocabulary, env, logger, singleton, Drizzle schema and first migration (`drizzle/0000_init.sql`, **not applied anywhere yet**), Tatum layer with a shared 3 rps budget and 429 retries, engine (windows, scoring, resolution), voices (DeepBook, Polymarket, Kalshi), memory codec and Walrus client.
+- **GATE 1 evidence** (`pnpm probe --write-memory`):
+  - DeepBook markets, pricer (Pyth age about 1 s) and the reference-price chain (gap under one cent) through Tatum gRPC.
+  - Tatum BTC rate, Polymarket and Kalshi live calls (VPN on).
+  - First Walrus mainnet memory: blob `U6j4ENe8kln_fFeuuThcB_eKL6-ogQGexVjTzMVDAfc`. Recalled by meaning with its write timestamp; the Walruscan link `https://walruscan.com/mainnet/blob/{blobId}` returns 200.
+  - Tatum cost of one probe run: 15 gRPC calls and 1 Data API call. **Check the Tatum dashboard for the credits that used.**
+- Single env file: everything is in `.env` (gitignored). `.env.local` was removed; its three generated secrets were moved into `.env`.
 
 ## Next (in order)
-1. **GATE 1.** With `.env.local` filled (see below), run `pnpm probe --write-memory`.
-   Done when every line says `ok`: DeepBook markets and pricer through Tatum (pyth age under 30 s), the strike-chain line (reference vs previous settlement; the gap should be tiny), BTC rate, Polymarket and Kalshi calls, and a Walrus `blob`. Record the Tatum call counts and check the Tatum dashboard for the credit cost per call.
-   If the Tatum key is not attached to gRPC calls, switch `sui.ts` to a metadata-generator credential (PRD §10.5).
-2. **Apply the migration:** `pnpm db:migrate` against the Supabase database.
-3. **Worker** (`src/server/worker/`, PRD §5.1–5.4, §6): discover windows with `openWindows`, create `questions`, capture every voice at `lockMs`, resolve after the end with `resolve`, update `scoreboard` with `scoreCall`, write records to the `memories` outbox. Start it from `src/instrumentation.ts` with a `globalThis` guard (use `singleton`).
-   Done when both categories lock and resolve locally for an hour.
-4. **Outbox flusher + cold boot** (`src/server/memory/flusher.ts`, `coldboot.ts`): bulk-flush at most 20 items every 5 minutes; rebuild the scoreboard from Walrus when the database is empty. Then deploy to Render by GATE 2 so data accumulates overnight.
-5. `engine/lessons.ts` (templated lessons, one per 25 scored windows per category).
+1. **Worker** (`src/server/worker/`, PRD §5.1–5.4, §6): discover windows with `openWindows`, create `questions`, capture every voice at `lockMs`, resolve after the end with `resolve`, update `scoreboard` with `scoreCall`, write records to the `memories` outbox. Start it from `src/instrumentation.ts` with a `globalThis` guard (use `singleton`).
+   Done when both categories lock and resolve against a real database for an hour.
+2. **Apply the migration** once a database exists: `pnpm db:migrate`.
+3. **Outbox flusher + cold boot** (`src/server/memory/flusher.ts`, `coldboot.ts`): bulk-flush at most 20 items every 5 minutes; rebuild the scoreboard from Walrus when the database is empty. Deploy to Render so data accumulates overnight (GATE 2).
+4. `engine/lessons.ts` (templated lessons, one per 25 scored windows per category).
+5. Design context: `impeccable init` → `PRODUCT.md`, then `shape` the board (PRD §12, Day 0 22:00).
 
 ## Waiting on the user
-- [ ] **Tatum** API key + dashboard account ID
-- [ ] **Walrus Memory** mainnet: `MEMWAL_PRIVATE_KEY` (delegate private key), `MEMWAL_ACCOUNT_ID` (the account object, not the wallet), `MEMWAL_AGENT_ID` (public key, for the form)
-- [ ] A wallet with about 0.5 SUI (account creation may need gas)
-- [ ] **Treasury** Sui address (receive only) and an **agent payer** keypair with about 1 USDC (needs no SUI)
-- [ ] **Supabase** project in `eu-central-1`: session-pooler `DATABASE_URL`
-- [ ] **Render** account (Starter plan, $7/mo approved?) and the GitHub repo `grudge`
-- [ ] **Windows DNS-over-HTTPS** (1.1.1.1), so Polymarket and Kalshi resolve locally. The probe currently fails on both with `fetch failed`.
-- [ ] Confirm the git identity for the public repo: commits are authored as `AkuTampanTay <ezradarkwing@gmail.com>` (from global git config). Nothing has been pushed.
-- [ ] Decide on a paid Tatum plan after the probe measures credit burn
-
-Create `.env.local` from `.env.example`. Generate the two local secrets with:
-`node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` (once for `QUOTE_SECRET`, once for `ADMIN_TOKEN`).
-Secrets go in `.env.local` only, never in docs or chat.
+- [ ] **A database.** Supabase says `ketutezraugm` (the account that owns the connected org) has 2 active free projects, so it will not create `grudge`. The only project the tools can see, `CMC API Hackaton`, is already paused, so the two active ones are in another organization. Pause or delete one there, or choose another database (Render Postgres about $6 a month, or any Postgres URL pasted into `DATABASE_URL`).
+- [ ] **Render:** account, Starter plan ($7 a month) approved?
+- [ ] **GitHub:** the repo `grudge`, plus the author name for the public history. Commits are authored as `AkuTampanTay <ezradarkwing@gmail.com>` (global git config). Nothing has been pushed.
+- [ ] **Agent wallet funding:** about 2 USDC on Sui mainnet to `0x132643284ef48e256d2b31fe7907d87032f7be6c21086e68df89d36ba536d76c`. Its private key is in `.env` as `AGENT_PRIVATE_KEY`, and the user can sweep any leftover USDC back out. Balance was 0 at last check.
+- [ ] Look at the Tatum dashboard for credit use after the probe, and decide on a paid plan.
 
 ## Gotchas learned
-- Gamma `markets?slug=` returns open markets only; add `&closed=true` for resolved ones. Resolution lands about 80 s after the window ends. Its `outcomePrices` can lag the live book right after a window opens, so the live call uses `bestBid`/`bestAsk`.
+- **Walrus has four look-alike values.** The owner address (here a Google-made address, because the dashboard's "Continue with Google" creates one), the account object ID (`MEMWAL_ACCOUNT_ID`, what the code needs), the delegate private key, and the delegate public key (the "Agent ID" for the form). Our account ID is `0x38de8cce40f73eeb500055ec3330b12fe0ad8347ee4d6fc5274ebe078bc20a04` (public). The owner is `0xcabb5dd8…116e`.
+- To find an account ID from an owner address: read the `AccountRegistry` object `0x8bf82c9e…199f`, then the dynamic field keyed by the owner address in its `accounts` table. The value is the account object ID.
+- On-chain delegate keys are returned as **base64**, not hex. Compare after converting.
+- The treasury address does not have to own the Walrus account. It only receives payments.
+- Gamma `markets?slug=` returns open markets only; add `&closed=true` for resolved ones. Resolution lands about 80 s after the window ends. The live call uses `bestBid`/`bestAsk`, because `outcomePrices` lags.
 - Kalshi: `min_close_ts` and `max_close_ts` return exactly the market that closes with a window, whatever its status.
-- DeepBook mainnet has 1m and 5m markets only. `referencePrice` is `null` until the window opens, but `pricer()` still works then. The 5m market for T is listed 6.5–10 minutes ahead.
-- Local `curl` to Polymarket and Kalshi needs `--doh-url https://1.1.1.1/dns-query`; Node's `fetch` cannot use it, so local runs need Windows DoH.
-- The Walrus Memory relayer picks its own Sui RPC; it cannot be routed through Tatum.
-- `create-next-app` 16.4.5 turns on `cacheComponents` and `partialPrefetching`; both were removed because they conflict with our dynamic routes. `next typegen` (run by `pnpm typecheck`) rewrites `tsconfig.json` once to add `allowJs`; it is committed.
-- Biome would reformat the markdown docs and add a blank line inside skill frontmatter, so `docs`, `.claude` and `*.md` are excluded.
-- `tsx` treats `.ts` as CommonJS here; scripts are `.mts`.
+- DeepBook mainnet has 1m and 5m markets only. A 1m market's reference price chains on a 60 s step, so check chaining on 5m markets only. `referencePrice` is `null` until the window opens, but `pricer()` still works then. The 5m market for T is listed about 10 minutes ahead (the probe skips that case).
+- Tatum answers a burst of calls with HTTP 429 even within the plan's average rate. `ThrottledTransport` retries after 1 s and then 3 s.
+- Node's `fetch` cannot use DNS-over-HTTPS, so Polymarket and Kalshi need the VPN (EU exit) locally. Render needs nothing.
+- The Walrus relayer picks its own Sui RPC; it cannot be routed through Tatum. A 401 from it means a wrong account ID, a key that is not registered, or a testnet/mainnet mix-up.
+- `create-next-app` 16.4.5 turns on `cacheComponents` and `partialPrefetching`; both were removed. `next typegen` (run by `pnpm typecheck`) adds `allowJs` to `tsconfig.json` once; it is committed.
+- Biome would reformat the markdown docs, so `docs`, `.claude` and `*.md` are excluded.
+- `tsx` treats `.ts` as CommonJS here, so scripts are `.mts`.
 - pnpm holds back packages published in the last 24 hours; three Mysten versions are excluded in `pnpm-workspace.yaml`.
 
 ## Open questions
-- Does `GrpcTransport`'s `meta` option attach `x-api-key` to every call? The probe decides.
-- What does a Tatum gRPC call cost in credits? The probe plus the Tatum dashboard decide.
+- What does a Tatum gRPC call cost in credits? The dashboard decides; the probe makes about 15 calls.
 - The `btc-5m` void rate (only two venues resolve) needs measuring overnight. Above 15%, use DeepBook settlement as the tie-break.
