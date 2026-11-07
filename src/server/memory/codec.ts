@@ -1,0 +1,97 @@
+import { z } from "zod";
+import { categories, type Voice, voices } from "../domain";
+
+const outcome = z.union([z.literal(0), z.literal(1)]);
+const byVoice = <T extends z.ZodType>(value: T) => z.partialRecord(z.enum(voices), value);
+const byCategory = <T extends z.ZodType>(value: T) => z.partialRecord(z.enum(categories), value);
+
+const record = z.object({
+  kind: z.literal("record"),
+  question: z.string(),
+  category: z.enum(categories),
+  endsAt: z.iso.datetime(),
+  strike: z.number().nullable(),
+  state: z.enum(["resolved", "void"]),
+  outcome: outcome.nullable(),
+  split: z.boolean(),
+  calls: byVoice(z.number()),
+  results: byVoice(outcome),
+  line: z.number().nullable(),
+});
+
+const scoreboard = z.object({
+  kind: z.literal("scoreboard"),
+  seq: z.number().int().nonnegative(),
+  at: z.iso.datetime(),
+  grudges: byCategory(byVoice(z.object({ loss: z.number(), count: z.number() }))),
+  resolved: byCategory(z.number().int().nonnegative()),
+});
+
+const lesson = z.object({
+  kind: z.literal("lesson"),
+  category: z.enum(categories),
+  text: z.string(),
+});
+
+const payload = z.discriminatedUnion("kind", [record, scoreboard, lesson]);
+
+export type MemoryPayload = z.infer<typeof payload>;
+export type RecordPayload = z.infer<typeof record>;
+
+const TAIL = "#grudge ";
+
+const NAMES: Record<Voice, string> = {
+  deepbook: "DeepBook",
+  polymarket: "Polymarket",
+  kalshi: "Kalshi",
+  crowd: "Crowd",
+};
+
+const minute = (iso: string) => `${iso.slice(0, 16)}Z`;
+
+function describeRecord(entry: RecordPayload): string {
+  const window = `BTC ${entry.category === "btc-5m" ? "5m" : "15m"} window ending ${minute(entry.endsAt)}`;
+  if (entry.state === "void") {
+    const why = entry.split ? ": the venues disagreed about what happened" : "";
+    return `${window} ended void${why}.`;
+  }
+  const calls = voices.flatMap((voice) => {
+    const p = entry.calls[voice];
+    if (p === undefined) return [];
+    const leansUp = p >= 0.5;
+    const right = leansUp === (entry.outcome === 1);
+    return [
+      `${NAMES[voice]} ${Math.round(p * 100)}% ${leansUp ? "▲" : "▼"} (${right ? "right" : "wrong"})`,
+    ];
+  });
+  const line = entry.line === null ? "" : ` Grudge line ${Math.round(entry.line * 100)}%.`;
+  return `${window} went ${entry.outcome === 1 ? "UP" : "DOWN"}. ${calls.join(", ")}.${line}`;
+}
+
+function describe(entry: MemoryPayload): string {
+  switch (entry.kind) {
+    case "record":
+      return describeRecord(entry);
+    case "scoreboard":
+      return `Grudge scoreboard #${entry.seq} at ${minute(entry.at)}.`;
+    case "lesson":
+      return entry.text;
+  }
+}
+
+/** A sentence for semantic recall, then the exact data on a last line for rebuilding state. */
+export function encode(entry: MemoryPayload): string {
+  return `${describe(entry)}\n${TAIL}${JSON.stringify(entry)}`;
+}
+
+/** The structured data from a memory's last line, or null if the tail is missing or damaged. */
+export function decode(text: string): MemoryPayload | null {
+  const tail = text.split("\n").findLast((line) => line.startsWith(TAIL));
+  if (tail === undefined) return null;
+  try {
+    const parsed = payload.safeParse(JSON.parse(tail.slice(TAIL.length)));
+    return parsed.success ? parsed.data : null;
+  } catch {
+    return null;
+  }
+}
