@@ -53,7 +53,7 @@ Drizzle schema (`schema.ts`) and the lazy Postgres connection (`client.ts`, sess
 - `log.ts`: JSON lines to stdout.
 
 ## Scripts
-Run with `tsx --conditions=react-server` (so `server-only` resolves to an empty module) and `--env-file-if-exists=.env.local`. They are `.mts` so top-level await works.
+Run with `tsx --conditions=react-server` (so `server-only` resolves to an empty module) and `--env-file-if-exists=.env` then `.env.local`. A later file wins even with an empty value, so `.env.local` holds only values that are set. They are `.mts` so top-level await works.
 - `pnpm probe`: asks every dependency a live question and prints the result. `--write-memory` also stores one memory on Walrus mainnet.
 - `pnpm db:migrate`: applies the migrations.
 

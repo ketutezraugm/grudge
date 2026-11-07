@@ -56,15 +56,19 @@ await check("deepbook pricer", async () => {
 await check("deepbook strike chain", async () => {
   const { read } = sui().predict;
   const markets = await read.markets();
-  const seeded = markets.find((m) => m.referencePrice !== null);
-  if (!seeded?.referencePrice) throw new Error("no market has a reference price yet");
+  // 1m markets chain on a 60 s step, so only a market on a 5-minute mark says anything here.
+  const seeded = markets.find((m) => m.referencePrice !== null && m.expiryMs % 300_000n === 0n);
+  if (!seeded?.referencePrice) throw new Error("no 5m market has a reference price yet");
   const before = await read.settlement({
     underlying: "BTC",
     expiryMs: seeded.expiryMs - 300_000n,
   });
   if (before.settlementPrice === null) throw new Error("previous window not settled");
   const gap = Math.abs(before.settlementPrice - seeded.referencePrice);
-  return `reference ${seeded.referencePrice.toFixed(2)} vs previous settlement ${before.settlementPrice.toFixed(2)} (gap $${gap.toFixed(2)})`;
+  const summary = `reference ${seeded.referencePrice.toFixed(2)} vs previous settlement ${before.settlementPrice.toFixed(4)} (gap $${gap.toFixed(4)})`;
+  // The reference is the previous settlement rounded to the $0.01 tick.
+  if (gap > 0.01) throw new Error(`windows no longer chain: ${summary}`);
+  return summary;
 });
 
 await check("tatum btc rate", async () => {
