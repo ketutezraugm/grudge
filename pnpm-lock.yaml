@@ -184,6 +184,9 @@ importers:
       '@protobuf-ts/grpc-transport':
         specifier: ^2.11.1
         version: 2.11.1(@grpc/grpc-js@1.14.7)
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
       drizzle-orm:
         specifier: ^0.45.4
         version: 0.45.4(postgres@3.4.9)
