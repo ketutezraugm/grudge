@@ -92,9 +92,17 @@ for (const category of ["btc-5m", "btc-15m"] as const) {
     });
   }
 
+  const opensInMs = window.startMs - Date.now();
+  if (opensInMs > 0) {
+    // The strike is the Bitcoin price at the window's start, so it does not exist before then.
+    console.log(
+      `skip  deepbook ${label}  strike exists once the window opens in ${Math.ceil(opensInMs / 1000)} s`,
+    );
+    continue;
+  }
   await check(`deepbook ${label}`, async () => {
     const strike = await deepbookStrike(window);
-    if (strike === null) throw new Error("strike not available yet");
+    if (strike === null) throw new Error("strike not available");
     const call = await deepbookCall(window, strike, Date.now());
     if (!call) throw new Error("no live call (market not listed yet, or pricer stale)");
     return `p(up) = ${percent(call.p)} at strike ${strike.toFixed(2)}`;
