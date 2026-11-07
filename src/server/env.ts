@@ -4,7 +4,7 @@ import { z } from "zod";
 const suiAddress = z.string().regex(/^0x[0-9a-fA-F]{64}$/, "expected a 32-byte 0x address");
 
 /**
- * Each module asks only for the variables it uses, so a half-filled `.env.local`
+ * Each module asks only for the variables it uses, so a half-filled `.env`
  * keeps working while accounts are still being created.
  */
 function defineEnv<S extends z.ZodType>(schema: S): () => z.infer<S> {

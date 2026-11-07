@@ -41,7 +41,7 @@ Nothing may read as generic AI output.
 - TypeScript strict. Zod at every boundary. USDC is `bigint` atomic units. Types are explicit (`unknown`, then narrow).
 - `src/server/engine/*` and `src/server/memory/codec.ts` stay pure (time is passed in) and fully tested. The x402 money path (`src/server/x402/*`) is written test-first.
 - Comments explain why. Delete dead code; track follow-ups as GitHub issues.
-- Secrets live only in `.env.local` and in `src/server/*` (`server-only`). Docs record whether a secret is set, never its value.
+- Secrets live only in `.env` and in `src/server/*` (`server-only`). Docs record whether a secret is set, never its value.
 - Every Tatum gRPC call goes through `ThrottledTransport` (3 rps free plan).
 - Walrus Memory writes go through the `memories` outbox and are flushed in bulk (≤ 20 items).
 

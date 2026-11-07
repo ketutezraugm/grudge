@@ -10,10 +10,10 @@
     "format": "biome format --write",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
-    "probe": "tsx --conditions=react-server --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/probe.mts",
-    "agent": "tsx --conditions=react-server --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/agent.mts",
+    "probe": "tsx --conditions=react-server --env-file-if-exists=.env scripts/probe.mts",
+    "agent": "tsx --conditions=react-server --env-file-if-exists=.env scripts/agent.mts",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx --conditions=react-server --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/migrate.mts"
+    "db:migrate": "tsx --conditions=react-server --env-file-if-exists=.env scripts/migrate.mts"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.14.7",

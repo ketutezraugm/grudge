@@ -88,3 +88,6 @@ Why: the SDK versions we pin require them and Mysten published them within the l
 
 **2026-11-07 · `protobufjs` and `esbuild` install scripts stay blocked.**
 Why: protobufjs's script only prepares an optional CLI, and esbuild gets its binary from its platform package.
+
+**2026-11-07 · One env file: `.env`. No `.env.local`.**
+Why: two files that both set the same variable already blanked a real Tatum key once (an empty placeholder in `.env.local` overrode the value in `.env`). Everything lives in `.env`, which git ignores; `.env.example` lists the names.

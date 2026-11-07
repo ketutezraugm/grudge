@@ -48,12 +48,12 @@ Every Tatum request shares one budget of 3 requests per second (the free plan).
 Drizzle schema (`schema.ts`) and the lazy Postgres connection (`client.ts`, session pooler, SSL required). Migrations are generated into `drizzle/` and applied by `runMigrations`.
 
 ### Shared plumbing
-- `env.ts`: one zod-parsed getter per concern (`tatumEnv`, `memoryEnv`, `databaseEnv`, ...), so a half-filled `.env.local` works while accounts are still being created. Errors name the variables, never print values.
+- `env.ts`: one zod-parsed getter per concern (`tatumEnv`, `memoryEnv`, `databaseEnv`, ...), so a half-filled `.env` works while accounts are still being created. Errors name the variables, never print values.
 - `singleton.ts`: state both `instrumentation.ts` and the route handlers must see lives on `globalThis`.
 - `log.ts`: JSON lines to stdout.
 
 ## Scripts
-Run with `tsx --conditions=react-server` (so `server-only` resolves to an empty module) and `--env-file-if-exists=.env` then `.env.local`. A later file wins even with an empty value, so `.env.local` holds only values that are set. They are `.mts` so top-level await works.
+Run with `tsx --conditions=react-server` (so `server-only` resolves to an empty module) and `--env-file-if-exists=.env`.
 - `pnpm probe`: asks every dependency a live question and prints the result. `--write-memory` also stores one memory on Walrus mainnet.
 - `pnpm db:migrate`: applies the migrations.
 
