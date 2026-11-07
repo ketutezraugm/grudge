@@ -1,0 +1,11 @@
+allowBuilds:
+  esbuild: false
+  protobufjs: false
+  sharp: false
+  unrs-resolver: false
+# pnpm holds back packages published in the last 24 hours. These are Mysten Labs releases
+# that our pinned SDK versions require; each is excluded at one exact version.
+minimumReleaseAgeExclude:
+  - "@mysten/bcs@2.1.4"
+  - "@mysten/deepbook-v3@2.11.1"
+  - "@mysten/sui@2.39.1"
