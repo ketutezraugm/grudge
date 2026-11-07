@@ -70,3 +70,21 @@ Why: judges can check the Walrus rebuild themselves without any way to wipe prod
 
 **2026-11-07 · A paying agent runs continuously (`agent.ts --loop`) from Day 1 through Nov 16**, paying only when the board shows a disagreement ≥ 7 pts.
 Why: live mainnet payments accumulating on `/receipts` are stronger evidence for the Agent Payments award than one demo transaction.
+
+**2026-11-07 · Hedge rate 0.5, not 2.**
+Why: the loss is a discounted sum that settles near 50 times the mean Brier score. At a rate of 2, a 0.03 Brier gap becomes a 20x weight ratio and one voice runs the board. 0.5 sits next to the textbook sqrt(8 ln K / T) = 0.47 for 4 voices over about 50 windows, and gives 2.1x.
+
+**2026-11-07 · All Tatum access lives in `src/server/tatum/`; venue readers live in `src/server/voices/`.**
+Why: gRPC and the Data API draw on one 3 rps budget, so one folder owns it. "Voice" is the product's word for a source, so the code uses it too. This replaces the `sui/` and `sources/` folders in the first PRD layout.
+
+**2026-11-07 · Scripts are `.mts` and run through `tsx --conditions=react-server --env-file-if-exists=.env.local`.**
+Why: `.ts` resolves to CommonJS here and has no top-level await; the condition lets `server-only` load outside Next; the optional env file lets the same scripts run on Render with plain variables.
+
+**2026-11-07 · Palette tokens live in `src/app/globals.css`; `assets/` keeps only the logo.**
+Why: one place for the colors, and Tailwind reads them there.
+
+**2026-11-07 · pnpm's 24-hour release-age policy excludes three Mysten packages at exact versions** (`@mysten/bcs@2.1.4`, `@mysten/sui@2.39.1`, `@mysten/deepbook-v3@2.11.1`).
+Why: the SDK versions we pin require them and Mysten published them within the last day. Each exclusion names one version, so nothing newer slips in.
+
+**2026-11-07 · `protobufjs` and `esbuild` install scripts stay blocked.**
+Why: protobufjs's script only prepares an optional CLI, and esbuild gets its binary from its platform package.

@@ -258,8 +258,9 @@ b  = (p − o)²            // Brier
 L ← λ·L + b ;  N ← λ·N + 1      // λ = 0.98 (≈50-question memory)
 ```
 
-- **Weights** over the sources present for a question: `w_s = softmax(−η · L_s)` with `η = 2`.
-  - A new source (`N < 5`) gets `L = mean(L of the others)`, so it is neutral until proven.
+- **Weights** over the voices present for a question: `w_s = softmax(−η · L_s)` with `η = 0.5`.
+  - `L` is a discounted *sum*, so it settles near 50× the mean Brier score. The textbook Hedge rate `sqrt(8 ln K / T)` with K = 4, T = 50 is ≈ 0.47. The earlier planned `η = 2` would turn a 0.03 Brier gap into a 20× weight ratio; `η = 0.5` gives 2.1× (decision log, 2026-11-07).
+  - A new voice (`N < 5`) gets `L = mean(L of the established voices)`, so it is neutral until proven.
 - **Grudge line:** `logit(p*) = Σ w_s · logit(clamp(p_s, 0.02, 0.98))`.
 - **Confidence:** `c = (1 − e^(−n/50)) · max_s(w_s)`, where `n` = number of resolved questions in the category.
 - **Price (atomic USDC):** `round_to_1000(10_000 + 40_000·c)`, i.e. 0.010–0.050 USDC.
@@ -422,27 +423,29 @@ grudge/
 │  │     └─ health/route.ts
 │  ├─ components/               # Gauge, SourceCard, TallyMarks, DisagreementCard, PickBar, Ledger, LearningChart, Receipt
 │  ├─ server/
-│  │  ├─ env.ts                 # zod-parsed process.env, imported only server-side ('server-only')
+│  │  ├─ domain.ts              # the shared vocabulary: categories, voices, states
+│  │  ├─ env.ts                 # zod-parsed process.env, one getter per concern ('server-only')
 │  │  ├─ log.ts                 # JSON line logger
-│  │  ├─ db/{schema.ts,client.ts,migrate.ts}
-│  │  ├─ sui/{transport.ts,client.ts}      # ThrottledTransport + Tatum SuiGrpcClient (+ predict extension)
-│  │  ├─ sources/{types.ts,deepbook.ts,polymarket.ts,kalshi.ts,tatum-rate.ts}
+│  │  ├─ singleton.ts           # state shared between instrumentation.ts and route handlers
+│  │  ├─ db/{schema.ts,client.ts}
+│  │  ├─ tatum/{budget.ts,transport.ts,sui.ts,rate.ts}   # every Tatum call shares one 3 rps budget
+│  │  ├─ voices/{types.ts,http.ts,deepbook.ts,polymarket.ts,kalshi.ts}
 │  │  ├─ engine/{windows.ts,scoring.ts,resolve.ts,lessons.ts}   # pure
 │  │  ├─ memory/{codec.ts,store.ts,flusher.ts,coldboot.ts}
 │  │  ├─ x402/{protocol.ts,quote.ts,verify.ts}
 │  │  └─ worker/{loop.ts,snapshot.ts}
 │  └─ instrumentation.ts
-├─ scripts/{probe.ts,agent.ts,seed-check.ts}
+├─ scripts/{probe.mts,migrate.mts,agent.mts,seed-check.mts}   # ESM so they can use top-level await
 ├─ drizzle/                     # generated SQL migrations
 ├─ docs/{PRD.md,brand-guidelines.md}
-├─ assets/{tokens.css,logo-mark.svg}
+├─ assets/logo-mark.svg         # palette tokens live in src/app/globals.css
 ├─ .env.example · biome.json · drizzle.config.ts · next.config.ts · render.yaml · CLAUDE.md · README.md
 ```
 
 **Module rules**
 
 - `engine/*` and `memory/codec.ts` are **pure**: no I/O, no `Date.now()` (time is passed in). They are 100% unit-tested.
-- `sources/*` each export one async function per need, e.g. `getLiveCall(q) → Call | null` and `getResult(q) → 0|1|null`. Zod-parse every response. No source throws into the loop; each returns `null` and logs.
+- `voices/*` expose a live call and a final result per voice. Every response is zod-parsed. A voice never throws into the loop; it returns `null` and logs. The venue parsers are pure functions tested against payloads recorded from the live venues (`voices/fixtures/`).
 - Only `server/*` imports secrets. Client components import types only.
 - No barrel files. No classes except `ThrottledTransport` (the interface requires one).
 
@@ -452,9 +455,9 @@ grudge/
 questions:  id text pk, category text, windowStart timestamptz, expiry timestamptz, lockAt timestamptz,
             strike double null, state text check(open|locked|resolved|void), outcome smallint null,
             split boolean default false, venueResults jsonb default {}, resolvedAt timestamptz null
-forecasts:  questionId text fk, source text, p double, capturedAt timestamptz, pk(questionId, source)
+forecasts:  questionId text fk, voice text, p double (0 < p < 1), capturedAt timestamptz, pk(questionId, voice)
 picks:      questionId text fk, visitorId text, p double, createdAt timestamptz, pk(questionId, visitorId)
-scoreboard: category text, source text, loss double, count double, updatedAt timestamptz, pk(category, source)
+scoreboard: category text, voice text, loss double, count double, updatedAt timestamptz, pk(category, voice)
 memories:   id uuid pk, namespace text, kind text check(record|scoreboard|lesson), ref text, body text,
             status text check(pending|done|failed), attempts int default 0, blobId text null, createdAt, writtenAt null
 payments:   digest text pk, payer text, amount bigint, category text, status text check(settling|settled|failed),
