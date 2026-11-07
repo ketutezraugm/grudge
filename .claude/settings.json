@@ -1,0 +1,20 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '# Auto-loaded: docs/HANDOFF.md (current build state; continue from Next)'; cat \"$CLAUDE_PROJECT_DIR/docs/HANDOFF.md\" 2>/dev/null || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
