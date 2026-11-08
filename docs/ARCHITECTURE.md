@@ -71,11 +71,14 @@ Started once per process from `src/instrumentation.ts` (which first applies migr
 3. `coldboot.ts`: `restoreIfEmpty` runs at boot. With no grudges in the database it reads the latest snapshot and up to 100 recent records from Walrus, rebuilds the grudges (`engine/rebuild.ts`: snapshot, then replay later records in resolution order) restores the recent ledger with its blob ids, and brings back the latest 20 lessons (skipping any whose blob is already held). `checkAgainstWalrus` does the same read-only and reports the largest gap against the live scoreboard, with the blob ids it read (`pnpm exec tsx ... scripts/verify-memory.mts`). A recall that comes back empty is asked again after 2 s, up to four times, because a fresh process gets empty answers for its first seconds.
 4. `amnesia.ts`: `forget()` sets `paused` on the worker state, waits for a pass in flight, writes every waiting memory (`flushAll`), and checks that Walrus alone reproduces the live weights. If anything is unwritten or the gap exceeds 1e-9 it throws `AmnesiaRefused` and deletes nothing. Otherwise one transaction deletes picks, forecasts, lessons, questions, the scoreboard and the `record` memories that are done; `restoreFromWalrus` puts them back, and the report compares the weights before and after. `scoreboard` memories are kept so snapshot numbering continues.
 
+## Board and picks (`src/server/board.ts`, `src/app/api/board`, `src/app/api/pick`)
+`boardSnapshot()` reads, per category, the open window, the newest locked window, the last 20 with a result, the grudges, the resolved count and the newest lesson, and works out weights, confidence and price with the engine's pure functions. It is cached for 3 s and shared, so polling costs the same however many visitors there are. The visitor's own pick is the only per-visitor read. `engine/ledger.ts` turns calls and outcomes into right/wrong marks. The board shows only what has locked: live odds before the lock are not built yet.
+
 ## Deployment
 `render.yaml` describes one Render web service in Frankfurt (Starter plan), built with `pnpm build` and started with `pnpm start`. Secrets are typed into the dashboard when the Blueprint is created. The database is Supabase `grudge` (eu-central-1) through the session pooler.
 
 ## Not built yet
-The public board API and the UI, picks, streak and split lessons (only the every-25-windows lesson exists), the x402 payment path, the paying agent, an amnesia history table, and `/receipts`.
+The UI, live odds before the lock, streak and split lessons (only the every-25-windows lesson exists), the x402 payment path, the paying agent, an amnesia history table, and `/receipts`.
 
 ## Decisions that shaped the layout
 See `DECISIONS.md`. In short: all Tatum access is in one folder because it shares one rate budget; venue parsers are pure so they can be tested against real payloads; shared state goes through `singleton` because Next bundles the worker and the route handlers separately.
