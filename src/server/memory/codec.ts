@@ -44,6 +44,7 @@ const payload = z.discriminatedUnion("kind", [record, scoreboard, lesson]);
 
 export type MemoryPayload = z.infer<typeof payload>;
 export type RecordPayload = z.infer<typeof record>;
+export type ScoreboardPayload = z.infer<typeof scoreboard>;
 
 const TAIL = "#grudge ";
 
@@ -130,5 +131,31 @@ export function recordOf(input: RecordInput): RecordPayload {
     calls: input.calls,
     results: input.results,
     line: input.line,
+  };
+}
+
+export interface ScoreboardInput {
+  seq: number;
+  nowMs: number;
+  grudges: readonly { category: Category; voice: Voice; loss: number; count: number }[];
+  resolved: readonly { category: Category; count: number }[];
+}
+
+/** A snapshot of everything Grudge holds against each voice, enough to rebuild the weights. */
+export function scoreboardOf(input: ScoreboardInput): ScoreboardPayload {
+  const grudges: ScoreboardPayload["grudges"] = {};
+  for (const { category, voice, loss, count } of input.grudges) {
+    const held = grudges[category] ?? {};
+    held[voice] = { loss, count };
+    grudges[category] = held;
+  }
+  const resolved: ScoreboardPayload["resolved"] = {};
+  for (const { category, count } of input.resolved) resolved[category] = count;
+  return {
+    kind: "scoreboard",
+    seq: input.seq,
+    at: new Date(input.nowMs).toISOString(),
+    grudges,
+    resolved,
   };
 }

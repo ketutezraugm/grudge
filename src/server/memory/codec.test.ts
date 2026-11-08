@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { decode, encode, type MemoryPayload, type RecordPayload, recordOf } from "./codec";
+import {
+  decode,
+  encode,
+  type MemoryPayload,
+  type RecordPayload,
+  recordOf,
+  scoreboardOf,
+} from "./codec";
 
 const record: RecordPayload = {
   kind: "record",
@@ -93,5 +100,34 @@ describe("recordOf", () => {
     });
     expect(built).toEqual(record);
     expect(decode(encode(built))).toEqual(record);
+  });
+});
+
+describe("scoreboardOf", () => {
+  it("groups the grudges by category and voice and keeps the resolved counts", () => {
+    const snapshot = scoreboardOf({
+      seq: 7,
+      nowMs: Date.parse("2026-11-08T06:30:00Z"),
+      grudges: [
+        { category: "btc-5m", voice: "deepbook", loss: 0.01, count: 1 },
+        { category: "btc-5m", voice: "polymarket", loss: 0.245, count: 1 },
+        { category: "btc-15m", voice: "kalshi", loss: 9.5, count: 41.2 },
+      ],
+      resolved: [
+        { category: "btc-5m", count: 12 },
+        { category: "btc-15m", count: 4 },
+      ],
+    });
+    expect(snapshot).toEqual({
+      kind: "scoreboard",
+      seq: 7,
+      at: "2026-11-08T06:30:00.000Z",
+      grudges: {
+        "btc-5m": { deepbook: { loss: 0.01, count: 1 }, polymarket: { loss: 0.245, count: 1 } },
+        "btc-15m": { kalshi: { loss: 9.5, count: 41.2 } },
+      },
+      resolved: { "btc-5m": 12, "btc-15m": 4 },
+    });
+    expect(decode(encode(snapshot))).toEqual(snapshot);
   });
 });

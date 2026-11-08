@@ -1,4 +1,5 @@
 import { log } from "../log";
+import { flushDue } from "../memory/flusher";
 import { discoverWindows } from "./discover";
 import { lockDue } from "./lock";
 import { settleDue } from "./settle";
@@ -11,6 +12,7 @@ const steps = [
   ["discover", discoverWindows],
   ["lock", lockDue],
   ["settle", settleDue],
+  ["flush", flushDue],
 ] as const;
 
 async function tick(): Promise<void> {
