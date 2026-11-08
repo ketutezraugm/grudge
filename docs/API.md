@@ -62,4 +62,4 @@ Everything the board shows. Pollers share one set of queries (at most 3 s stale)
 - `yourPicks` is the visitor's own pick (probability of up) on each open window, read from the `grudge_visitor` cookie.
 
 ## `POST /api/pick`
-Body `{ "question": "btc-15m:1794123000", "direction": "up" | "down", "confidence": 55 | 65 | 80 | 95 }`. Sets the `grudge_visitor` cookie on the first pick. `200 { question, p }`; `400` for a bad body; `409` when the window is locked or this visitor already picked it. The Crowd voice at lock is the mean of the window's picks.
+Body `{ "question": "btc-15m:1794123000", "direction": "up" | "down", "confidence": 55 | 65 | 80 | 95 }`. Sets the `grudge_visitor` cookie on the first pick. `200 { question, p }`; `400` for a bad body; `409` when the window is locked or this visitor already picked it. The Crowd voice at lock is the mean of the window's picks. `429` after 3 picks from one address on a window (the address is the visitor's, read from `X-Forwarded-For` behind Cloudflare and Render).
