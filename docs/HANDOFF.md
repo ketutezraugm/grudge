@@ -1,14 +1,14 @@
 # Handoff
 
 > Living state of the build. Overwritten (not appended) by `/handoff`. A new session reads this first, then the PRD sections named under **Next**.
-> Last updated: 2026-11-08 07:07 UTC · Session 1 (amnesia and verify-memory built and run live; worker moved to Render)
+> Last updated: 2026-11-08 08:20 UTC · Session 1 (lessons, board API and picks live on Render; the design handoff is next)
 
 ## Now
 - **Render is the only worker.** Service `srv-dbo1qp3rjlhs73a6ico0` (Blueprint `exs-dbo1pgjl550s738gn730`, workspace `tea-db0fppid0e5s73beqn4g`), live since 06:58 UTC at **https://grudge-l19c.onrender.com**, auto-deploys on every push to `main`. The local server was stopped at 07:05 UTC; **do not start `next start` locally again** (a second worker double-writes). The VPN is no longer needed.
-- **Phase:** the core loop works end to end against live data, and memory is proven both ways: it writes to Walrus mainnet and rebuilds from it, including after a real wipe. No UI yet.
+- **Phase:** the data side is done and live: worker, memory both ways (including after a real wipe), lessons, `GET /api/board`, `POST /api/pick`. **No UI yet, and none is built by Claude: the design handoff to Claude Design is next, and starts with questions to the user.**
 - **Deadline:** submissions close 2026-11-10 17:00 UTC. Our own cutoff is 14:00 UTC.
-- **Checks:** `pnpm lint`, `pnpm typecheck`, `pnpm test` (74 tests) pass; `pnpm build` passed at 06:43.
-- **GitHub:** private repo `ketutezraugm/grudge`. Pushed through `fb9c432`. A push to `main` redeploys Render and restarts the worker (a restart costs the open window). Commits are authored as `AkuTampanTay`, no co-author. **Stays private until the user says so.**
+- **Checks:** `pnpm lint`, `pnpm typecheck`, `pnpm test` (84 tests) pass at 08:17 UTC.
+- **GitHub:** private repo `ketutezraugm/grudge`. Pushed through `e63964e`. A push to `main` redeploys Render and restarts the worker (a restart costs the open window). Commits are authored as `AkuTampanTay`, no co-author. **Stays private until the user says so.**
 - **Visual world:** Grudge Book (paper, ink, red pencil). See `docs/brand-guidelines.md` v2 and PRD §15.
 
 ## Done (see `docs/ARCHITECTURE.md` and `docs/API.md`)
@@ -17,7 +17,9 @@
 - **Worker** (`src/server/worker/`): discover, lock, settle, flush, plus `GET /api/health`. Locks, settles, scores, queues memories.
 - **Walrus mainnet memories: about 10** (probe memory plus flushes at 06:27, 06:31, 06:36 and 06:41 UTC; 0 refused). The hackathon minimum of 10 is reached; the worker adds a few per hour.
 - **Cold boot** (`memory/coldboot.ts`, `engine/rebuild.ts`): rebuilds from the latest snapshot plus later records.
-- **This session:**
+- **Lessons** (`engine/lessons.ts`, queued from `worker/settle.ts`): every 25 resolved windows per category, one counted sentence on how often each voice was closest when voices were 7+ pts apart. Restored on cold boot (latest 20). The database path was checked once in a rolled-back transaction; **no real lesson exists yet** (a category needs 25 resolved windows; btc-5m reaches it around 11:00 UTC Nov 8).
+- **Board and picks** (`server/board.ts`, `app/api/board`, `app/api/pick`, `engine/ledger.ts`, `server/caller.ts`): see `docs/API.md` for the exact shape. Snapshot cached 3 s; Bitcoin price from Tatum cached 5 min; picks capped at 3 per address per window. The board shows only what has locked: **live odds before the lock are not built** (the Crowd and the live gauge need them if the design wants a moving needle).
+- **Earlier this session:**
   - `src/server/memory/amnesia.ts` and `POST /api/admin/amnesia` (Bearer `ADMIN_TOKEN`, which is set in `.env`). Pauses the worker, flushes, refuses (409) unless Walrus alone reproduces the live weights, wipes, restores, reports. **Run live at 06:43 UTC: 5 grudges before and after, 4 ledger windows restored, gap 0, worker resumed.**
   - `POST /api/verify-memory`: public, read-only, one shared check per minute, returns blob ids plus rebuilt and live boards.
   - `flusher.ts` `flushAll()`; worker state gained `paused` and `ticking`.
@@ -26,10 +28,11 @@
 - `render.yaml` Blueprint committed (Frankfurt, Starter).
 
 ## Next (in order)
-1. **`engine/lessons.ts`** (templated lessons, one per 25 scored windows per category) and the lessons memory writer. PRD §5.4. Done when a unit test with real fixtures produces the PRD's example sentence shape and a lesson row queues a `lesson` memory.
-2. **Board API** `GET /api/board`, picks `POST /api/pick`, then stop at the UI. **The user's rule: Claude does not design.** Build the APIs, then ask the user questions about the design, and hand off to a Design artifact in Claude Design (PRD §12, §15 mention `impeccable`; that is superseded). Implement only what Claude Design returns. No dark/neon, no rounded boxes, no generic AI look. Done when `GET /api/board` returns real data and the Design artifact exists.
-3. **`/receipts`:** memory totals and Walruscan links, payments, Tatum counters, the verify-memory button, and amnesia history. Amnesia history needs a table (none yet; the report is only logged as `amnesia.restored`).
-4. x402 payment path (test-first), `scripts/agent.mts`, `/agents` (PRD §5.5).
+1. **Design handoff.** **The user's rule: Claude does not design.** Ask the user the design questions first (audience, screens, tone, the proof strip, what a judge sees in 10 seconds, whether live odds before the lock matter), then create a Design artifact (Artifact quickstart intent `design`) seeded with the brief, `docs/brand-guidelines.md`, real copy and a real `GET /api/board` response. Implement only what comes back (PRD §12, §15 mention `impeccable`; superseded). No dark/neon, no rounded boxes, no generic AI look. Done when the Design artifact exists and the user has seen it.
+2. **x402 payment path** (test-first, PRD §5.5): `x402/{protocol,quote,verify}.ts`, `GET /api/consensus`, `scripts/agent.mts`. Needs no design, so it can run while the design is made. Done when the agent script gets 402, pays, gets 200, and a replay returns 402 `duplicate`.
+3. **`GET /api/receipts`** (PRD §5.6): memory totals and Walruscan links, payments, Tatum counters, amnesia history. Amnesia history needs a table (none yet; the report is only logged as `amnesia.restored`). The `/receipts` page itself comes from the design.
+4. Live odds before the lock for the gauge, if the design needs them.
+5. `/agents` docs page content (curl flow, price now) once x402 works; the page itself comes from the design.
 
 ## Waiting on the user
 - [x] **Render Blueprint applied** (see Now). `ADMIN_TOKEN` and `QUOTE_SECRET` are generated by Render; the admin token is in the service's Environment tab, for calling amnesia in production. Never set `AGENT_PRIVATE_KEY` there.
