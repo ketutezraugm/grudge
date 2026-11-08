@@ -1,13 +1,55 @@
 import postgres from "postgres";
-const sql = postgres(process.env.DATABASE_URL as string, { ssl: "require", max: 1, onnotice: () => undefined });
+
+const sql = postgres(process.env.DATABASE_URL as string, {
+  ssl: "require",
+  max: 1,
+  onnotice: () => undefined,
+});
 const iso = (d: Date | null) => (d ? d.toISOString().slice(11, 19) : "-");
-const qs = await sql`select id, state, strike, line, lock_at, expiry, outcome, split, venue_results from questions order by expiry, id`;
+const qs =
+  await sql`select id, state, strike, line, lock_at, expiry, outcome, split, venue_results from questions order by expiry, id`;
 console.log(`now ${new Date().toISOString().slice(11, 19)} UTC | questions: ${qs.length}`);
-for (const q of qs) console.log(" ", q.id.padEnd(20), q.state.padEnd(9), "lock", iso(q.lock_at), "end", iso(q.expiry), "strike", q.strike ?? "-", "line", q.line == null ? "-" : Number(q.line).toFixed(3), "outcome", q.outcome ?? "-", "split", q.split, JSON.stringify(q.venue_results));
-const fs = await sql`select question_id, voice, p, captured_at from forecasts order by question_id, voice`;
-for (const f of fs) console.log("   forecast", f.question_id.padEnd(20), String(f.voice).padEnd(10), Number(f.p).toFixed(3), "at", iso(f.captured_at));
+for (const q of qs)
+  console.log(
+    " ",
+    q.id.padEnd(20),
+    q.state.padEnd(9),
+    "lock",
+    iso(q.lock_at),
+    "end",
+    iso(q.expiry),
+    "strike",
+    q.strike ?? "-",
+    "line",
+    q.line == null ? "-" : Number(q.line).toFixed(3),
+    "outcome",
+    q.outcome ?? "-",
+    "split",
+    q.split,
+    JSON.stringify(q.venue_results),
+  );
+const fs =
+  await sql`select question_id, voice, p, captured_at from forecasts order by question_id, voice`;
+for (const f of fs)
+  console.log(
+    "   forecast",
+    f.question_id.padEnd(20),
+    String(f.voice).padEnd(10),
+    Number(f.p).toFixed(3),
+    "at",
+    iso(f.captured_at),
+  );
 const sb = await sql`select category, voice, loss, count from scoreboard order by 1, 2`;
-for (const s of sb) console.log("   grudge", s.category, String(s.voice).padEnd(10), "loss", Number(s.loss).toFixed(3), "count", Number(s.count).toFixed(2));
+for (const s of sb)
+  console.log(
+    "   grudge",
+    s.category,
+    String(s.voice).padEnd(10),
+    "loss",
+    Number(s.loss).toFixed(3),
+    "count",
+    Number(s.count).toFixed(2),
+  );
 const m = await sql`select status, count(*)::int n from memories group by 1`;
 console.log("   memories outbox:", m.map((x) => `${x.status}=${x.n}`).join(" ") || "empty");
 await sql.end();

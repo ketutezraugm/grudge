@@ -21,6 +21,7 @@ const record = z.object({
   state: z.enum(["resolved", "void"]),
   outcome: outcome.nullable(),
   split: z.boolean(),
+  resolvedAt: z.iso.datetime(),
   calls: byVoice(z.number()),
   results: byVoice(outcome),
   line: z.number().nullable(),
@@ -30,6 +31,8 @@ const scoreboard = z.object({
   kind: z.literal("scoreboard"),
   seq: z.number().int().nonnegative(),
   at: z.iso.datetime(),
+  /** Resolution time of the newest window this snapshot already counts; later records are not in it. */
+  through: z.iso.datetime().nullable(),
   grudges: byCategory(byVoice(z.object({ loss: z.number(), count: z.number() }))),
   resolved: byCategory(z.number().int().nonnegative()),
 });
@@ -112,6 +115,7 @@ export interface RecordInput {
   state: "resolved" | "void";
   outcome: Outcome | null;
   split: boolean;
+  resolvedMs: number;
   calls: ByVoice<number>;
   results: ByVoice<Outcome>;
   line: number | null;
@@ -128,6 +132,7 @@ export function recordOf(input: RecordInput): RecordPayload {
     state: input.state,
     outcome: input.outcome,
     split: input.split,
+    resolvedAt: new Date(input.resolvedMs).toISOString(),
     calls: input.calls,
     results: input.results,
     line: input.line,
@@ -137,6 +142,8 @@ export function recordOf(input: RecordInput): RecordPayload {
 export interface ScoreboardInput {
   seq: number;
   nowMs: number;
+  /** Resolution time of the newest window counted in `grudges`, or null when none is. */
+  throughMs: number | null;
   grudges: readonly { category: Category; voice: Voice; loss: number; count: number }[];
   resolved: readonly { category: Category; count: number }[];
 }
@@ -155,6 +162,7 @@ export function scoreboardOf(input: ScoreboardInput): ScoreboardPayload {
     kind: "scoreboard",
     seq: input.seq,
     at: new Date(input.nowMs).toISOString(),
+    through: input.throughMs === null ? null : new Date(input.throughMs).toISOString(),
     grudges,
     resolved,
   };

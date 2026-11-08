@@ -1,4 +1,4 @@
-import { and, asc, count, eq, lt } from "drizzle-orm";
+import { and, asc, count, eq, lt, max } from "drizzle-orm";
 import { database } from "../db/client";
 import { memories, questions, scoreboard } from "../db/schema";
 import { namespaces } from "../domain";
@@ -65,18 +65,32 @@ async function queueScoreboard(nowMs: number): Promise<void> {
     .from(memories)
     .where(eq(memories.kind, "scoreboard"));
   const seq = (previous?.n ?? 0) + 1;
-  const grudges = await db.select().from(scoreboard);
-  const resolved = await db
-    .select({ category: questions.category, count: count() })
-    .from(questions)
-    .where(eq(questions.state, "resolved"))
-    .groupBy(questions.category);
+  // One consistent view: a window settling mid-read must not be in the grudges but not in
+  // `through`, or restoring would count it twice or never.
+  const snapshot = await db.transaction(
+    async (tx) => {
+      const [newest] = await tx
+        .select({ at: max(questions.resolvedAt) })
+        .from(questions)
+        .where(eq(questions.state, "resolved"));
+      return {
+        throughMs: newest?.at?.getTime() ?? null,
+        grudges: await tx.select().from(scoreboard),
+        resolved: await tx
+          .select({ category: questions.category, count: count() })
+          .from(questions)
+          .where(eq(questions.state, "resolved"))
+          .groupBy(questions.category),
+      };
+    },
+    { isolationLevel: "repeatable read" },
+  );
 
   await db.insert(memories).values({
     namespace: namespaces.scoreboard,
     kind: "scoreboard",
     ref: `scoreboard-${seq}`,
-    body: encode(scoreboardOf({ seq, nowMs, grudges, resolved })),
+    body: encode(scoreboardOf({ seq, nowMs, ...snapshot })),
   });
 }
 

@@ -17,6 +17,7 @@ const record: RecordPayload = {
   state: "resolved",
   outcome: 1,
   split: false,
+  resolvedAt: "2026-11-07T13:19:41.000Z",
   calls: { kalshi: 0.93, polymarket: 0.8, deepbook: 0.61, crowd: 0.45 },
   results: { kalshi: 1, polymarket: 1, deepbook: 1 },
   line: 0.86,
@@ -51,6 +52,7 @@ describe("decode", () => {
       kind: "scoreboard",
       seq: 412,
       at: "2026-11-07T13:20:00.000Z",
+      through: "2026-11-07T13:19:41.000Z",
       grudges: { "btc-15m": { kalshi: { loss: 9.5, count: 41.2 } } },
       resolved: { "btc-15m": 61 },
     },
@@ -94,6 +96,7 @@ describe("recordOf", () => {
       state: "resolved",
       outcome: record.outcome,
       split: record.split,
+      resolvedMs: Date.parse(record.resolvedAt),
       calls: record.calls,
       results: record.results,
       line: record.line,
@@ -108,6 +111,7 @@ describe("scoreboardOf", () => {
     const snapshot = scoreboardOf({
       seq: 7,
       nowMs: Date.parse("2026-11-08T06:30:00Z"),
+      throughMs: Date.parse("2026-11-08T06:24:23Z"),
       grudges: [
         { category: "btc-5m", voice: "deepbook", loss: 0.01, count: 1 },
         { category: "btc-5m", voice: "polymarket", loss: 0.245, count: 1 },
@@ -122,6 +126,7 @@ describe("scoreboardOf", () => {
       kind: "scoreboard",
       seq: 7,
       at: "2026-11-08T06:30:00.000Z",
+      through: "2026-11-08T06:24:23.000Z",
       grudges: {
         "btc-5m": { deepbook: { loss: 0.01, count: 1 }, polymarket: { loss: 0.245, count: 1 } },
         "btc-15m": { kalshi: { loss: 9.5, count: 41.2 } },

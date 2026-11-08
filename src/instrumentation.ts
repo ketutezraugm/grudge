@@ -7,7 +7,16 @@ export async function register(): Promise<void> {
     return;
   }
   const { runMigrations } = await import("./server/db/client");
+  const { restoreIfEmpty } = await import("./server/memory/coldboot");
+  const { log } = await import("./server/log");
   const { startWorker } = await import("./server/worker/loop");
+
   await runMigrations();
+  try {
+    await restoreIfEmpty();
+  } catch (err) {
+    // Walrus being unreachable must not take the site down with it; the worker starts regardless.
+    log.error("coldboot.failed", { err });
+  }
   startWorker();
 }

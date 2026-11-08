@@ -79,15 +79,13 @@ async function settleOne(question: Question, nowMs: number): Promise<void> {
     }
     return;
   }
-  await finalize(question, results, nowMs);
+  await finalize(question, results);
   lastAsked().delete(question.id);
 }
 
-async function finalize(
-  question: Question,
-  results: ByVoice<Outcome>,
-  nowMs: number,
-): Promise<void> {
+async function finalize(question: Question, results: ByVoice<Outcome>): Promise<void> {
+  // Taken here, not at tick start: restoring orders windows by this instant, so each needs its own.
+  const resolvedMs = Date.now();
   const resolution = resolve(results);
 
   await database().transaction(async (tx) => {
@@ -99,7 +97,7 @@ async function finalize(
         outcome: resolution.outcome,
         split: resolution.split,
         venueResults: results,
-        resolvedAt: new Date(nowMs),
+        resolvedAt: new Date(resolvedMs),
       })
       .where(and(eq(questions.id, question.id), eq(questions.state, "locked")))
       .returning({ id: questions.id });
@@ -117,7 +115,7 @@ async function finalize(
           .values({ category: question.category, voice: call.voice, ...next })
           .onConflictDoUpdate({
             target: [scoreboard.category, scoreboard.voice],
-            set: { ...next, updatedAt: new Date(nowMs) },
+            set: { ...next, updatedAt: new Date(resolvedMs) },
           });
       }
     }
@@ -140,6 +138,7 @@ async function finalize(
           state: resolution.state,
           outcome: resolution.outcome,
           split: resolution.split,
+          resolvedMs,
           calls,
           results,
           line: question.line,
