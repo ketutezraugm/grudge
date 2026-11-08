@@ -45,6 +45,8 @@ export const questions = pgTable(
     expiry: at().notNull(),
     lockAt: at().notNull(),
     strike: doublePrecision(),
+    /** The Grudge line as it stood at lock time; the weights keep moving afterwards. */
+    line: doublePrecision(),
     state: text({ enum: questionStates }).notNull().default("open"),
     outcome: smallint().$type<Outcome>(),
     split: boolean().notNull().default(false),

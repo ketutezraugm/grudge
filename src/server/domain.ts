@@ -15,6 +15,13 @@ export type Outcome = 0 | 1;
 export const memoryKinds = ["record", "scoreboard", "lesson"] as const;
 export type MemoryKind = (typeof memoryKinds)[number];
 
+/** One Walrus Memory namespace per kind of memory, so recall can be aimed at one of them. */
+export const namespaces = {
+  record: "grudge:v1:records",
+  scoreboard: "grudge:v1:scoreboard",
+  lesson: "grudge:v1:lessons",
+} as const satisfies Record<MemoryKind, string>;
+
 export const memoryStatuses = ["pending", "done", "failed"] as const;
 export type MemoryStatus = (typeof memoryStatuses)[number];
 

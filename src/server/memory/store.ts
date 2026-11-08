@@ -1,14 +1,7 @@
 import "server-only";
 import { MemWal } from "@mysten-incubation/memwal";
-import type { MemoryKind } from "../domain";
 import { memoryEnv } from "../env";
 import { singleton } from "../singleton";
-
-export const NAMESPACES = {
-  record: "grudge:v1:records",
-  scoreboard: "grudge:v1:scoreboard",
-  lesson: "grudge:v1:lessons",
-} as const satisfies Record<MemoryKind, string>;
 
 /** Walrus takes 20 to 90 seconds to store a memory and confirm it. */
 const WRITE_TIMEOUT_MS = 120_000;

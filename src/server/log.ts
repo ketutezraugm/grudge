@@ -1,7 +1,10 @@
 type Level = "info" | "warn" | "error";
 
 function serialize(_key: string, value: unknown): unknown {
-  if (value instanceof Error) return { name: value.name, message: value.message };
+  // Drivers wrap the real failure in `cause`; without it a query error says nothing useful.
+  if (value instanceof Error) {
+    return { name: value.name, message: value.message.slice(0, 200), cause: value.cause };
+  }
   if (typeof value === "bigint") return value.toString();
   return value;
 }

@@ -1,5 +1,12 @@
 import { z } from "zod";
-import { categories, type Voice, voices } from "../domain";
+import {
+  type ByVoice,
+  type Category,
+  categories,
+  type Outcome,
+  type Voice,
+  voices,
+} from "../domain";
 
 const outcome = z.union([z.literal(0), z.literal(1)]);
 const byVoice = <T extends z.ZodType>(value: T) => z.partialRecord(z.enum(voices), value);
@@ -94,4 +101,34 @@ export function decode(text: string): MemoryPayload | null {
   } catch {
     return null;
   }
+}
+
+export interface RecordInput {
+  id: string;
+  category: Category;
+  endMs: number;
+  strike: number | null;
+  state: "resolved" | "void";
+  outcome: Outcome | null;
+  split: boolean;
+  calls: ByVoice<number>;
+  results: ByVoice<Outcome>;
+  line: number | null;
+}
+
+/** What Grudge writes to Walrus about one window once it has settled, or been given up on. */
+export function recordOf(input: RecordInput): RecordPayload {
+  return {
+    kind: "record",
+    question: input.id,
+    category: input.category,
+    endsAt: new Date(input.endMs).toISOString(),
+    strike: input.strike,
+    state: input.state,
+    outcome: input.outcome,
+    split: input.split,
+    calls: input.calls,
+    results: input.results,
+    line: input.line,
+  };
 }

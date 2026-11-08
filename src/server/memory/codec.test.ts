@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { decode, encode, type MemoryPayload, type RecordPayload } from "./codec";
+import { decode, encode, type MemoryPayload, type RecordPayload, recordOf } from "./codec";
 
 const record: RecordPayload = {
   kind: "record",
@@ -74,5 +74,24 @@ describe("decode", () => {
   it("reads the last tail when a sentence quotes the marker", () => {
     const tricky = `He wrote "#grudge nope".\n${encode(record)}`;
     expect(decode(tricky)).toEqual(record);
+  });
+});
+
+describe("recordOf", () => {
+  it("builds the record that was written for a settled window", () => {
+    const built = recordOf({
+      id: record.question,
+      category: record.category,
+      endMs: Date.parse(record.endsAt),
+      strike: record.strike,
+      state: "resolved",
+      outcome: record.outcome,
+      split: record.split,
+      calls: record.calls,
+      results: record.results,
+      line: record.line,
+    });
+    expect(built).toEqual(record);
+    expect(decode(encode(built))).toEqual(record);
   });
 });

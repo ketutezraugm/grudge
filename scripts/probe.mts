@@ -2,8 +2,9 @@
  * Live check of every external dependency Grudge reads. Run it before a demo and whenever a
  * source misbehaves. `--write-memory` also stores one memory on Walrus mainnet.
  */
+import { namespaces } from "../src/server/domain";
 import { openWindows } from "../src/server/engine/windows";
-import { NAMESPACES, writeBulk } from "../src/server/memory/store";
+import { writeBulk } from "../src/server/memory/store";
 import { tatumCalls } from "../src/server/tatum/budget";
 import { bitcoinUsd } from "../src/server/tatum/rate";
 import { sui } from "../src/server/tatum/sui";
@@ -125,7 +126,7 @@ for (const category of ["btc-5m", "btc-15m"] as const) {
 if (process.argv.includes("--write-memory")) {
   await check("walrus memory write", async () => {
     const text = `Grudge probe at ${new Date().toISOString()}: every voice answered.`;
-    const [written] = await writeBulk([{ namespace: NAMESPACES.lesson, text }]);
+    const [written] = await writeBulk([{ namespace: namespaces.lesson, text }]);
     if (!written?.blobId) throw new Error(written?.error ?? "no blob id");
     return `blob ${written.blobId}`;
   });

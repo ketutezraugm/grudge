@@ -9,7 +9,12 @@ import * as schema from "./schema";
 const connection = () =>
   singleton("database", () => {
     // Supabase session pooler (port 5432); it speaks plain Postgres, so prepared statements work.
-    const sql = postgres(databaseEnv().DATABASE_URL, { max: 5, ssl: "require" });
+    const sql = postgres(databaseEnv().DATABASE_URL, {
+      max: 5,
+      ssl: "require",
+      // "already exists, skipping" from the migrator is not worth a log line.
+      onnotice: () => undefined,
+    });
     return { sql, db: drizzle(sql, { schema, casing: "snake_case" }) };
   });
 
