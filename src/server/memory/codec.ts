@@ -5,6 +5,7 @@ import {
   categories,
   type Outcome,
   type Voice,
+  voiceNames,
   voices,
 } from "../domain";
 
@@ -51,13 +52,6 @@ export type ScoreboardPayload = z.infer<typeof scoreboard>;
 
 const TAIL = "#grudge ";
 
-const NAMES: Record<Voice, string> = {
-  deepbook: "DeepBook",
-  polymarket: "Polymarket",
-  kalshi: "Kalshi",
-  crowd: "Crowd",
-};
-
 const minute = (iso: string) => `${iso.slice(0, 16)}Z`;
 
 function describeRecord(entry: RecordPayload): string {
@@ -72,7 +66,7 @@ function describeRecord(entry: RecordPayload): string {
     const leansUp = p >= 0.5;
     const right = leansUp === (entry.outcome === 1);
     return [
-      `${NAMES[voice]} ${Math.round(p * 100)}% ${leansUp ? "▲" : "▼"} (${right ? "right" : "wrong"})`,
+      `${voiceNames[voice]} ${Math.round(p * 100)}% ${leansUp ? "▲" : "▼"} (${right ? "right" : "wrong"})`,
     ];
   });
   const line = entry.line === null ? "" : ` Grudge line ${Math.round(entry.line * 100)}%.`;

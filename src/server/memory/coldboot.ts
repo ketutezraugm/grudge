@@ -1,6 +1,6 @@
 import { and, count, eq, lt } from "drizzle-orm";
 import { database } from "../db/client";
-import { forecasts, memories, questions, scoreboard } from "../db/schema";
+import { forecasts, lessons, memories, questions, scoreboard } from "../db/schema";
 import { categories, namespaces, voices } from "../domain";
 import { type Board, rebuildGrudges } from "../engine/rebuild";
 import { windowEndingAt } from "../engine/windows";
@@ -73,10 +73,35 @@ const rowsOf = (board: Board) =>
     }),
   );
 
-/** Rebuilds the grudges and the recent ledger from Walrus alone. Replaces whatever is in the scoreboard. */
-export async function restoreFromWalrus(): Promise<{ grudges: number; windows: number }> {
+/** How many lessons to bring back; the board shows the latest few. */
+const LESSONS_TO_RECALL = 20;
+
+/**
+ * No retry on empty: this runs after the records were read, so the process is warm, and an
+ * empty answer here usually means no lesson has been written yet.
+ */
+async function readLessons() {
+  const found = await recall(namespaces.lesson, "disagreements of 7+ pts", {
+    topK: LESSONS_TO_RECALL,
+    sort: "recent",
+  });
+  return found.flatMap((memory) => {
+    const payload = decode(memory.text);
+    return payload?.kind === "lesson"
+      ? [{ payload, blobId: memory.blobId, text: memory.text, createdAt: memory.createdAt }]
+      : [];
+  });
+}
+
+/** Rebuilds the grudges, the recent ledger and the lessons from Walrus alone. Replaces whatever is in the scoreboard. */
+export async function restoreFromWalrus(): Promise<{
+  grudges: number;
+  windows: number;
+  lessons: number;
+}> {
   const { snapshot, records } = await readFromWalrus();
-  if (!snapshot && records.length === 0) return { grudges: 0, windows: 0 };
+  if (!snapshot && records.length === 0) return { grudges: 0, windows: 0, lessons: 0 };
+  const found = await readLessons();
 
   const rows = rowsOf(
     rebuildGrudges(
@@ -85,6 +110,7 @@ export async function restoreFromWalrus(): Promise<{ grudges: number; windows: n
     ),
   );
   let windows = 0;
+  let restoredLessons = 0;
 
   await database().transaction(async (tx) => {
     await tx.delete(scoreboard);
@@ -130,8 +156,37 @@ export async function restoreFromWalrus(): Promise<{ grudges: number; windows: n
       });
       windows += 1;
     }
+
+    // Oldest first, so the cards keep their order.
+    for (const { payload, blobId, text, createdAt } of found.toReversed()) {
+      const [held] = await tx
+        .select({ id: memories.id })
+        .from(memories)
+        .where(eq(memories.blobId, blobId));
+      if (held) continue;
+
+      const [memory] = await tx
+        .insert(memories)
+        .values({
+          namespace: namespaces.lesson,
+          kind: "lesson",
+          ref: `lesson-${payload.category}-${blobId.slice(0, 8)}`,
+          body: text,
+          status: "done",
+          blobId,
+          writtenAt: new Date(),
+        })
+        .returning({ id: memories.id });
+      await tx.insert(lessons).values({
+        category: payload.category,
+        text: payload.text,
+        memoryId: memory?.id,
+        createdAt: createdAt ? new Date(createdAt) : new Date(),
+      });
+      restoredLessons += 1;
+    }
   });
-  return { grudges: rows.length, windows };
+  return { grudges: rows.length, windows, lessons: restoredLessons };
 }
 
 /** At boot: a database with no grudges at all is either brand new or wiped, so ask Walrus. */

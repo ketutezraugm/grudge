@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { database } from "../db/client";
 import { forecasts, lessons, memories, picks, questions, scoreboard } from "../db/schema";
 import { log } from "../log";
@@ -21,6 +21,8 @@ export interface AmnesiaReport {
   restored: number;
   /** Recent windows put back into the ledger, with their blob ids. */
   windows: number;
+  /** Lessons put back, newest 20 at most. */
+  lessons: number;
   /** Largest gap between the weights before the wipe and after the restore. */
   maxDifference: number;
   identical: boolean;
@@ -61,11 +63,11 @@ export async function forget(): Promise<AmnesiaReport> {
       await tx.delete(lessons);
       await tx.delete(questions);
       await tx.delete(scoreboard);
-      // Records come back from Walrus with their blob ids. Snapshots stay, so the next one
-      // continues the numbering instead of starting again at 1.
+      // Records and lessons come back from Walrus with their blob ids. Snapshots stay, so the
+      // next one continues the numbering instead of starting again at 1.
       await tx
         .delete(memories)
-        .where(and(eq(memories.kind, "record"), eq(memories.status, "done")));
+        .where(and(inArray(memories.kind, ["record", "lesson"]), eq(memories.status, "done")));
     });
     log.warn("amnesia.wiped", { grudges: countGrudges(check.live) });
 
@@ -75,6 +77,7 @@ export async function forget(): Promise<AmnesiaReport> {
       before: countGrudges(check.live),
       restored: restored.grudges,
       windows: restored.windows,
+      lessons: restored.lessons,
       maxDifference,
       identical: maxDifference <= SAME,
     };

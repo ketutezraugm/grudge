@@ -127,3 +127,6 @@ Why: each check reads Walrus twice and the relayer's budget is shared with the w
 
 **2026-11-08 · Claude does not design; every screen is designed in Claude Design and Claude only implements it.**
 Why: the user's call. They want no generic AI look (no black neon, no rounded boxes). Before each design handoff Claude asks the user questions, then builds a Design artifact seeded with the brief, copy, brand guidelines and real data. This supersedes the PRD's "run `impeccable` for UI work" (§12, §15).
+
+**2026-11-08 · Lessons are counted, not written: one sentence per 25 resolved windows per category, from a template.**
+Why: over the windows where voices were 7+ pts apart, it reports how often each voice was closest to the outcome. A tie credits nobody. Fewer than 5 such windows writes nothing and waits for the next 25. Streak and split lessons from the PRD are left out until the board needs them. Queueing runs in a savepoint so a failed lesson cannot stop a window from settling; the database path was checked once in a rolled-back transaction.

@@ -1,7 +1,15 @@
-import { and, eq, lte } from "drizzle-orm";
+import { and, count, eq, lte } from "drizzle-orm";
 import { database } from "../db/client";
-import { forecasts, memories, questions, scoreboard } from "../db/schema";
-import { type ByVoice, namespaces, type Outcome, type Voice, voices } from "../domain";
+import { forecasts, lessons, memories, questions, scoreboard } from "../db/schema";
+import {
+  type ByVoice,
+  type Category,
+  namespaces,
+  type Outcome,
+  type Voice,
+  voices,
+} from "../domain";
+import { disagreementLesson, LESSON_EVERY, type ScoredWindow } from "../engine/lessons";
 import { RESOLVE_AFTER_MS, settlingVoices, verdict } from "../engine/lifecycle";
 import { resolve } from "../engine/resolve";
 import { scoreCall } from "../engine/scoring";
@@ -15,6 +23,52 @@ import { polymarketResult } from "../voices/polymarket";
 import { grudgesIn } from "./grudges";
 
 type Question = typeof questions.$inferSelect;
+type Transaction = Parameters<Parameters<ReturnType<typeof database>["transaction"]>[0]>[0];
+
+/**
+ * Every LESSON_EVERY scored windows in a category, counts how the voices fared when they
+ * disagreed and queues the sentence as a lesson memory.
+ * ponytail: counts the windows still in the database, which after an amnesia restore is at most
+ * the last 100, so a category can write the same lesson number twice. Fine until it shows.
+ */
+export async function queueLesson(tx: Transaction, category: Category): Promise<void> {
+  const scoredWhere = and(eq(questions.category, category), eq(questions.state, "resolved"));
+  const [row] = await tx.select({ n: count() }).from(questions).where(scoredWhere);
+  const scored = row?.n ?? 0;
+  if (scored === 0 || scored % LESSON_EVERY !== 0) return;
+
+  const calls = await tx
+    .select({
+      question: forecasts.questionId,
+      voice: forecasts.voice,
+      p: forecasts.p,
+      outcome: questions.outcome,
+    })
+    .from(forecasts)
+    .innerJoin(questions, eq(questions.id, forecasts.questionId))
+    .where(scoredWhere);
+  const byQuestion = new Map<string, ScoredWindow>();
+  for (const { question, voice, p, outcome } of calls) {
+    if (outcome === null) continue;
+    const window = byQuestion.get(question) ?? { calls: {}, outcome };
+    window.calls[voice] = p;
+    byQuestion.set(question, window);
+  }
+  const text = disagreementLesson(category, [...byQuestion.values()]);
+  if (text === null) return;
+
+  const [memory] = await tx
+    .insert(memories)
+    .values({
+      namespace: namespaces.lesson,
+      kind: "lesson",
+      ref: `lesson-${category}-${scored}`,
+      body: encode({ kind: "lesson", category, text }),
+    })
+    .returning({ id: memories.id });
+  await tx.insert(lessons).values({ category, text, memoryId: memory?.id });
+  log.info("worker.lesson", { category, scored, text });
+}
 
 /** Venues are asked again this often until they answer. */
 const RETRY_EVERY_MS = 20_000;
@@ -145,6 +199,14 @@ async function finalize(question: Question, results: ByVoice<Outcome>): Promise<
         }),
       ),
     });
+    if (resolution.outcome !== null) {
+      // A savepoint: if the lesson fails, the window is still scored and remembered.
+      try {
+        await tx.transaction((inner) => queueLesson(inner, question.category));
+      } catch (err) {
+        log.error("worker.lesson.failed", { category: question.category, err });
+      }
+    }
   });
   log.info("worker.settled", {
     question: question.id,

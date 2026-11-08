@@ -27,5 +27,5 @@ Public and read-only. Rebuilds the trust weights from Walrus alone and compares 
 ## `POST /api/admin/amnesia`
 Admin only: `Authorization: Bearer <ADMIN_TOKEN>`, otherwise `401`. Wipes the learned state and rebuilds it from Walrus (see `ARCHITECTURE.md`, memory flow step 4).
 
-`200`: `{ "before": 5, "restored": 5, "windows": 4, "maxDifference": 0, "identical": true }`
+`200`: `{ "before": 5, "restored": 5, "windows": 4, "lessons": 0, "maxDifference": 0, "identical": true }` (`lessons` counts the lessons put back, newest 20 at most)
 `409 {"error": "…"}` when the wipe was refused (memories not yet on Walrus, Walrus does not reproduce the live weights, or amnesia is already running). Nothing was deleted.
