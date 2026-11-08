@@ -5,14 +5,18 @@ import { categories, namespaces, voices } from "../domain";
 import { type Board, rebuildGrudges } from "../engine/rebuild";
 import { windowEndingAt } from "../engine/windows";
 import { log } from "../log";
+import { bucketsBack } from "./buckets";
 import { decode, type RecordPayload, type ScoreboardPayload } from "./codec";
 import { recall } from "./store";
 
-/** Walrus returns at most 100 memories per recall, which is also how far back a restore can see. */
-const RECORDS_TO_RECALL = 100;
+/** Walrus returns at most 100 memories per recall; an hourly bucket holds far fewer (buckets.ts). */
+const BUCKET_RECALL = 100;
 
-/** Snapshots written before the current format cannot be read; look a few back for one that can. */
-const SNAPSHOTS_TO_TRY = 5;
+/** How many hours back to look for a snapshot before falling back to the old single namespaces. */
+const SNAPSHOT_HOURS = 12;
+
+/** A restore also rebuilds the recent ledger, so it reads at least this many hours of records. */
+const LEDGER_HOURS = 8;
 
 const EMPTY_RECALL_TRIES = 4;
 const EMPTY_RECALL_PAUSE_MS = 2_000;
@@ -37,32 +41,89 @@ async function recallAgainIfEmpty(...args: Parameters<typeof recall>) {
   return recall(...args);
 }
 
-async function readFromWalrus(): Promise<{
+interface WalrusRead {
   snapshot: ScoreboardPayload | null;
   snapshotBlobId: string | null;
   records: FoundRecord[];
-}> {
-  const candidates = await recallAgainIfEmpty(namespaces.scoreboard, "Grudge scoreboard", {
-    topK: SNAPSHOTS_TO_TRY,
-    sort: "recent",
-  });
-  const newest = candidates.flatMap((memory) => {
-    const payload = decode(memory.text);
-    return payload?.kind === "scoreboard" ? [{ payload, blobId: memory.blobId }] : [];
-  })[0];
-  const snapshot = newest?.payload ?? null;
+}
 
-  const found = await recallAgainIfEmpty(namespaces.record, "BTC window went UP or DOWN", {
-    topK: RECORDS_TO_RECALL,
-    sort: "recent",
-  });
-  const records = found.flatMap((memory) => {
+const toRecords = (found: Awaited<ReturnType<typeof recall>>): FoundRecord[] =>
+  found.flatMap((memory) => {
     const payload = decode(memory.text);
     return payload?.kind === "record"
       ? [{ payload, blobId: memory.blobId, text: memory.text }]
       : [];
   });
-  return { snapshot, snapshotBlobId: newest?.blobId ?? null, records };
+
+const newestSnapshot = (found: Awaited<ReturnType<typeof recall>>) =>
+  found
+    .flatMap((memory) => {
+      const payload = decode(memory.text);
+      return payload?.kind === "scoreboard" ? [{ payload, blobId: memory.blobId }] : [];
+    })
+    .toSorted((a, b) => b.payload.seq - a.payload.seq)[0];
+
+/** One bucket, asked again once on a failure: the relayer's decrypt step times out now and then. */
+async function readBucket(namespace: string, query: string, firstOfProcess: boolean) {
+  const options = { topK: BUCKET_RECALL, sort: "recent" } as const;
+  try {
+    return await (firstOfProcess
+      ? recallAgainIfEmpty(namespace, query, options)
+      : recall(namespace, query, options));
+  } catch (err) {
+    log.warn("coldboot.recall.retry", { namespace, err });
+    await new Promise((done) => setTimeout(done, EMPTY_RECALL_PAUSE_MS));
+    return recall(namespace, query, options);
+  }
+}
+
+/**
+ * The newest snapshot and every record flushed at or after its hour, read from the hourly
+ * buckets. `ledgerHours` adds older hours of records for the ledger; the weights need none.
+ */
+async function readFromWalrus(
+  options: { ledgerHours: number },
+  nowMs = Date.now(),
+): Promise<WalrusRead> {
+  let snapshotHour = -1;
+  let snapshot: Awaited<ReturnType<typeof newestSnapshot>>;
+  const scoreboardBuckets = bucketsBack(namespaces.scoreboard, nowMs, SNAPSHOT_HOURS);
+  for (const [hour, namespace] of scoreboardBuckets.entries()) {
+    snapshot = newestSnapshot(await readBucket(namespace, "Grudge scoreboard", hour === 0));
+    if (snapshot) {
+      snapshotHour = hour;
+      break;
+    }
+  }
+  // Nothing in the hourly buckets yet (the first hour after this change): the old namespaces.
+  if (!snapshot) return readLegacy();
+
+  const recordHours = Math.max(snapshotHour + 1, options.ledgerHours);
+  const records: FoundRecord[] = [];
+  for (const namespace of bucketsBack(namespaces.record, nowMs, recordHours)) {
+    const found = await readBucket(namespace, "BTC window went UP or DOWN", false);
+    if (found.length >= BUCKET_RECALL) log.warn("coldboot.bucket.full", { namespace });
+    records.push(...toRecords(found));
+  }
+  return { snapshot: snapshot.payload, snapshotBlobId: snapshot.blobId, records };
+}
+
+/** Before hourly buckets: one namespace per kind, where only a similarity-ranked sample comes back. */
+async function readLegacy(): Promise<WalrusRead> {
+  const candidates = await recallAgainIfEmpty(namespaces.scoreboard, "Grudge scoreboard", {
+    topK: 5,
+    sort: "recent",
+  });
+  const newest = newestSnapshot(candidates);
+  const found = await recallAgainIfEmpty(namespaces.record, "BTC window went UP or DOWN", {
+    topK: BUCKET_RECALL,
+    sort: "recent",
+  });
+  return {
+    snapshot: newest?.payload ?? null,
+    snapshotBlobId: newest?.blobId ?? null,
+    records: toRecords(found),
+  };
 }
 
 const rowsOf = (board: Board) =>
@@ -99,7 +160,7 @@ export async function restoreFromWalrus(): Promise<{
   windows: number;
   lessons: number;
 }> {
-  const { snapshot, records } = await readFromWalrus();
+  const { snapshot, records } = await readFromWalrus({ ledgerHours: LEDGER_HOURS });
   if (!snapshot && records.length === 0) return { grudges: 0, windows: 0, lessons: 0 };
   const found = await readLessons();
 
@@ -243,7 +304,7 @@ export interface WalrusCheck {
 
 /** Non-destructive: rebuilds the grudges from Walrus and compares them with the live scoreboard. */
 export async function checkAgainstWalrus(): Promise<WalrusCheck> {
-  const { snapshot, snapshotBlobId, records } = await readFromWalrus();
+  const { snapshot, snapshotBlobId, records } = await readFromWalrus({ ledgerHours: 0 });
   const rebuilt = rebuildGrudges(
     snapshot,
     records.map((entry) => entry.payload),

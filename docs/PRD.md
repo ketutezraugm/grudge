@@ -285,7 +285,7 @@ L ← λ·L + b ;  N ← λ·N + 1      // λ = 0.98 (≈50-question memory)
   - Every 5 min (or ≥ 15 pending): one `rememberBulkAndWait` with ≤ 20 items, scoreboard included.
   - On success, stores `blob_id`. Failures retry with backoff, up to 5 attempts, then `failed`.
   - Budget: ~16 records/h + 12 scoreboards/h, about 120 weighted units/h out of 500.
-- **Cold boot** (when the `scoreboard` table is empty at start, or after amnesia):
+- **Cold boot** (when the `scoreboard` table is empty at start, or after amnesia). **Superseded 2026-11-08: steps 1 and 2 read hourly bucket namespaces, because `recall` cannot return the newest N (see ARCHITECTURE, Hourly buckets):**
   1. `recall({ namespace: scoreboard, query: 'latest scoreboard', topK: 1, sort: 'recent' })`, then parse the tail and seed `L`/`N`.
   2. `recall({ namespace: records, topK: 100, sort: 'recent' })`, then re-insert those questions as resolved history, keeping their `blob_id`s.
   3. `recall({ namespace: lessons, topK: 20, sort: 'recent' })`, then seed the lesson cards.

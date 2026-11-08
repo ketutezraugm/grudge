@@ -4,6 +4,7 @@ import { memories, questions, scoreboard } from "../db/schema";
 import { namespaces } from "../domain";
 import { log } from "../log";
 import { singleton } from "../singleton";
+import { bucketNamespace } from "./buckets";
 import { encode, scoreboardOf } from "./codec";
 import { writeBulk } from "./store";
 
@@ -125,8 +126,14 @@ async function flush(nowMs: number): Promise<void> {
       .limit(BATCH_SIZE);
     if (batch.length === 0) return;
 
+    // Records and snapshots go into the bucket for this hour so a rebuild can read them back in
+    // full (see buckets.ts). Lessons stay in one namespace: they are found by meaning, and few.
     const written = await writeBulk(
-      batch.map((memory) => ({ namespace: memory.namespace, text: memory.body })),
+      batch.map((memory) => ({
+        namespace:
+          memory.kind === "lesson" ? memory.namespace : bucketNamespace(memory.namespace, nowMs),
+        text: memory.body,
+      })),
     );
     let stored = 0;
     for (const [index, memory] of batch.entries()) {
