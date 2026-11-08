@@ -54,6 +54,14 @@ describe("ThrottledTransport", () => {
     expect(attempts()).toBe(2);
   });
 
+  it("retries a call whose connection was reset and returns the answer that follows", async () => {
+    const { transport, attempts } = transportAnswering(new Error("read ECONNRESET"), { ok: true });
+    const pending = new ThrottledTransport(transport).unary(method, {}, options).response;
+    await vi.advanceTimersByTimeAsync(5_000);
+    expect(await pending).toEqual({ ok: true });
+    expect(attempts()).toBe(2);
+  });
+
   it("gives up after two retries and surfaces the rate-limit error", async () => {
     const limited = new Error("Received HTTP status code 429");
     const { transport, attempts } = transportAnswering(limited, limited, limited, { ok: true });

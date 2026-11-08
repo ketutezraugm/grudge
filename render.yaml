@@ -1,0 +1,37 @@
+# Render Blueprint. Secrets marked `sync: false` are typed into the Render dashboard when the
+# Blueprint is created; they are never stored in this repository.
+services:
+  - type: web
+    name: grudge
+    runtime: node
+    region: frankfurt
+    plan: starter
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
+    startCommand: pnpm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: DATABASE_URL
+        sync: false
+      - key: TATUM_API_KEY
+        sync: false
+      - key: MEMWAL_PRIVATE_KEY
+        sync: false
+      - key: TREASURY_ADDRESS
+        sync: false
+      # Public chain data and settings, not secrets.
+      - key: MEMWAL_ACCOUNT_ID
+        value: "0x38de8cce40f73eeb500055ec3330b12fe0ad8347ee4d6fc5274ebe078bc20a04"
+      - key: MEMWAL_SERVER_URL
+        value: https://relayer.memory.walrus.xyz
+      # Random values Render makes for us.
+      - key: QUOTE_SECRET
+        generateValue: true
+      - key: ADMIN_TOKEN
+        generateValue: true
+      - key: LIVE_REFRESH_MS
+        value: "15000"
+      - key: IDLE_REFRESH_MS
+        value: "60000"

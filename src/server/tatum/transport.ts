@@ -10,10 +10,22 @@ import {
 import { log } from "../log";
 import { takeSlot } from "./budget";
 
-/** Tatum answers a burst with HTTP 429 even inside the plan's average rate; a pause clears it. */
-const RATE_LIMIT_RETRY_DELAYS_MS = [1_000, 3_000];
+/** Pauses before each retry. A third failure in a row is reported. */
+const RETRY_DELAYS_MS = [1_000, 3_000];
 
-const isRateLimited = (err: unknown) => err instanceof Error && err.message.includes("429");
+/**
+ * Tatum answers a burst with HTTP 429 even inside the plan's average rate, and a connection that
+ * died while idle (a network change, a proxy timing out) fails the first call that tries to use it.
+ * Both clear on a retry.
+ */
+function isTransient(err: unknown): boolean {
+  if (!(err instanceof Error)) return false;
+  return (
+    err.message.includes("429") ||
+    err.message.includes("ECONNRESET") ||
+    ("code" in err && err.code === "UNAVAILABLE")
+  );
+}
 
 /** A failed call rejects all four of its promises, and only `response` is ever awaited. */
 function quiet<T>(promise: Promise<T>): Promise<T> {
@@ -61,9 +73,9 @@ export class ThrottledTransport implements RpcTransport {
         await call.response;
         return call;
       } catch (err) {
-        const delayMs = RATE_LIMIT_RETRY_DELAYS_MS[retry];
-        if (delayMs === undefined || !isRateLimited(err)) throw err;
-        log.warn("tatum.grpc.rate_limited", { method: method.name, retry: retry + 1, delayMs });
+        const delayMs = RETRY_DELAYS_MS[retry];
+        if (delayMs === undefined || !isTransient(err)) throw err;
+        log.warn("tatum.grpc.retry", { method: method.name, retry: retry + 1, delayMs, err });
         await new Promise((resolve) => setTimeout(resolve, delayMs));
       }
     }

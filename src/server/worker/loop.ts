@@ -1,8 +1,8 @@
 import { log } from "../log";
-import { singleton } from "../singleton";
 import { discoverWindows } from "./discover";
 import { lockDue } from "./lock";
 import { settleDue } from "./settle";
+import { workerState } from "./status";
 
 /** Locks have to land within seconds of their instant, so the loop wakes often and works little. */
 const TICK_MS = 5_000;
@@ -22,11 +22,12 @@ async function tick(): Promise<void> {
       log.error("worker.step.failed", { step, err });
     }
   }
+  workerState().lastTickMs = Date.now();
 }
 
 /** Starts the loop once per process, however many times the framework loads this module. */
 export function startWorker(): void {
-  const worker = singleton("worker", () => ({ running: false }));
+  const worker = workerState();
   if (worker.running) return;
   worker.running = true;
   log.info("worker.started", { tickMs: TICK_MS });
