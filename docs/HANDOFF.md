@@ -5,7 +5,7 @@
 
 ## Now
 - **Phase:** Day 0. **GATE 1 passed** at about 18:02 UTC: every external dependency answered through the real credentials, and the first memory is on Walrus mainnet.
-- **Blocked:** no database yet. Supabase refuses to create a project (see Waiting on the user). The worker code does not need it to be written, only to run.
+- **Blocked:** Supabase rejects the password in `DATABASE_URL` (project `grudge`, `eu-central-1`, healthy; migration not applied). Hosting is undecided (see Waiting on the user).
 - **Deadline:** submissions close 2026-11-10 17:00 UTC. Our own cutoff is 14:00 UTC.
 - **Checks right now:** `pnpm lint`, `pnpm typecheck`, `pnpm test` (53 tests) and `pnpm build` pass.
 - **Visual world:** Grudge Book (paper, ink, red pencil). See `docs/brand-guidelines.md` v2 and PRD §15.
@@ -29,9 +29,9 @@
 5. Design context: `impeccable init` → `PRODUCT.md`, then `shape` the board (PRD §12, Day 0 22:00).
 
 ## Waiting on the user
-- [ ] **A database.** Supabase says `ketutezraugm` (the account that owns the connected org) has 2 active free projects, so it will not create `grudge`. The only project the tools can see, `CMC API Hackaton`, is already paused, so the two active ones are in another organization. Pause or delete one there, or choose another database (Render Postgres about $6 a month, or any Postgres URL pasted into `DATABASE_URL`).
-- [ ] **Render:** account, Starter plan ($7 a month) approved?
-- [ ] **GitHub:** the repo `grudge`, plus the author name for the public history. Commits are authored as `AkuTampanTay <ezradarkwing@gmail.com>` (global git config). Nothing has been pushed.
+- [ ] **Database password.** The Supabase project `grudge` exists (Frankfurt). `pnpm db:migrate` fails with "password authentication failed" even though the URL is well-formed. Reset it: Project Settings → Database → Reset database password (letters and digits only), then Connect → Session pooler → paste the URI into `DATABASE_URL`.
+- [ ] **Hosting.** The user has a paid DigitalOcean droplet from another project (ssh alias `bot`, `167.71.197.78`, user root, key `~/.ssh/id_ed25519`). SSH from this laptop is refused with a **changed host key** warning (stored ECDSA entry at known_hosts line 3; the server now presents ED25519 `SHA256:68hb/8WunD00S/kEe4r+Fm1MZ4UFMFFwndaWjeQdvCA`). Do not bypass it. The user should compare that fingerprint in the DigitalOcean web console (`ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub`); if it matches, the droplet was rebuilt and the old entry can be removed. Then inspect it read-only (size, what runs there) before deploying. Fallback: Render Starter (about $7 a month, billed by the second).
+- [x] **GitHub:** private repo `ketutezraugm/grudge`, pushed over HTTPS, 16 commits authored as `AkuTampanTay <ezradarkwing@gmail.com>`. Flip it public on Nov 10 (see DECISIONS).
 - [ ] **Agent wallet funding:** about 2 USDC on Sui mainnet to `0x132643284ef48e256d2b31fe7907d87032f7be6c21086e68df89d36ba536d76c`. Its private key is in `.env` as `AGENT_PRIVATE_KEY`, and the user can sweep any leftover USDC back out. Balance was 0 at last check.
 - [ ] Look at the Tatum dashboard for credit use after the probe, and decide on a paid plan.
 

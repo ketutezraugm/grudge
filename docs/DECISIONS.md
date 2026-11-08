@@ -91,3 +91,9 @@ Why: protobufjs's script only prepares an optional CLI, and esbuild gets its bin
 
 **2026-11-07 · One env file: `.env`. No `.env.local`.**
 Why: two files that both set the same variable already blanked a real Tatum key once (an empty placeholder in `.env.local` overrode the value in `.env`). Everything lives in `.env`, which git ignores; `.env.example` lists the names.
+
+**2026-11-08 · The GitHub repo `ketutezraugm/grudge` starts private and goes public on submission day (Nov 10, before the form).**
+Why: the hackathon needs a public repo only at submission, and about 150 competitor repos are visibly reading each other. Staying private keeps the approach to ourselves while we build. History carries over unchanged when it flips. Before flipping, review `docs/RESEARCH.md` and PRD §1, which name competitors.
+
+**2026-11-08 · The git remote uses HTTPS with the `gh` credential helper (repo-local), not SSH.**
+Why: SSH to github.com failed host-key verification on this machine, and trusting a host key blindly is not something to do silently. The helper is set in the repo's own git config only.
