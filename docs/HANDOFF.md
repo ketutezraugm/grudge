@@ -19,7 +19,7 @@
   - 06:22 UTC: a 15m window locked with all three venues (DeepBook, Polymarket, Kalshi).
   - 06:25 UTC window **voided as a split**: Pyth saw the move as -$0.14, Polymarket's Chainlink average said UP. Two feeds can disagree when Bitcoin barely moves. Worth measuring (see Open questions).
   - Two windows voided at 06:07 (VPN off) and one at 06:12 (Tatum connection reset); both causes are fixed or understood.
-- **Walrus mainnet memories:** the probe memory, then flushes at 06:27 and 06:31 UTC (2 stored each, 0 refused). The first two predate the current format (no `resolvedAt` / `through`) and are skipped when restoring.
+- **Walrus mainnet memories: 5 so far** (the probe memory, then flushes at 06:27 and 06:31 UTC with 2 stored each, 0 refused). The hackathon needs at least 10; the worker adds a few per hour. The first two predate the current format (no `resolvedAt` / `through`) and are skipped when restoring.
 - **Cold boot and verification** (`memory/coldboot.ts`, `engine/rebuild.ts`): rebuilds the grudges from the latest snapshot plus later records in resolution order. A unit test proves the rebuild equals the live computation exactly. `restoreIfEmpty` runs at boot. `pnpm exec tsx --conditions=react-server --env-file=.env scripts/verify-memory.mts` compares live with rebuilt, read-only.
 - Database: Supabase `grudge` (eu-central-1), three migrations applied, row-level security on every table.
 - `render.yaml` Blueprint committed (Frankfurt, Starter).

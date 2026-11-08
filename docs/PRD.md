@@ -430,12 +430,12 @@ grudge/
 │  │  ├─ db/{schema.ts,client.ts}
 │  │  ├─ tatum/{budget.ts,transport.ts,sui.ts,rate.ts}   # every Tatum call shares one 3 rps budget
 │  │  ├─ voices/{types.ts,http.ts,deepbook.ts,polymarket.ts,kalshi.ts}
-│  │  ├─ engine/{windows.ts,scoring.ts,resolve.ts,lessons.ts}   # pure
+│  │  ├─ engine/{windows.ts,scoring.ts,resolve.ts,lifecycle.ts,rebuild.ts,lessons.ts}   # pure
 │  │  ├─ memory/{codec.ts,store.ts,flusher.ts,coldboot.ts}
 │  │  ├─ x402/{protocol.ts,quote.ts,verify.ts}
-│  │  └─ worker/{loop.ts,snapshot.ts}
+│  │  └─ worker/{discover.ts,lock.ts,settle.ts,grudges.ts,loop.ts,status.ts}
 │  └─ instrumentation.ts
-├─ scripts/{probe.mts,migrate.mts,agent.mts,seed-check.mts}   # ESM so they can use top-level await
+├─ scripts/{probe.mts,migrate.mts,verify-memory.mts,agent.mts}   # ESM so they can use top-level await
 ├─ drizzle/                     # generated SQL migrations
 ├─ docs/{PRD.md,brand-guidelines.md}
 ├─ assets/logo-mark.svg         # palette tokens live in src/app/globals.css
@@ -814,3 +814,14 @@ Nothing may read as generic AI output. References are allowed as inspiration for
 3. **Continuous paying agent:** `scripts/agent.ts --loop` runs every 30 min from Day 1 through Nov 16, paying only when the board shows a disagreement ≥ 7 pts. Budget 2 USDC.
 4. **Build in public:** an X post tonight with the first gauge screenshot; an update on Day 2; share the live link in the Walrus and Tatum Discords.
 5. **Cut-line discipline:** no new features after GATE 5.
+
+---
+
+## 16. Changes made while building (2026-11-08)
+
+Where the build departs from the text above. The decision log has the reasons.
+
+- **Record and snapshot format (supersedes §5.4):** a record also carries `resolvedAt`, and a scoreboard snapshot carries `through`, the resolution time of the newest window it already counts. Restoring starts from the latest snapshot and replays records settled after `through`, in resolution order.
+- **Worker (§6):** a window with fewer than two voices, or locked more than 30 s late, is voided and nothing is written to Walrus for it. The Tatum transport retries 429, `ECONNRESET` and `UNAVAILABLE` after 1 s and 3 s.
+- **Deployment (§10.1):** the host is Render Starter in Frankfurt, created from `render.yaml`; the user's DigitalOcean droplet is ruled out. `GET /api/health` is Render's health check.
+- **Hedge rate:** 0.5, not 2 (§5.3 already says so).
