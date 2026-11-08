@@ -1,11 +1,11 @@
 # Handoff
 
 > Living state of the build. Overwritten (not appended) by `/handoff`. A new session reads this first, then the PRD sections named under **Next**.
-> Last updated: 2026-11-08 08:20 UTC · Session 1 (lessons, board API and picks live on Render; the design handoff is next)
+> Last updated: 2026-11-08 08:35 UTC · Session 1 (lessons, board API and picks live on Render; design handoff sent to Claude Design)
 
 ## Now
 - **Render is the only worker.** Service `srv-dbo1qp3rjlhs73a6ico0` (Blueprint `exs-dbo1pgjl550s738gn730`, workspace `tea-db0fppid0e5s73beqn4g`), live since 06:58 UTC at **https://grudge-l19c.onrender.com**, auto-deploys on every push to `main`. The local server was stopped at 07:05 UTC; **do not start `next start` locally again** (a second worker double-writes). The VPN is no longer needed.
-- **Phase:** the data side is done and live: worker, memory both ways (including after a real wipe), lessons, `GET /api/board`, `POST /api/pick`. **No UI yet, and none is built by Claude: the design handoff to Claude Design is next, and starts with questions to the user.**
+- **Phase:** the data side is done and live: worker, memory both ways (including after a real wipe), lessons, `GET /api/board`, `POST /api/pick`. **No UI yet, and none is designed by Claude: the brief is on a Design canvas (see Next 1) waiting for the user to run Claude Design.**
 - **Deadline:** submissions close 2026-11-10 17:00 UTC. Our own cutoff is 14:00 UTC.
 - **Checks:** `pnpm lint`, `pnpm typecheck`, `pnpm test` (84 tests) pass at 08:17 UTC.
 - **GitHub:** private repo `ketutezraugm/grudge`. Pushed through `e63964e`. A push to `main` redeploys Render and restarts the worker (a restart costs the open window). Commits are authored as `AkuTampanTay`, no co-author. **Stays private until the user says so.**
@@ -17,7 +17,7 @@
 - **Worker** (`src/server/worker/`): discover, lock, settle, flush, plus `GET /api/health`. Locks, settles, scores, queues memories.
 - **Walrus mainnet memories: about 10** (probe memory plus flushes at 06:27, 06:31, 06:36 and 06:41 UTC; 0 refused). The hackathon minimum of 10 is reached; the worker adds a few per hour.
 - **Cold boot** (`memory/coldboot.ts`, `engine/rebuild.ts`): rebuilds from the latest snapshot plus later records.
-- **Lessons** (`engine/lessons.ts`, queued from `worker/settle.ts`): every 25 resolved windows per category, one counted sentence on how often each voice was closest when voices were 7+ pts apart. Restored on cold boot (latest 20). The database path was checked once in a rolled-back transaction; **no real lesson exists yet** (a category needs 25 resolved windows; btc-5m reaches it around 11:00 UTC Nov 8).
+- **Lessons** (`engine/lessons.ts`, queued from `worker/settle.ts`): every 25 resolved windows per category, one counted sentence on how often each voice was closest when voices were 7+ pts apart. Restored on cold boot (latest 20). The database path was checked once in a rolled-back transaction; **no real lesson exists yet** (a category needs 25 resolved windows; at 08:18 UTC btc-5m had 16 and btc-15m 6, and a lesson also needs at least 5 windows where voices were 7+ pts apart).
 - **Board and picks** (`server/board.ts`, `app/api/board`, `app/api/pick`, `engine/ledger.ts`, `server/caller.ts`): see `docs/API.md` for the exact shape. Snapshot cached 3 s; Bitcoin price from Tatum cached 5 min; picks capped at 3 per address per window. The board shows only what has locked: **live odds before the lock are not built** (the Crowd and the live gauge need them if the design wants a moving needle).
 - **Earlier this session:**
   - `src/server/memory/amnesia.ts` and `POST /api/admin/amnesia` (Bearer `ADMIN_TOKEN`, which is set in `.env`). Pauses the worker, flushes, refuses (409) unless Walrus alone reproduces the live weights, wipes, restores, reports. **Run live at 06:43 UTC: 5 grudges before and after, 4 ledger windows restored, gap 0, worker resumed.**
@@ -28,15 +28,16 @@
 - `render.yaml` Blueprint committed (Frankfurt, Starter).
 
 ## Next (in order)
-1. **Design handoff.** **The user's rule: Claude does not design.** Ask the user the design questions first (audience, screens, tone, the proof strip, what a judge sees in 10 seconds, whether live odds before the lock matter), then create a Design artifact (Artifact quickstart intent `design`) seeded with the brief, `docs/brand-guidelines.md`, real copy and a real `GET /api/board` response. Implement only what comes back (PRD §12, §15 mention `impeccable`; superseded). No dark/neon, no rounded boxes, no generic AI look. Done when the Design artifact exists and the user has seen it.
+1. **Implement the design when it comes back.** The design handoff is done: Design artifact **https://claude.ai/artifact/3Rm1ffnBBNPWc6AYTPJ2Zm** ("Grudge screens", private) holds a plain brief (`Main.dc.html`), `brand-guidelines.md`, `assets/logo-mark.svg` and real samples of `/api/board` and `/api/verify-memory` (taken 08:18 UTC). **The user's rule: Claude does not design.** The user runs Claude Design on that canvas; read it with the Artifact `read` action, then build exactly what is drawn (Next.js, real text, inline SVG marks). If the data in a sample is stale, re-fetch from the live API and republish `project/data/…` (root: the scratchpad `seed` folder is gone after a session; rebuild from `read`). Settled answers: three screens in one canvas (board, `/receipts`, `/agents`), Grudge Book direction, the 10-second priorities (markets disagree and Grudge keeps score, it learns from Walrus, it is live), the gauge shows locked calls only. Done when the board renders live data from `GET /api/board` and matches the approved design.
 2. **x402 payment path** (test-first, PRD §5.5): `x402/{protocol,quote,verify}.ts`, `GET /api/consensus`, `scripts/agent.mts`. Needs no design, so it can run while the design is made. Done when the agent script gets 402, pays, gets 200, and a replay returns 402 `duplicate`.
 3. **`GET /api/receipts`** (PRD §5.6): memory totals and Walruscan links, payments, Tatum counters, amnesia history. Amnesia history needs a table (none yet; the report is only logged as `amnesia.restored`). The `/receipts` page itself comes from the design.
-4. Live odds before the lock for the gauge, if the design needs them.
+4. ~~Live odds before the lock~~ Decided against (user, 2026-11-08): the gauge shows locked calls only.
 5. `/agents` docs page content (curl flow, price now) once x402 works; the page itself comes from the design.
 
 ## Waiting on the user
 - [x] **Render Blueprint applied** (see Now). `ADMIN_TOKEN` and `QUOTE_SECRET` are generated by Render; the admin token is in the service's Environment tab, for calling amnesia in production. Never set `AGENT_PRIVATE_KEY` there.
 - [x] **Agent wallet funded:** 3.095552 USDC (no SUI, none needed: payments are gasless) at `0x132643284ef48e256d2b31fe7907d87032f7be6c21086e68df89d36ba536d76c`, checked on-chain via Sui GraphQL on 2026-11-08 06:50 UTC. Its key is in `.env` as `AGENT_PRIVATE_KEY`. Sui public JSON-RPC is retired; use `https://graphql.mainnet.sui.io/graphql` (`address(address:…){ balances { nodes { coinType { repr } totalBalance } } }`).
+- [ ] **Run Claude Design on the canvas** https://claude.ai/artifact/3Rm1ffnBBNPWc6AYTPJ2Zm (only the user can; it is private to the user's account). Ask it to design the three screens at desktop and phone with the states in the brief, then tell Claude Code to implement.
 - [ ] Look at the Tatum dashboard for credit use (a few gRPC calls per window, plus 429 retries) and decide on a paid plan. Tests also log 429 retries, so the free plan is near its limit.
 - [ ] The `bot` host in `~/.ssh/config` (`167.71.197.78`) is not the user's DigitalOcean droplet and its host key changed. Do not connect to it; the user may want to remove the entry.
 
