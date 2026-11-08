@@ -150,3 +150,15 @@ export const lessons = pgTable("lessons", {
   memoryId: uuid().references(() => memories.id),
   createdAt: at().notNull().defaultNow(),
 }).enableRLS();
+
+/** One row per amnesia run: what was wiped, what Walrus gave back, and whether the weights matched. */
+export const amnesia = pgTable("amnesia", {
+  id: uuid().primaryKey().defaultRandom(),
+  at: at().notNull().defaultNow(),
+  before: integer().notNull(),
+  restored: integer().notNull(),
+  windows: integer().notNull(),
+  lessons: integer().notNull(),
+  maxDifference: doublePrecision().notNull(),
+  identical: boolean().notNull(),
+}).enableRLS();

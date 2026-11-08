@@ -19,6 +19,7 @@ import {
   priceAtomic,
   trustWeights,
 } from "./engine/scoring";
+import { recalledLesson } from "./memory/recall";
 import { singleton } from "./singleton";
 import { cachedBitcoinUsd } from "./tatum/rate";
 import { grudgesIn } from "./worker/grudges";
@@ -113,6 +114,25 @@ async function categoryBoard(category: Category) {
   }));
   const gap = disagreement(lockedCalls);
 
+  // On a disagreement the lesson is read back from Walrus, not from our own table.
+  const ranked = present.toSorted((a, b) => (lockedCalls[a] ?? 0) - (lockedCalls[b] ?? 0));
+  const low = ranked.at(0);
+  const high = ranked.at(-1);
+  const fromWalrus =
+    gap >= DISAGREEMENT_GAP && low !== undefined && high !== undefined
+      ? await recalledLesson(category, voiceNames[high], voiceNames[low])
+      : null;
+  const shownLesson = fromWalrus
+    ? {
+        text: fromWalrus.text,
+        at: fromWalrus.at ?? (lesson ? iso(lesson.at) : null),
+        blobId: fromWalrus.blobId,
+        recalled: true,
+      }
+    : lesson
+      ? { text: lesson.text, at: iso(lesson.at), blobId: lesson.blobId ?? null, recalled: false }
+      : null;
+
   return {
     open: open
       ? {
@@ -154,9 +174,7 @@ async function categoryBoard(category: Category) {
       ];
     }),
     resolved: resolvedCount,
-    lesson: lesson
-      ? { text: lesson.text, at: iso(lesson.at), blobId: lesson.blobId ?? null }
-      : null,
+    lesson: shownLesson,
     ledger: settled.map((question) => {
       const calls = callsOf(question.id);
       return {

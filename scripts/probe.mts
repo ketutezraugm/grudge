@@ -132,6 +132,6 @@ if (process.argv.includes("--write-memory")) {
   });
 }
 
-const calls = tatumCalls();
+const { calls } = tatumCalls();
 console.log(`\ntatum calls this run: grpc ${calls.grpc}, data api ${calls.data}`);
 process.exit(failures === 0 ? 0 : 1);

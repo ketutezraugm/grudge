@@ -1,6 +1,6 @@
 import { and, eq, inArray } from "drizzle-orm";
 import { database } from "../db/client";
-import { forecasts, lessons, memories, picks, questions, scoreboard } from "../db/schema";
+import { amnesia, forecasts, lessons, memories, picks, questions, scoreboard } from "../db/schema";
 import { log } from "../log";
 import { workerState } from "../worker/status";
 import { checkAgainstWalrus, largestGap, liveBoard, restoreFromWalrus } from "./coldboot";
@@ -82,6 +82,7 @@ export async function forget(): Promise<AmnesiaReport> {
       identical: maxDifference <= SAME,
     };
     log.info("amnesia.restored", report);
+    await database().insert(amnesia).values(report);
     return report;
   } finally {
     worker.paused = false;

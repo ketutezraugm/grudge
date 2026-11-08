@@ -154,3 +154,6 @@ Why: each attempt spends Tatum calls from the same 3 rps budget the worker uses 
 
 **2026-11-08 · "Zero gas" is not claimed.**
 Why: the settled transaction's gas summary shows computation cost 1,322,268 and a storage rebate of 1,322,268. What was verified is that the payer holds no SUI and the payment still settled. The two PRD lines that said "0 gas" were corrected.
+
+**2026-11-08 · The learning result is published as measured: memory beats equal-weight averaging on 5m, and does not beat the best single voice.**
+Why: the stored lock-time line is a genuine out-of-sample forecast, so scoring it is fair. Over the last 100 resolved windows per category, Grudge's Brier is 0.1747 against 0.1825 for equal weights on 5m (gain 0.0078 ± 0.0065, 95%), but DeepBook alone scores 0.1690. On 15m the gain over equal weights is 0.0018 ± 0.0035, not significant. The weights are still concentrating on DeepBook (0.84 on 5m), so the gap to DeepBook may close; that is a hypothesis, not a claim. The hedge rate stays at 0.5 (PRD §5.3): picking a different rate after seeing these windows would be tuning on the test data. Competitors set the bar here: one entry published a null result on memory and was credited for it.

@@ -9,6 +9,7 @@ const budget = () =>
   singleton("tatum-budget", () => ({
     nextSlotMs: 0,
     calls: { grpc: 0, data: 0 } satisfies Record<TatumSurface, number>,
+    sinceMs: Date.now(),
   }));
 
 /** Resolves when this call may go out. gRPC and the Data API share one queue. */
@@ -21,6 +22,8 @@ export async function takeSlot(surface: TatumSurface): Promise<void> {
   if (start > now) await new Promise((resolve) => setTimeout(resolve, start - now));
 }
 
-export function tatumCalls(): Readonly<Record<TatumSurface, number>> {
-  return { ...budget().calls };
+/** Calls made since this process started; a restart (every deploy) resets them. */
+export function tatumCalls(): { calls: Readonly<Record<TatumSurface, number>>; sinceMs: number } {
+  const { calls, sinceMs } = budget();
+  return { calls: { ...calls }, sinceMs };
 }

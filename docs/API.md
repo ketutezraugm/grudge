@@ -58,7 +58,7 @@ Everything the board shows. Pollers share one set of queries (at most 3 s stale)
 ```
 - `open` is the window still taking picks (null if none); `locked` is the newest window whose calls are frozen and whose result is pending (null if none). Probabilities are the chance the window ends at or above where it started.
 - `weight` is the voice's share of the line. `marks` are its last 10 scored calls, oldest first. `priceAtomic` is the x402 price in USDC's six decimals, as a string.
-- `lesson` is the newest lesson for the category, or null. `ledger` is the last 20 windows with a result, newest first, without windows given up at lock. `blobId` is the Walrus memory (Walruscan link) or null while still queued.
+- `lesson` is the lesson for the category, or null. When the voices are 7+ pts apart it is read back from Walrus Memory (the query names the category and the two voices, `maxDistance` 0.55, cached 10 min per question shape, 3 s limit) and `recalled` is true; otherwise, or if Walrus is slow or empty, it is the newest stored lesson and `recalled` is false. `blobId` links to the Walrus memory. `ledger` is the last 20 windows with a result, newest first, without windows given up at lock. `blobId` is the Walrus memory (Walruscan link) or null while still queued.
 - `yourPicks` is the visitor's own pick (probability of up) on each open window, read from the `grudge_visitor` cookie.
 
 ## `POST /api/pick`
@@ -91,3 +91,22 @@ The server checks in this order: header shape, quote signature and expiry, that 
 }
 ```
 `pnpm agent` is a client that does steps 1 to 3 (see the header of `scripts/agent.mts`).
+
+## `GET /api/receipts`
+The proof page's data, shared between visitors for 10 seconds.
+```json
+{
+  "asOf": "…",
+  "memories": {
+    "totals": { "record": { "done": 120, "pending": 2 }, "scoreboard": { "done": 24 }, "lesson": { "done": 2 } },
+    "latest": [{ "kind": "record", "ref": "btc-5m:…", "blobId": "…", "at": "…", "url": "https://walruscan.com/mainnet/blob/…" }]
+  },
+  "payments": [{ "digest": "…", "payer": "0x…", "amount": "38000", "category": "btc-5m", "status": "settled", "settledAt": "…", "url": "https://suiscan.xyz/mainnet/tx/…" }],
+  "tatum": { "grpc": 0, "data": 0, "sinceStartedAt": "…" },
+  "amnesia": [{ "at": "…", "before": 5, "restored": 5, "windows": 4, "lessons": 0, "maxDifference": 0, "identical": true }],
+  "learning": { "btc-5m": { "windows": 96, "grudge": 0.1747, "equalWeight": 0.1825, "voices": { "deepbook": 0.169 }, "best": { "voice": "deepbook", "mean": 0.169 }, "gainOverEqual": { "mean": 0.0078, "halfWidth": 0.0065 }, "gainOverBest": { "mean": -0.0057, "halfWidth": 0.0074 } } }
+}
+```
+- `latest` is the 50 newest memories with a Walrus blob. `payments` are the 50 newest, any status; `amount` is atomic USDC as a string.
+- `tatum` counts calls since the server process started, so a deploy resets it. It is not a lifetime total.
+- `learning` scores, per category over the last 100 resolved windows, the Grudge line as it stood at lock time against the same calls averaged with equal trust, and against each voice alone, by mean Brier loss (lower is better). `gainOverEqual` and `gainOverBest` are mean differences (positive means Grudge did better) with a 95% half-width, null until there are two windows. Read it as measured: see `ASSUMPTIONS.md` for what can and cannot be claimed.
