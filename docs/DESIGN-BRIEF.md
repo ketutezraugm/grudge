@@ -1,113 +1,313 @@
-# Grudge: design brief
+# Grudge: design brief (PLAYBOOK v3)
 
-Written for Claude Design. Claude Code builds the product and does not design: every screen and every graphic below is yours, and Claude Code implements what you draw. The same file sits on the Design canvas as `DESIGN-BRIEF.md`. Numbers were taken from the live service at 15:22 UTC on 2026-11-08 (`data/board-sample.json`).
+Written for Claude Design, 2026-11-08. Claude Code builds the product and does not design: every screen, graphic and motion below is yours to draw, and Claude Code implements exactly what you draw, adding nothing visual. The identity in section 2 is locked. Work inside it and push it, but do not swap it for another look. The data samples in `data/` are real responses from the live service at 18:00 UTC on Nov 8. Numbers change every few minutes, so design every number as a slot and use the samples only to fill it.
 
-## 1. Rules from the owner
+## 1. The product in four lines
 
-- No black or near-black backgrounds with neon accents. No rounded boxes. Nothing that reads as generic AI output.
-- Start from the Grudge Book direction in `brand-guidelines.md` (the owner chose it): paper, ink, red pencil, ruled ledger rows, stamps, tally marks, hand-built SVG marks. Push it further; do not replace it. Typefaces are open within section 3 of that file, from Google Fonts only.
-- Voice: petty, deadpan, precise. The owner does a final pass on all prose.
-- No invented numbers. Where something does not exist yet, design an honest empty state (section 11).
+Every 5 and 15 minutes, four sources give a probability that Bitcoin ends the window higher: **DeepBook** (an onchain market on Sui), **Polymarket**, **Kalshi** and **the Crowd** (visitors' picks). Grudge freezes their calls at a lock time and scores each source with the Brier score when the window ends. It trusts each source in proportion to how right it has been, and blends the calls into one line. That memory lives on **Walrus** mainnet and survives a full server wipe. AI agents can buy the line for a few cents in USDC on Sui (x402).
 
-## 2. What to lead with
+**The first 10 seconds, in this order:** (1) the sources disagree about the same Bitcoin move, and Grudge keeps score of who is right; (2) it learns, and the record lives on Walrus; (3) it is live now: a real window, real numbers, a countdown. Agent payments come after these. Add a quiet "Judges: start here" link to `/receipts`.
 
-Grudge asks the same Bitcoin question of an onchain Sui market (DeepBook), Polymarket, Kalshi and the visitors, then remembers who was right. The first screen should show a disagreement and its record, because that is what no other entry shows.
+## 2. Identity (pasted from IDENTITY.md, exact)
 
-The real result today: on the 5-minute question, across the 75 resolved windows behind the latest lesson, DeepBook and Polymarket were 7 or more points apart 54 times. DeepBook was closer 72% of the time. With 93 windows resolved, Grudge now gives DeepBook 84% of the line and Polymarket 16%. The price of reading that consensus has risen from 0.010 USDC to 0.039 USDC as confidence grew. Design a place where a sentence like this is readable in two seconds: "[voice] was closer [n]% of the time over [n] disagreements." The numbers change; the sentence shape stays.
+The owner approved this at the PLAYBOOK v3 Phase 3 gate (~18:20 UTC): **the Hindcast world under the name Grudge**, with the per-source record row borrowed from Formline. Every later design step reads this file as the spec, not as inspiration. The three directions considered are in [DIRECTIONS.md](DIRECTIONS.md), and the style tiles are at https://claude.ai/artifact/NLRMhQgaFLEQsBfidcAtRR (artboard 2).
 
-Another entry in this hackathon also uses a paper-and-pencil look with stamps. Ours has to read as ours at a glance, through marks that are hand-built and specific to this product: the G-gauge ring with the red pencil needle, tally marks that cross on the fifth stroke, the red-pencil strike through a wrong call, and the stamps NOTED, FORGIVEN and SPLIT. Do not use a generic parchment texture or a stock handwriting font.
+### Name and words
 
-## 3. The first 10 seconds, in the owner's order
+- **Name:** Grudge. **Motto:** "Markets forget. Grudge doesn't."
+- **Tagline:** "Markets get graded like forecasts."
+- **Voice:** a duty forecaster's log. Plain, numeric, dry. It says what was called, what happened and the score. Writing rules and banned words: `brand-guidelines.md` §5 (still in force).
+- **Sample line:** "Kalshi said 81% up. Bitcoin finished lower. Brier 0.656."
 
-1. The markets disagree about the same Bitcoin move, and Grudge keeps score of who is right.
-2. It learns: the record lives on Walrus and survives a wipe.
-3. It is live right now: a real window is counting down, with real numbers.
+### Context profile
 
-Agents paying for the consensus matters but comes after these. The first viewer is a hackathon judge with about five minutes. Add a quiet "Judges: start here" link that leads to the receipts page.
+- **Who:** judges on a 1440 laptop for 5 to 10 minutes; crypto and prediction-market people on a 390 phone, making one pick; AI agents (API only).
+- **Session:** a glance (the live state) or a few minutes (the proof: Walrus receipts, payments, learning numbers).
+- **Density:** medium on the board, higher on Receipts, low in the first viewport.
+- **Motion budget:** measured, near-still around live data. One signature moment, when a window resolves.
+- **Interaction:** glanceable, plus one touch action (a pick: up or down and a confidence). Receipts is exploratory.
 
-## 4. Surfaces
+### World
 
-**Batch 1, design now.** Each at desktop (1280 to 1440) and phone (390), plus the states in section 11.
-- `/` Board: header, proof strip, category tabs (15m default), the gauge with a countdown, one entry per voice, pick bar, disagreement entry with the recalled lesson, the ledger of the last 20 windows. The gauge shows each window's locked calls only; nothing moves before the lock.
-- `/receipts`: memory on Walrus with Walruscan links, the memory-check button and its result, amnesia history, payments, Tatum counters, the learning chart.
-- `/agents`: the x402 flow, the price now, request and response blocks as real code, paid calls so far.
+Weather-forecast verification. The Brier score that Grudge uses was published in 1950 to grade weather forecasters, so the page borrows the instruments of that trade: the barograph drum chart, the station-model plot (the okta circle, filled by eighths), front symbols, wind barbs and wind-sock orange. Colours come from those objects: cold-front blue, drum-chart paper, wind-sock orange.
 
-**Batch 2, after batch 1 is approved.**
-- Logo mark and favicon from `assets/logo-mark.svg` at 16, 32, 180 and 512 px, with a maskable version.
-- A social image of 1200 by 630 that the server renders from live data (it shows the current Grudge line), so design it as a template with variable slots.
-- README banner 1280 by 400, X image 1200 by 675, blog cover 1000 by 420, video thumbnail 1280 by 720.
-- Video title cards at 1920 by 1080: the hook ("Markets forget. Grudge doesn't."), "Four voices, one question", "Nothing forgiven", and a closing card with the motto and the names Walrus and Tatum set as text.
-- The learning chart as a hand-built figure: the Grudge line against the equal-weight average and against the best single voice, by rolling Brier score, with an interval. It must look right with few points. The real numbers are in `data/receipts-sample.json` (`learning`): Grudge is slightly ahead of the equal-weight average on both categories, the 95% interval includes zero on both, and DeepBook alone scores slightly better than Grudge. The figure must show that plainly; do not draw Grudge winning.
+### Colour tokens
 
-## 5. The magic moment
+| Token | Hex | Role | Area |
+|---|---|---|---|
+| `cobalt` | `#2B54C9` | page ground and dominant colour (cold-front blue) | ~60% |
+| `chart` | `#D9ECE6` | data panels (drum-chart paper) | ~30% |
+| `ink` | `#0F1B44` | text and lines on `chart`; text on `orange` | |
+| `white` | `#FFFFFF` | text and lines on `cobalt` | |
+| `white-muted` | `#DCE4FA` | secondary text on `cobalt` | |
+| `ink-muted` | `#44507A` | secondary text on `chart` | |
+| `orange` | `#FF6A2B` | accent **fill only**: the open window, the pick action, disagreement fronts | ~5% |
+| `grid` | `#0F1B44` at 18% opacity | chart gridlines on `chart` | |
 
-This is the 30 seconds of the demo video, so choreograph it. A locked window ends and resolves:
-1. The result arrives: the outcome glyph, ▲ or ▼, is set in the ledger row.
-2. Each wrong call gets a red-pencil strike drawn through it (250 ms). Right calls get the green check.
-3. The wrong voice gains one tally mark (250 ms); every fifth crosses the four.
-4. Its pin on the gauge shrinks and its trust share eases to the new value; the needle moves to the next window's line (600 ms).
-5. If a voice has recovered, a FORGIVEN stamp presses in beside it (180 ms).
-6. On a disagreement, the entry shows the recalled lesson in the serif italic with a receipt tick; clicking it opens the Walruscan page for that memory.
+Verified contrast: white on cobalt 6.53:1; white-muted on cobalt 5.14:1; ink on chart 13.56:1; ink-muted on chart 6.39:1; cobalt on chart 5.32:1; ink on orange 5.83:1; ink on white 16.66:1.
+**Forbidden pairs:** orange as text or a line on cobalt (2.29:1) or on chart (2.33:1); ink on cobalt (2.55:1).
+Up and down are always the glyphs ▲ and ▼, never colour alone. Right and wrong are a filled or an empty station mark, never red against green.
 
-With reduced motion, every state changes at once with no drawing or pressing.
+### Type
 
-## 6. Motion
+| Role | Family | Setting | Source |
+|---|---|---|---|
+| Display and every number | **Martian Mono** (Roman Shamin, Evil Martians; OFL, verified in Google Fonts METADATA) | `wdth` 75 to 112.5, `wght` 100 to 800. Big numbers wide 112.5 at 800; secondary numbers narrow 75 at 200 | https://fonts.google.com/specimen/Martian+Mono |
+| Text and UI | **Atkinson Hyperlegible Next** (Braille Institute, Applied Design Works; OFL, verified) | `wght` 300 body, 400 UI, 700 emphasis | https://fonts.google.com/specimen/Atkinson+Hyperlegible+Next |
 
-Needle: 600 ms, `cubic-bezier(.2,.8,.2,1)`. Strike and tally draw-in: 250 ms. Stamp: scale 1.06 to 1 over 180 ms. The page polls every 5 seconds; numbers change in place without flashing. Nothing loops, glows or pulses. Every motion has a reason and respects `prefers-reduced-motion`.
+Load: `https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,100..800&family=Atkinson+Hyperlegible+Next:wght@300;400;700&display=swap` (in the app: `next/font/google` or self-hosted woff2, with `font-display: swap` and size-adjusted fallbacks so nothing shifts).
 
-## 7. Layout language
+**Scale (px):** 12 · 14 · 15 (body) · 18 · 24 · 32 · 52 (headline) · 88 · 120 (the Grudge line). Contrast is extreme on purpose: 120 wide 800 against 15 at 300 (8x size). Mono is for numbers, codes and the display; running text is always Atkinson, so the page does not read as a developer tool.
 
-A ledger on a desk: ruled rows, a left margin column for times, small-caps column heads, tabular numerals. Radius is 2 px at most. Layers separate by a paper-shadow tint, never a drop shadow. No card grid, no pills, no centered hero over three feature cards, no icon in a rounded square. The gauge is printed on the page like an instrument, not dropped in a box.
+### Space, shape, line
 
-## 8. Accessibility floor
+- **Spacing (px):** 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96. Desktop margin 56, gutter 24, 12 columns. Phone margin 16, gutter 16.
+- **Radius:** 0 everywhere. Circles appear only as station marks.
+- **Lines:** 1.5 px on cobalt (white), 1 px gridlines on chart, 3 px for a source's trace when it is the most trusted.
+- **Focus ring:** 2 px solid `white` at 2 px offset on cobalt; 2 px solid `ink` on chart and on white. Never orange.
+- **Touch targets:** 44 px or more.
 
-Text 4.5 to 1 against paper (the ledger-rule blue is for hairlines only). Up and down are always the glyphs ▲ and ▼, never colour alone. Real buttons and links, a visible focus ring, a logical tab order. The confidence chips (55, 65, 80, 95) are one radio group. Touch targets 44 px or more. No horizontal scroll at 390 px, including the ledger; how it reflows is yours to design.
+### Icon language
 
-## 9. Bans
+A 20 px grid, 1.5 px strokes with round caps and joins, glyph-like and drawn from WMO weather symbols. Metaphors: the okta circle (a call), a front with teeth (a disagreement), a wind barb (a trust shift), a station plot (a source). Filled shapes appear only inside a station mark. No icon library, no redraws of library icons.
 
-Black or near-black backgrounds with neon. Cyberpunk or hacker styling. Rounded-card grids, pill buttons everywhere, soft-shadow SaaS boxes. Purple-blue gradients, glass, glowing orbs, blobs. Icon-in-a-rounded-square rows. Emoji as icons. Inter, Roboto, Space Grotesk, Poppins or system UI as the identity. Handwriting fonts. Stock photos or generic AI imagery. Words such as "revolutionary", "seamless", "unleash", "AI-powered", "empower", "elevate". Cloning any other project's layout, text or artwork.
+### Signature move
 
-## 10. Copy
+**The page is a verification chart.**
+- A full-width drum-chart band: time runs left to right, each source's call at lock is a trace, and each resolved window is an outcome mark (filled = went up, empty = went down, half = split).
+- Below it, each source is a station plot: a circle filled to its call, with its trust and score beside it.
+- A disagreement of 7 or more points is drawn as a front between the two stations.
+- **Record row** (borrowed from Formline): under each station, its last ten windows as ten small station marks, filled for right and empty for wrong, oldest to newest.
+- **Last window line:** one plain line stating the last result, for example "15:00–15:15 · down · all three wrong."
 
-Draft copy for each screen, in the brand voice. The owner will rewrite where it does not sound like them.
+### Art direction
+
+Data as image and technical drawing. Traces, station circles, fronts and wind barbs are the art, drawn as original SVG. No textures, grain, paper or imitated materials. The logo is a station plot.
+
+### Motion
+
+| Token | Value | Use |
+|---|---|---|
+| `instant` | 100 ms | press, hover |
+| `quick` | 200 ms | UI changes, a value updating |
+| `deliberate` | 400 ms | panels, page changes, a front drawing |
+| `moment` | at most 900 ms in total | the resolve sequence |
+| `ease-enter` | `cubic-bezier(0.2, 0, 0, 1)` | things arriving |
+| `ease-exit` | `cubic-bezier(0.4, 0, 1, 1)` | things leaving |
+| `ease-standard` | `cubic-bezier(0.2, 0, 0.2, 1)` | state changes |
+
+No springs. Animate only `transform`, `opacity` and SVG stroke offsets. Traces extend only when new data arrives, and nothing loops near live numbers.
+**Signature motion:** when a window resolves, every station's circle snaps to the outcome (`quick`), the front between the two that disagreed draws along its length (`deliberate`, `ease-enter`), then each record row takes its new mark at the front as the oldest drops off (`quick`, 60 ms stagger).
+**Reduced motion:** all of it becomes an instant change; the front appears drawn.
+
+### Not this
+
+- Any AI's crypto dashboard: a near-black navy page, neon green and red, glass cards, Inter or Space Grotesk, candlesticks, gradient badges, rounded stat-card rows.
+- The retired Grudge Book: a warm paper ground, a serif display, red pencil, stamps, hairline rules, tracked mono labels, Newsreader, IBM Plex.
+- Neobrutalism: flat yellow, thick black borders, offset shadows.
+- The directions turned down: Formline (a race card in cerise on white) and the green manual scoreboard (Ultra on plates).
+- **Drift to watch for:** a slate or blue-black ground in place of cobalt; Sui's light brand blue; mono used for running text (it reads as a developer tool); orange used as text; gauges, dials or speedometers; any rounded card.
+
+## 3. How we stand apart
+
+- **From the field.** Crypto prediction entries look like trading dashboards: dark navy, neon up and down, candlesticks, rounded stat cards. One entry with the same core idea uses an oracle name and a mystical register; another uses paper and pencil. Ours reads as an instrument: weather-verification charts on a cobalt ground. Nobody else's page will look measured.
+- **From our own past.** The retired look (warm paper, serif, red pencil, stamps, a gauge) must not come back in any form. No dials, gauges or speedometers: a call is a station circle filled to its probability.
+- **The honest result is a feature.** Grudge is slightly ahead of an equal-weight average, not by a clear margin, and DeepBook alone scores better. A verification chart can show that plainly, and it must: never draw Grudge winning.
+
+## 4. Surfaces and order of work
+
+**Step A, first, before any full screen:** three clearly different first-viewport compositions of the Board (`/`) at 1440 by 900, all inside section 2. The owner picks one. Vary the structure (where the drum-chart band sits, how big the line is, where the stations and the pick action go), not the identity.
+
+**Step B, after the pick (batch 1):** full screens at 1440, 1280, 768 and 390, with every state in section 11:
+- `/` Board: header with status, category switch (15 min default, 5 min), the drum-chart band, the station plots with record rows, the Grudge line with countdown, the disagreement front and its recalled lesson, the pick action, the last-window line, the history of the last 20 windows, footer.
+- `/receipts`: memory totals and the latest blobs (each links to Walruscan), the memory check (button, waiting, result), amnesia history, payments, Tatum counters, the learning figure.
+- `/agents`: the x402 flow as five steps, today's price, request and response as real code blocks, paid calls so far.
+- 404.
+
+**Step C (batch 2, after batch 1 is approved):** the asset artboards in section 6, the logo and favicon set, the social image template, the README banner, video title cards, and the learning figure as a standalone graphic. The pitch deck is a separate Slides artifact on the same Design System.
+
+## 5. Layout language and first viewports
+
+The signature move sets the structure: **the page is a verification chart.** Sections follow the argument (disagreement, record, proof, payment), not a landing-page order.
+
+- **Board, first viewport (1440):** the cobalt page; the header on one line (logo, Board / Receipts / Agents, status, "Judges: start here"); the drum-chart band on `chart` across the full width or nearly so; the station plots for the four sources with their record rows; the Grudge line at 120 px wide-800 with its countdown; the pick action in orange, visible without scrolling. **The deliberate grid break:** at least one element breaks the 12-column grid, for example the drum band bleeding off the right edge, the Grudge line overlapping the band, or a station sitting astride the band's edge. Choose one per composition.
+- **Board, phone (390):** the line and countdown first, then the pick action, then the stations as a vertical list with record rows, then the band, scrolling sideways inside its own box only. No page-level sideways scroll.
+- **Receipts, first viewport:** the memory totals as the largest numbers on the page, the memory-check action beside them, then the latest blobs as a log. The learning figure follows.
+- **Agents, first viewport:** the price now, in large numerals, and the five steps as a sequence. Code blocks sit on `chart`.
+- Vary rhythm and density: dense logs against open bands. Not every section has the same spacing.
+
+## 6. Asset inventory (all drawn here as original SVG, exported to the repo)
+
+| Asset | Where | Sizes | Format and variants |
+|---|---|---|---|
+| Logo: a station plot built into a mark, plus the wordmark "Grudge" with custom drawing (not a plain font) | header, favicon, README, video, deck | mark 20, 32, 64; wordmark 24 and 48 high | SVG, white on cobalt and cobalt on white |
+| Favicon set | browser, home screen | 16, 32, 180, 512, maskable 512 | SVG and PNG |
+| Station mark (a circle filled to p, 0 to 100%) | stations, the line, record rows | 12 (record row), 48, 96, 120 | SVG component with fill angle as a parameter; on cobalt and on chart |
+| Record-row mark: right (filled), wrong (empty), split (half), void (dashed) | under each station, history | 12 | SVG |
+| Drum-chart band (gridlines, traces, outcome marks) | Board | full width, 200 to 260 high; phone version | SVG spec with stroke styles per source |
+| Front with teeth (a disagreement) | Board, lesson, video | between two stations, any length | SVG path spec with tooth spacing |
+| Wind barb (a trust shift up or down) | stations, receipts | 20 | SVG, two states |
+| Source glyphs for DeepBook, Polymarket, Kalshi and the Crowd (in the icon language, not their brand logos) | stations, history, legend | 20 | SVG |
+| UI icons: external link, copy, check, refresh, lock, clock | links, code blocks, memory check | 20 | SVG, 1.5 px stroke |
+| Learning figure | Receipts, README, video, deck | 1200 by 600 and a phone version | SVG template with data slots |
+| Loader (memory check, about 3 s) | Receipts | inline | a determinate progress line, not a spinner |
+| Empty-state art: no windows yet, the Crowd silent, nothing paid | Board, Receipts, Agents | 120 | SVG, static |
+| Social image template, with live slots for the line and the lesson | link previews | 1200 by 630 | SVG or HTML template |
+| README banner, X image, blog cover, video thumbnail | outside | 1280×400, 1200×675, 1000×420, 1280×720 | PNG from SVG |
+| Video title cards: the hook, "Four sources, one question", "Graded like forecasts", closing with the motto and the names Walrus and Tatum set as text | video | 1920×1080 | SVG or HTML, with an entry animation spec |
+| Selection colour, focus ring, scrollbar styling | everywhere | | CSS spec |
+
+## 7. Motion spec
+
+Tokens and the signature motion are in section 2. Choreography:
+- **Polling (every 5 s):** numbers change in place with no flash; a changed value cross-fades (`quick`). Traces extend by one segment when a new window locks.
+- **Page changes:** content cross-fades (`deliberate`); the header stays put.
+- **The magic moment, frame by frame (a window resolves, at most 900 ms):**
+  1. 0 ms: the outcome mark sets on the band (filled or empty; `quick`).
+  2. 100 ms: each station circle snaps to the outcome, full for up or empty for down (`quick`).
+  3. 300 ms: the front between the two sources that disagreed draws along its length (`deliberate`, `ease-enter`); its teeth appear when it completes.
+  4. 500 ms: each record row takes its new mark at the front, and the oldest drops off (`quick`, 60 ms stagger in station order).
+  5. 700 ms: trust values and wind barbs update to the new weights; the line moves to the next open window (`quick`).
+  6. Later, when you open the disagreement, its lesson is read from Walrus and shown with a link to the blob.
+- **Ambient:** none near data. The 404 and the empty states may hold one slow, still drawing; nothing loops.
+- **Restraint:** only transform, opacity and stroke offset; 60 fps; nothing blocks input; a repeated action is faster than its first run.
+- **Reduced motion:** every state changes at once and the front appears already drawn.
+
+## 8. Interaction spec
+
+- **Pick action:** up or down (two buttons), then confidence 55 / 65 / 80 / 95 (one radio group), then "Log my call". States: rest, hover, focus-visible, pressed, disabled (window locked), loading (under 1 s; inline), done ("You said 80% ▲. Logged at 15:27."), limit reached ("Three calls from this address this window."), error ("Couldn't log that. Try again."). Feedback within 100 ms, optimistic where safe.
+- **Category switch (15 min / 5 min):** a two-option tab set with the resolved count on each tab.
+- **Memory check:** rest, running (a progress line for about 3 s with "Reading Walrus."), done (the gap and what was read), error ("Walrus didn't answer. Try again in a minute.").
+- **Links to Walruscan and Suiscan:** an external-link icon, opening in a new tab.
+- **Code blocks:** a copy button with "Copied" for 1.5 s.
+- **Skeletons** shaped like the band and the stations for the first paint, never a spinner.
+- **Phone:** 44 px targets, the pick action reachable with a thumb, no hover-only information.
+- **Microinteractions to draw and time:** logging a pick, a new lock arriving, copying code, the memory check completing.
+
+## 9. Accessibility floor
+
+Text contrast 4.5:1 or better using only the verified pairs in section 2. Up and down are ▲ and ▼ glyphs; right and wrong are filled and empty marks plus words for screen readers. Every station circle has a text equivalent ("DeepBook, 66% up, trust 44%"). Real buttons and links, a visible focus ring as specified, a logical tab order (header, line, pick, stations, history), skip-to-content, and no information carried by colour alone. No page-level sideways scroll at 390.
+
+## 10. Polish checklist (the designs cover these; the build must pass them)
+
+- Every state in section 11, plus very long and very short values ($100,000.00 BTC, a 100% call, a 0% call, a source name at full length).
+- Widths 390, 768, 1280, 1440 and 1920.
+- Aligned baselines; optically centred glyphs; tabular figures everywhere (Martian Mono is monospaced); no widows in headlines.
+- Favicon at every size, the social image, page titles, the 404, text selection colour, scrollbars, focus rings, and the first frame before data loads.
+- A fast first paint, no layout shift when data arrives, fonts that don't flash.
+- One system across the app, README, video, deck and social images.
+
+## 11. States (all real; draw each one)
+
+Board: loading (first paint); live (a window open, one locked); a window locked and waiting for its result (venues can take minutes to settle); resolved with a wrong call; resolved with all right; a split (the venues disagreed about the outcome; voided and not scored); a void (fewer than two sources); a source missing from a window; the Crowd silent (no visitor has picked yet, which is the case today); a disagreement of 7+ points with a lesson; a disagreement with no lesson yet ("Grudge writes one every 25 windows."); stale data or a lost worker; offline.
+Receipts: memory check waiting, done and failed; amnesia history empty (the table is new, so it is empty even though a wipe and rebuild was done earlier); payments with one settled payment; Tatum counters, labelled as counted since the last deploy because they reset on each deploy; learning figure.
+Agents: price now; no paid calls yet; one paid call.
+
+## 12. Copy (draft; the owner does the final pass)
+
+Voice: a duty forecaster's log, with the grudge in the name doing the joke. Plain, numeric, dry.
 
 **Board**
 - Hero: Markets forget. Grudge doesn't.
-- Sub-hero: Four voices call the same Bitcoin move. Grudge writes down who was wrong, on Walrus, and trusts the rest a little more.
-- Proof strip labels: grudges on Walrus · resolutions · paid agent calls · Tatum calls.
-- Status: "Live. Last pass 2 s ago." / when stale: "Lost the worker. These numbers are old."
+- Under it: Four sources call the same Bitcoin move. Grudge grades each call like a weather forecast, keeps the record on Walrus, and trusts the ones that verify.
+- Status: "Live. Last pass 2 s ago." Stale: "Lost the worker. These numbers are old."
 - Countdown: "locks in 03:12" · "ends in 05:12".
-- Pick bar: "Your call, before the lock." After a pick: "You said 80% ▲. Locked at 15:27." After the lock: "Locked. Waiting for the result."
-- Disagreement: "DeepBook and Polymarket disagree by 28 pts. Over 54 disagreements, DeepBook was closer 72% of the time."
-- No lesson yet: "No lesson yet. Grudge writes one every 25 windows."
-- Wrong call: "Polymarket said 71% ▲. It went ▼. Noted." Right call: "Kalshi called it. Grudge reduced by 0.04." Forgiven: "DeepBook: forgiven. Nine right in a row."
-- Ledger heads: Window ends · Result · each voice · Receipt. Void row: "Void. The venues disagreed about what happened." with the SPLIT stamp. Queued receipt: "Receipt queued."
-- Empty: "No grudges yet. Give it five minutes." Voice missing: "Lost a voice. Grudge will hold it against them." Crowd with no picks: "The Crowd hasn't called."
-- Footer: Every grudge is a Walrus blob. Receipts ↗
+- Station: "DeepBook · 66% ▲ · trust 44%". Line: "Grudge line · 65% ▲ · weighted by record".
+- Pick: "Your call, before the lock." Done: "You said 80% ▲. Logged at 15:27." Locked: "Locked. Waiting for the result."
+- Disagreement: "Kalshi and Polymarket disagree by 20 pts. Over 22 disagreements, Kalshi was closer 45% of the time; DeepBook, 36%." Under it: "Recalled from Walrus ↗".
+- Last window: "15:00–15:15 · ▼ down · all three wrong."
+- Wrong call: "Polymarket said 71% ▲. It went ▼. Noted." Split: "Split. The venues disagreed about what happened, so nobody is scored."
+- Empty: "No windows yet. Give it five minutes." Source missing: "Lost a source this window. Grudge will remember." Crowd silent: "The Crowd hasn't called."
+- Footer: "Every grudge is a Walrus blob. Receipts ↗"
 
 **Receipts**
-- Title: Receipts. Line under it: "Everything Grudge remembers is on Walrus. Check it yourself."
-- Button: "Rebuild from Walrus and compare". Waiting: "Reading Walrus. This takes a few seconds." Result: "Rebuilt from snapshot #106 and 99 records. Largest gap against the live weights: 0."
-- Amnesia: "Server wiped. 5 grudges restored from Walrus. Nothing forgiven." Never wiped: "Never wiped. Yet."
-- Payments empty: "No paid calls yet." Learning chart thin: "Needs about 100 windows a category. 93 so far on 5m, 35 on 15m."
+- Title: Receipts. Under it: "Everything Grudge remembers is on Walrus. Check it yourself."
+- Memory check: "Rebuild from Walrus and compare". Waiting: "Reading Walrus. This takes a few seconds." Result: "Rebuilt from snapshot #{n} and {n} records. Largest gap against the live weights: {gap}."
+- Amnesia: "Server wiped. {n} records restored from Walrus. Nothing forgiven." Empty: "No wipes logged yet."
+- Learning: "Brier score over the last {n} windows. Lower is better." Caption shape: "Grudge {a}, equal weights {b}, DeepBook alone {c}. Slightly ahead of the average; the interval includes zero. DeepBook alone is better."
+- Tatum: "{n} gRPC calls · {n} Data API calls since the last deploy."
 
 **Agents**
-- Title: Agents. Line: "This memory costs 0.039 USDC. Grudges aren't free."
-- Steps: ask, get a 402 with the price, pay on Sui, ask again with the payment, get the consensus.
+- Title: Agents. Under it: "This line costs {price} USDC. Grudges aren't free."
+- Steps: Ask. Get a 402 with the price. Pay in USDC on Sui (no SUI needed). Ask again with the payment. Get the line.
 - Success: "Paid. Settled on Sui. Receipt ↗". Empty: "No paid calls yet."
 
-**Elsewhere:** 404: "Grudge doesn't remember this page. Unusual."
+**404:** "Grudge doesn't remember this page. Unusual."
 
-## 11. What does not exist yet
+Never write "zero gas". Never claim Grudge beats the market or its best source.
 
-Design these as honest states; do not show numbers for them. The agent endpoint and its payments are not live yet. Tatum call counters and amnesia history are not served yet. There are no visitor picks so far, so the Crowd has not called. The learning chart has about 90 windows on 5m and 35 on 15m.
+## 13. Bans (PLAYBOOK v3 section 6, exact)
 
-States to draw: empty (no grudges), a voice missing from a window, the Crowd absent, locked and waiting for the result, resolved with a wrong call, a right call, forgiven, void, split, stale data or offline, the memory check waiting and done.
+These bans mark what's already used up. They don't replace Phase 3's process: banning a look
+only pushes the model to the next default. The four clusters below are the looks AI design keeps
+landing on, and any of them is allowed only if I explicitly pick it at the Phase 3 gate.
 
-## 12. Technical constraints
+**AI look clusters**
+- Black or near-black backgrounds with neon accents and glowing edges; cyberpunk / "hacker"
+  aesthetics
+- Warm "old money" editorial: a cream, ivory, beige, parchment or "paper" ground with a
+  high-contrast serif display (often italic) and a terracotta, clay, rust, sage or olive accent
+- Broadsheet pastiche: hairline rules everywhere, an italic display serif, tiny tracked
+  uppercase mono labels, "No. 01" / "§" / "Vol." ornaments
+- Reflex neobrutalism: flat saturated ink, thick black borders, hard offset shadows, heavy
+  condensed display type
 
-It will be built in Next.js with real text and inline SVG marks; no pictures of text. Tabular numerals on every number. Fonts are self-hosted from Google Fonts. Colours are CSS custom properties from the palette. Times arrive in UTC and display in the visitor's time. The page polls every 5 seconds. Ship a phone layout at 390 px for every screen.
+**Color and surface**
+- Purple-blue gradients, glassmorphism, glowing orbs, blob or mesh backgrounds
+- Timid palettes: a neutral page with one small accent, where nothing owns the screen
+- Faked materials: CSS paper grain, emboss, stamps, torn edges, chalk, or any imitation of a
+  material we don't actually render
+
+**Type**
+- Default fonts as the identity (Inter / Roboto / Arial / Open Sans / Lato / system UI)
+- Typefaces AI over-uses (allowed only with a reason no other face could meet; "it's a book
+  app, so serif" doesn't count): Fraunces, Playfair Display, Cormorant, Lora, Crimson,
+  Newsreader, Instrument Serif, DM Serif, EB Garamond, Space Grotesk, Space Mono, IBM Plex,
+  DM Sans, Outfit, Plus Jakarta Sans, Instrument Sans, Syne, Geist, Manrope
+- Timid hierarchy: 400 vs 600 weights, sizes only 1.5x apart
+
+**Structure**
+- The stock landing order: hero, logo strip, 3 features, testimonial, pricing, CTA band
+- A centered hero with headline, subhead and two buttons; a 50/50 hero with text on the left
+  and an image on the right; zigzag rows alternating image and text
+- Equal-width card trios, a three-big-numbers stat row, a FAQ accordion with a closing CTA
+  band used as filler
+- An eyebrow or kicker label above every heading; numbered section prefixes (01 / 02 / 03)
+- Everything centered in one max-width column with the same spacing between every section
+- Generic rounded-card grids, pill buttons everywhere, soft-shadow "SaaS template" boxes
+- Stock icon-in-a-rounded-square feature rows, emoji used as icons
+
+**Originality** (every visual element is made in Claude Design for this project)
+- Icon libraries of any kind (lucide, heroicons, Feather, Font Awesome, Material, Phosphor,
+  Tabler, react-icons), and redrawing one of their icons
+- Illustration libraries and kits (unDraw, Storyset, Humaaans, Blush, Open Peeps), clip art,
+  stock photos and vectors, template or UI-kit visuals, Dribbble-style borrowed art
+- Marketplace animations (LottieFiles, template motion presets) and AI image-generator output
+- Logo or wordmark set in a plain font: it gets custom drawing or lettering
+- Allowed exceptions: licensed typefaces, our own product screenshots, and code libraries
+  that add behaviour without visuals (headless UI primitives, a chart renderer we fully
+  restyle)
+
+**Motion**
+- Fade-up-on-scroll on every section, parallax for its own sake, and motion that delays
+  reading or input
+- Bouncy springs or playful overshoot in professional and monitoring tools
+- Decorative loops near data the user is reading or watching
+- Spinners where a skeleton or progress bar fits; animating width, height, top or left
+- Motion that looks different on the landing page, app, video and deck
+
+**Imagery and copy**
+- Stock photos, uncredited assets, and generic imagery or illustration with no art direction
+- Copy like "Revolutionize", "Seamless", "Unleash", "✨ AI-powered", "Empower", "Elevate"
+- Mad-lib headlines ("The AI-powered X for modern Y", "Meet X"), "It's not X, it's Y" reveals,
+  rule-of-three slogans, and benefit lines that could belong to any product
+- Cloning any reference's or competitor's layout, text or artwork; references are for mood only
+- Jarring or gratuitous animation; every motion has a purpose and respects reduced-motion
+
+## 14. Technical constraints
+
+Built in Next.js (App Router) with real text and inline SVG; no pictures of text. Colours, type, spacing and motion become CSS custom properties from section 2. Fonts are loaded from Google Fonts via `next/font`. Times arrive in UTC and show in the visitor's time. The page polls every 5 seconds. Every screen ships a 390 layout. No icon, illustration or animation libraries: every SVG comes from your export.
 
 ## Files on the canvas
 
-`brand-guidelines.md` (palette, type constraints, marks, voice, copy bank), `assets/logo-mark.svg`, `data/board-sample.json` (a real board response), `data/verify-memory-sample.json` (a real memory check), `data/receipts-sample.json` (a real `/api/receipts` response: memory totals and blob links, one settled payment, the learning numbers).
+`DESIGN-BRIEF.md` (this file), `IDENTITY.md`, `brand-guidelines.md` (§5 writing rules and the copy bank only; its visual sections are retired), `data/board.json`, `data/receipts.json` (live at 18:00 UTC Nov 8), `data/verify-memory.json`.

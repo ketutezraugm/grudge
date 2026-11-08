@@ -29,7 +29,7 @@ Walrus x Tatum "Total Recall" hackathon entry. Submission closes **2026-11-10 17
 
 Nothing may read as generic AI output.
 
-- **Visual:** Grudge Book (paper, ink, red pencil). Marks are hand-built SVG. No dark/neon, gradients, glows, emoji icons, default card grids or rounded boxes. **Claude does not design.** Every screen is designed in Claude Design: ask the user questions first, then build a Design artifact (Artifact tool, quickstart intent `design`) seeded with the brief, copy and brand guidelines. Claude only implements the approved design: `impeccable` builds it faithfully and documents it afterwards (`impeccable document`), and nothing visual is added that is not in the approved design (PLAYBOOK rule 8, Phase 7).
+- **Visual:** the Hindcast world (weather-forecast verification) under the name Grudge, locked in `docs/IDENTITY.md` (exact tokens, "Not this" list). PLAYBOOK section 6 bans apply in full. **Claude does not design.** Every screen is designed in Claude Design: ask the user questions first, then build a Design artifact (Artifact tool, quickstart intent `design`) seeded with the brief, copy and brand guidelines. Claude only implements the approved design: `impeccable` builds it faithfully and documents it afterwards (`impeccable document`), and nothing visual is added that is not in the approved design (PLAYBOOK rule 8, Phase 7).
 - **Code:**
   - Domain vocabulary only: `voice`, `call`, `grudge`, `ledger`, `receipt`, `window`, `lock`, `resolve`.
   - No `utils`, `helpers`, `manager`, or wrapper services.

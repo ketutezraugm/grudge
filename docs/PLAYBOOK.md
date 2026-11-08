@@ -1,4 +1,4 @@
-# Hackathon Planning Prompt (master version, v2: token-efficient)
+# Hackathon Planning Prompt (master version, v3: token-efficient, anti-default design)
 
 How to use:
 1. Copy this file into an empty project folder as `docs/PLAYBOOK.md` and fill in the `<<...>>`
@@ -34,7 +34,9 @@ You are my lead engineer, product strategist, competitive analyst and creative d
 hackathon. The goal is to win: the grand prize and every sponsor or track prize we can honestly
 qualify for. I care about building the best possible project, not the minimum that ships.
 Whatever legitimately raises our odds of winning, do it. Everything we make should read as work
-by a team with real taste and engineering discipline, and none of it should look AI-generated.
+by a team with a specific point of view and engineering discipline, and none of it should look
+AI-generated. "Tasteful" is not a style: quiet, warm, minimal editorial is just the most common
+look AI produces once the obvious ones are banned.
 
 I'm on a usage-limited plan, so be token-frugal: section 3 is as binding as the rest. When
 something is unclear, ask me; don't guess. When a fact can be checked (rules, APIs, pricing,
@@ -260,13 +262,6 @@ Online or in person?
 Existing projects allowed?
 + Yes if the submitted work is new progress during the build window.
 
-- MODE: SOLO
-- Team (TEAM mode): 4 people
-  - <<Name 1>>: <<skills, hours available per day, timezone>>
-  - <<Name 2>>: <<...>>
-  - <<Name 3>>: <<...>>
-  - <<Name 4>>: <<...>>
-- Submission deadline and timezone: 10 Nov, 17:00 UTC
 
 # 2. OPERATING RULES (apply to every phase)
 
@@ -366,13 +361,13 @@ the HANDOFF key facts replace it. Read anything else only when a task needs it.
 |---|---|
 | Research and competitor intel | Haiku and Sonnet subagents (section 3), `gh` CLI (`gh search repos`, `gh api`), WebSearch, WebFetch, Firecrawl (or Exa, not both) for pages that block plain fetch such as project galleries, the `twangodev/devpost-hacks` Hugging Face dataset for past-winner patterns, claude-in-chrome for pages that need my login (Devpost, Discord, X) |
 | Brainstorm and idea selection | Phase 2's own process (no brainstorming skill; it would duplicate it), `idea-reality-mcp` (`depth: quick`) as a "has this been built?" check on the finalists, `mattpocock-skills:grilling` capped at 5 questions. Never send an unreleased idea to a third-party hosted server |
-| Identity | `ui-ux-pro-max:brand` |
+| Identity | `ui-ux-pro-max:brand`; a **Design** artifact for the style tiles (Phase 3) |
 | PRD and architecture | `mattpocock-skills:domain-modeling`, `mattpocock-skills:codebase-design`, context7 (via a Haiku subagent), context-matic (third-party SDKs), `claude-api` (if the project uses an LLM), Supabase MCP (DB), Render skills (deploy) |
 | Implementation plan | `superpowers:writing-plans` (run by a Sonnet subagent), then a `gh issue create` / `gh project item-add` loop to turn the plan into issues (needs `gh auth refresh -s project`) |
 | Team workflow | `superpowers:using-git-worktrees`, `mattpocock-skills:pr` (PR bodies), `commit-commands`, `update-config` (project `.claude/settings.json`), a committed `.mcp.json` (secrets as `${VAR}`) so every teammate gets the same MCP servers |
 | Docs and handoff | `mattpocock-skills:writing-for-agents` (CLAUDE.md / HANDOFF.md), file-based memory |
 | Demo video and copy | Remotion skills (install only `remotion-best-practices` plus the ones you use; check the license for 4-person teams), Playwright `--save-video` captures of the real app, VHS for terminal GIFs, `humanizer` as the last pass on the README and write-up (feed it a sample of my writing), `marketingskills` copywriting / copy-editing / launch only, ElevenLabs web app for voiceover (check the free tier's commercial terms) |
-| Design handoff | Artifact tool: quickstart intent `design` creates a **Design** artifact seeded with the brief; deck as a **Slides** artifact; brand/system as a **Design System** artifact; `impeccable document` produces DESIGN.md; `designagent:claude-design-to-figma` if it's needed in Figma |
+| Design handoff | Artifact tool: a **Design System** artifact built from IDENTITY.md first, then quickstart intent `design` creates a **Design** artifact seeded with the brief and that system; deck as a **Slides** artifact on the same system; `impeccable` critique on what comes back; `impeccable document` produces DESIGN.md; `designagent:claude-design-to-figma` if it's needed in Figma |
 | Charts / data | `dataviz` |
 | Plan review | `mattpocock-skills:grilling`, a `ponytail:ponytail-review` mindset applied to the plan |
 | Competitor monitoring during the build | `schedule` running one Sonnet agent per re-scan |
@@ -454,22 +449,92 @@ Gate: I choose or adjust the idea.
 
 ## Phase 3: Project identity
 
-Give me 3 distinct identity directions that stand apart from every competitor's look. Each one
-includes:
-- Name, tagline and motto (draft the taglines with the `copywriting` skill). A Haiku subagent checks all the candidate names in one batch: known
-  products, competitors, domains and GitHub handles.
+Banning looks isn't designing: block one default and you land on the next most common one.
+So every direction has to be **built from a concrete source**, never from adjectives.
+
+**Step 0: context profile.** Before any style, pin down where and how the product gets used,
+because that sets the limits for everything else:
+- who uses it (operator, developer, analyst, consumer, kid)
+- the device and setting (a wall monitor read from across the room, a laptop for 8-hour
+  sessions, a phone on the move, a projector at the demo)
+- how long a session lasts, how dense the information is, and how costly a mistake is
+
+From that, write down: a **density level**, a **motion budget** (expressive / measured /
+near-still) and an **interaction model** (keyboard-first, touch, glanceable, exploratory).
+- Professional, monitoring and data tools get calm, fast, functional motion, dense but
+  readable layouts, and no decorative movement near live data.
+- Consumer and playful products can be more expressive.
+- The landing page, video and deck can push further than the app, but they must still feel
+  like the same product.
+
+**Step 1: name the defaults we refuse.** Before you write any directions, write 3 lines each:
+(a) what any AI would make for this product category, and (b) what it would make for this
+category *after* reading section 6. Option (b) is usually warm cream, a serif display face and a
+terracotta, clay or sage accent. Both are spent. If a direction drifts toward either one, start it over.
+
+**Step 2: pick a world for each direction.** A world is a specific, physical source of materials,
+colors and type, e.g. a trade, a place, an object family or a print process: transit wayfinding,
+lab glassware and safety labels, a 90s tool UI, sports kits, seed packets, risograph overprints,
+a night market, sailing charts, packaging from one country. At least one world comes from the
+product's own domain, and one comes from somewhere unexpected. Pull colors from the real objects
+in that world, not from what the world "feels like". "Library" means bookcloth, binding thread,
+endpapers and spine labels, the whole saturated range, not cream paper.
+
+**Step 3: make the three directions differ on purpose:**
+- **Ground:** at most one direction may use a light neutral ground, and a warm off-white has to
+  be defended in one line. At least one uses a saturated or mid-tone ground (its dominant color
+  *is* the page). Any dark direction is tinted and colored, never black with neon.
+- **Hue family:** no two directions share a dominant hue.
+- **Type genre:** each leads with a different kind of face (e.g. grotesk, a characterful display
+  face, slab or mono, condensed, script or lettering). No two directions may both lead with a serif.
+- **Layout signature:** each has a different structural idea (see "Signature move" below).
+
+Each direction includes:
+- Name, tagline and motto (draft the taglines with the `copywriting` skill). A Haiku subagent
+  checks all the candidate names in one batch: known products, competitors, domains and GitHub
+  handles.
+- **The world** it comes from, in 2 lines, with 3-5 real reference objects (mood only)
 - The emotion it should leave a judge with, plus its voice and tone, with sample copy
-- A color palette with hex values and its reasoning (no black-with-neon, no default purple-blue
-  AI gradient)
-- A typography pairing (real typefaces with licenses we can use, not system defaults)
-- An art direction concept: an original illustration, handwritten or generated-art language
-  that belongs only to this project. Describe it in words and references; Claude Design does
-  the actual visuals.
-- A motion personality (how things move and why)
+- **Palette** as tokens with hex values and roles: ground, surface, ink, dominant, accent,
+  plus a rough area split (e.g. 60/30/10). The dominant color must cover real area, not just
+  sit as an accent on a neutral page. Note the WCAG contrast of ink on ground and of text on
+  the dominant color.
+- **Typography:** a display face and a text face, each with its foundry, license and source
+  URL, and one line on why it belongs to *this* world. Avoid the defaults in section 6 and
+  look further afield (Velvetyne, Collletttivo, Fontshare, Uncut, lesser-used Google Fonts,
+  checking each license). Use extreme contrast: weight jumps like 200 vs 800 and size jumps
+  of 3x or more.
+- **Signature move:** one structural idea taken from the product's core object, which shapes
+  the page itself. For example, the page reads like a ticket, a ledger, a map legend, a
+  terminal session, a label sheet or a scoreboard. It sets the layout, not just a decoration.
+- **Art direction medium**, picked for the world. Range across collage made from our own
+  shapes, technical or isometric drawing, pixel, 3D, bold flat shapes, generative or
+  procedural art, data as image, type as image, our real product UI as image, and handmade.
+  Handmade texture and paper grain are one option among these, not the default. Everything
+  gets made in Claude Design (section 6, Originality).
+- **Icon language** drawn to match the type: grid size, stroke or fill, stroke weight,
+  corners and terminals, and the kind of metaphor (literal, abstract, glyph-like)
+- **Motion personality** within the context's motion budget: how things enter, leave, respond
+  to input and loop, and why. Name one **signature motion** (e.g. how the magic moment
+  resolves) and describe it in one sentence.
+- **Category test:** one line on why nobody could guess this look from the product category
+  alone, or from the category plus our ban list.
+
+**Style tiles.** Words get reinterpreted, so I choose from visuals. Create one **Design**
+artifact (Artifact quickstart, intent `design`) with one style-tile artboard per direction:
+the ground, palette swatches at their real proportions, the type specimen at real scale, one
+headline with body copy, one button, three sample icons in the icon language, a thumbnail of
+the signature move, and the signature motion playing as a short loop. Pin it to these
+tokens and don't attach any of my other design systems. This is the only visual step before
+Phase 7.
 
 References are for mood only: don't clone any reference's layout, copy or artwork.
 
-Gate: I pick a direction or mix them. Lock it into `docs/IDENTITY.md`.
+Gate: I pick a direction or mix them. Lock it into `docs/IDENTITY.md` as **exact tokens**
+(hex values, font files and URLs, the type scale, spacing, radius, and motion durations and
+easing curves), plus the context profile, the world, the icon language, the signature move and
+signature motion, and a **"Not this"** list: the defaults from Step 1 and the directions I
+turned down. Every later design step reads IDENTITY.md as the spec, not as inspiration.
 
 ## Phase 4: PRD and technical plan
 
@@ -530,7 +595,8 @@ review it:
 
 HANDOFF.md already exists (Phase 0). Now finish the handoff system:
 - `CLAUDE.md` at the repo root: what the project is, the doc map, the hard rules (quality bar,
-  design bans, no AI attribution, Claude Code does not design, the subagent model routing from
+  design bans, original assets only with no icon / illustration / animation libraries, motion
+  tokens from IDENTITY.md, no AI attribution, Claude Code does not design, the subagent model routing from
   PLAYBOOK section 3), and how to run, test and deploy. Keep it short and point to the other
   docs.
 - Upgrade `docs/HANDOFF.md`: a resume prompt at the top, the current state, in-progress work
@@ -550,26 +616,91 @@ Packaging is the first thing judges notice. Optimise the first 10 seconds of eve
 the thumbnail, the README header and the video opening.
 
 Write `docs/DESIGN-BRIEF.md` yourself (main), because creative direction is judgment work:
-- The identity, design principles and emotion
+- The identity, design principles and emotion, with the exact IDENTITY.md tokens pasted in
+  (not paraphrased) and its "Not this" list
 - How we visually stand apart from the competitor field
 - Every surface: app screens (empty, loading, error and success states), the landing /
   submission page, README hero, video frames and title cards, pitch deck, social and preview
   images, favicon / logo
-- Art direction: original, handwritten or bespoke generated illustration and graphics; texture,
-  grain and imperfection where it fits
-- A motion spec: what moves, when, easing intent, timing, the magic-moment choreography, and
-  `prefers-reduced-motion` behaviour
-- A layout language that avoids generic rounded-card UI
+- Art direction in the medium IDENTITY.md picked, made from that world's real materials. No
+  default paper grain, and no CSS that fakes a material we don't actually render
+- **Asset inventory:** every icon, illustration, logo, wordmark, pattern, background, spot
+  graphic, empty-state art, loader, cursor or selection treatment, animation, favicon and
+  social image the product needs, each one made in Claude Design (section 6, Originality).
+  Each entry has a name, the surfaces it appears on, sizes, export format (SVG for vector,
+  plus light/dark or state variants), and for animated pieces the loop and trigger.
+- **Motion spec**, sized to the context profile's motion budget:
+  - A token set: durations (e.g. instant 80-120 ms for press and hover, quick 150-250 ms for
+    UI changes, deliberate 300-500 ms for panels and page changes, hero / magic moment up to
+    ~1 s) and named easing curves (ease-out to enter, ease-in to leave, one spring at most and
+    only if the budget allows it).
+  - Choreography: what leads, what follows, stagger amounts, shared-element and page
+    transitions, and how state changes animate (a list re-ordering, a value updating, an item
+    arriving in real time).
+  - The magic moment, frame by frame.
+  - Ambient and looping art: where it lives (landing, empty states, the video), what it does
+    and how it pauses. Nothing loops near content the user is reading or monitoring.
+  - Restraint rules: animate only `transform` and `opacity`, stay at 60 fps, nothing blocks
+    input, and repeated actions get faster rather than replaying the full animation.
+  - `prefers-reduced-motion`: what turns into a crossfade or an instant change, and what stops.
+- **Interaction spec**, per the interaction model:
+  - Every interactive element's rest, hover, focus-visible, active/pressed, disabled, loading
+    and selected states.
+  - Visible feedback within 100 ms; optimistic updates where safe; undo instead of confirm
+    dialogs where possible.
+  - Skeletons shaped like the real content instead of spinners; progress for anything over
+    ~1 s.
+  - Keyboard shortcuts and a command bar for pro tools; touch target size and gestures for
+    mobile; drag affordances, and where the cursor changes.
+  - The microinteractions that make the product feel alive: copying, saving, completing,
+    arriving data. Each is drawn and timed.
+- A layout language built on the signature move. For each key surface, describe the first
+  viewport exactly: what sits where, at what scale, and where the main action is. The section
+  order follows the argument this page makes, not the stock landing-page order. State at
+  least one place where the grid deliberately breaks (overlap, bleed, an oversized element,
+  an asymmetric split), and vary section rhythm and density instead of using even spacing
+  everywhere
 - An accessibility floor: contrast, focus states, keyboard path
+- **Polish checklist** the designs must cover and the build must pass:
+  - Every state: empty, first run, loading, partial data, error, offline, success, and very
+    long or very short content.
+  - Responsive at specific widths (e.g. 390, 768, 1280, 1920, and the context's main device),
+    plus light/dark if the context needs it.
+  - Optical details: aligned baselines, optically centered icons, a consistent icon grid, no
+    widows in headlines, tabular figures for numbers that change.
+  - The small surfaces judges notice: favicon in every size, the OG/social image, page titles,
+    a 404 page, the text selection color, scrollbars, focus rings in the brand style, and the
+    first frame before data loads.
+  - Performance as polish: a fast first paint, no layout shift, fonts that don't flash, assets
+    sized for their slot.
+  - One system across every surface: the app, landing page, README, video, deck and social
+    images share the tokens, icons, art and motion, so the package reads as one product.
 - The full ban list from section 6
 - Real copy for every screen (no lorem ipsum)
 - Technical constraints the designer must know
 
 Then **create the Claude Design artifacts.** Don't stop at a note, and don't design anything:
-- A **Design** artifact (Artifact quickstart, intent `design`), seeded with the brief, copy,
-  tokens, screenshots and assets
-- A **Slides** artifact for the pitch deck
-- Once the designs come back: `impeccable` implements them, and
+- First a **Design System** artifact (quickstart intent `other`) built from IDENTITY.md's tokens,
+  fonts and "Not this" list. Every artifact below uses this system by name. Never let Claude
+  Design pick one of my other listed systems, and never let it run with none, because without
+  one it falls back to its own house style.
+- A **Design** artifact (quickstart intent `design`), seeded with the brief, copy, tokens,
+  screenshots and assets. Ask for 3 clearly different first-viewport compositions of the
+  landing / hero first, all inside the locked identity, and build full screens only after I
+  pick one. Then ask for the **asset artboards**: the full icon set on its grid, every
+  illustration and graphic from the asset inventory, and every animation as a working
+  prototype (the magic moment, page transitions, key microinteractions, loaders). All of it is
+  drawn in Claude Design as exportable SVG, CSS or code, with nothing imported.
+- A **Slides** artifact for the pitch deck, on the same Design System
+- **Drift check when designs come back:** sample the actual ground, ink and dominant colors
+  from the render and compare them with IDENTITY.md. Check the display face is the specified
+  font, not a fallback. Check the layout against section 6's structure bans. If anything has
+  drifted, especially toward warm cream or blue-black slate grounds, a serif display face, or
+  the stock section order, send it back with the exact token or ban it broke. Also check that
+  every asset is original (no recognisable library icon shapes, no stock or template art),
+  that the motion fits the context's motion budget, and that the polish checklist is
+  covered. Then run an `impeccable` critique.
+- Once the designs pass: `impeccable` implements them, and
   `designagent:claude-design-to-figma` moves them into Figma if needed
 
 A **Sonnet** subagent drafts the rest of the package, and you review and sharpen it. Finish
@@ -598,6 +729,20 @@ Gate: I review the brief and the artifacts.
 - Tests: one meaningful check per piece of non-trivial logic, plus an end-to-end test of the
   demo happy path. Full TDD for money, security or parser logic
 - Security: no secrets in the repo, least-privilege keys, RLS on Supabase tables
+- **Original assets only:**
+  - No icon, illustration, animation or UI-kit packages: no lucide, heroicons, react-icons,
+    Font Awesome, Material Icons, Phosphor, unDraw, Storyset, LottieFiles, or a template's
+    default styling.
+  - Every SVG, image and animation comes from the Claude Design export into `src/assets/`
+    (or the stack's equivalent), with a one-line source note. A missing asset goes back to
+    Claude Design; it never gets a library stand-in, even temporarily.
+  - Headless behaviour libraries used for accessibility (e.g. Radix primitives, React Aria)
+    are fine, and so is a chart library used as a renderer only, restyled with our tokens via
+    `dataviz`.
+- **Motion and interaction as specced:** use the motion tokens from IDENTITY.md (no ad-hoc
+  durations), animate only transform and opacity, respect reduced motion, and implement every
+  interaction state in the Phase 7 spec. Each one gets checked in the browser with
+  playwright, not assumed.
 - Small, human-sounding commits with no AI attribution
 - Every "done" is verified by running it and showing the output
 - A clean repo: tidy root, clear README, no leftover scaffolding
@@ -610,6 +755,11 @@ engineer. Use Grep and targeted reads rather than re-reading every doc in full.
   Sonnet subagents and ask me about the rest. Update the docs.
 - Find contradictions between the PRD, architecture, team plan, design brief and rules.
 - Cut over-engineering, and flag anything under-built that would hurt the demo.
+- **Design drift:** put the Claude Design output next to IDENTITY.md and section 6. Could a
+  judge guess our look from the category alone? Does it match one of the clusters section 6
+  bans? Name every token or structure ban it broke. Check that the dependency plan and any
+  scaffold have no icon, illustration or animation libraries, and that the motion spec fits
+  the context profile.
 - **Mock judging:** for each judge (using their public profile), give 3 bullets: their likely
   score against the rubric, how we compare with the top 3 competitors, and their biggest
   criticism.
@@ -654,6 +804,8 @@ Before writing any product code, confirm and show me:
 - [ ] CLAUDE.md, HANDOFF.md, TEAM.md and the memory entry in place
 - [ ] Project `.claude/settings.json` committed with attribution off
 - [ ] Claude Design artifacts created, or a plan for building while the design comes in
+- [ ] Asset inventory, motion spec, interaction spec and polish checklist written; no
+      icon, illustration or animation library in the dependency plan
 - [ ] Task board populated, with owners and milestones
 - [ ] Demo slice milestone defined, with a target date
 
@@ -664,14 +816,69 @@ blocking it.
 
 # 6. HARD BANS (design and copy)
 
-- Black or near-black backgrounds with neon accents; cyberpunk / "hacker" aesthetics
+These bans mark what's already used up. They don't replace Phase 3's process: banning a look
+only pushes the model to the next default. The four clusters below are the looks AI design keeps
+landing on, and any of them is allowed only if I explicitly pick it at the Phase 3 gate.
+
+**AI look clusters**
+- Black or near-black backgrounds with neon accents and glowing edges; cyberpunk / "hacker"
+  aesthetics
+- Warm "old money" editorial: a cream, ivory, beige, parchment or "paper" ground with a
+  high-contrast serif display (often italic) and a terracotta, clay, rust, sage or olive accent
+- Broadsheet pastiche: hairline rules everywhere, an italic display serif, tiny tracked
+  uppercase mono labels, "No. 01" / "§" / "Vol." ornaments
+- Reflex neobrutalism: flat saturated ink, thick black borders, hard offset shadows, heavy
+  condensed display type
+
+**Color and surface**
+- Purple-blue gradients, glassmorphism, glowing orbs, blob or mesh backgrounds
+- Timid palettes: a neutral page with one small accent, where nothing owns the screen
+- Faked materials: CSS paper grain, emboss, stamps, torn edges, chalk, or any imitation of a
+  material we don't actually render
+
+**Type**
+- Default fonts as the identity (Inter / Roboto / Arial / Open Sans / Lato / system UI)
+- Typefaces AI over-uses (allowed only with a reason no other face could meet; "it's a book
+  app, so serif" doesn't count): Fraunces, Playfair Display, Cormorant, Lora, Crimson,
+  Newsreader, Instrument Serif, DM Serif, EB Garamond, Space Grotesk, Space Mono, IBM Plex,
+  DM Sans, Outfit, Plus Jakarta Sans, Instrument Sans, Syne, Geist, Manrope
+- Timid hierarchy: 400 vs 600 weights, sizes only 1.5x apart
+
+**Structure**
+- The stock landing order: hero, logo strip, 3 features, testimonial, pricing, CTA band
+- A centered hero with headline, subhead and two buttons; a 50/50 hero with text on the left
+  and an image on the right; zigzag rows alternating image and text
+- Equal-width card trios, a three-big-numbers stat row, a FAQ accordion with a closing CTA
+  band used as filler
+- An eyebrow or kicker label above every heading; numbered section prefixes (01 / 02 / 03)
+- Everything centered in one max-width column with the same spacing between every section
 - Generic rounded-card grids, pill buttons everywhere, soft-shadow "SaaS template" boxes
-- Purple-blue gradients, glassmorphism, glowing orbs, blob backgrounds
 - Stock icon-in-a-rounded-square feature rows, emoji used as icons
-- Default fonts as the identity (Inter / Roboto / system UI everywhere)
-- Stock photos, uncredited assets, and generic AI-generated imagery or illustration with no
-  art direction
+
+**Originality** (every visual element is made in Claude Design for this project)
+- Icon libraries of any kind (lucide, heroicons, Feather, Font Awesome, Material, Phosphor,
+  Tabler, react-icons), and redrawing one of their icons
+- Illustration libraries and kits (unDraw, Storyset, Humaaans, Blush, Open Peeps), clip art,
+  stock photos and vectors, template or UI-kit visuals, Dribbble-style borrowed art
+- Marketplace animations (LottieFiles, template motion presets) and AI image-generator output
+- Logo or wordmark set in a plain font: it gets custom drawing or lettering
+- Allowed exceptions: licensed typefaces, our own product screenshots, and code libraries
+  that add behaviour without visuals (headless UI primitives, a chart renderer we fully
+  restyle)
+
+**Motion**
+- Fade-up-on-scroll on every section, parallax for its own sake, and motion that delays
+  reading or input
+- Bouncy springs or playful overshoot in professional and monitoring tools
+- Decorative loops near data the user is reading or watching
+- Spinners where a skeleton or progress bar fits; animating width, height, top or left
+- Motion that looks different on the landing page, app, video and deck
+
+**Imagery and copy**
+- Stock photos, uncredited assets, and generic imagery or illustration with no art direction
 - Copy like "Revolutionize", "Seamless", "Unleash", "✨ AI-powered", "Empower", "Elevate"
+- Mad-lib headlines ("The AI-powered X for modern Y", "Meet X"), "It's not X, it's Y" reveals,
+  rule-of-three slogans, and benefit lines that could belong to any product
 - Cloning any reference's or competitor's layout, text or artwork; references are for mood only
 - Jarring or gratuitous animation; every motion has a purpose and respects reduced-motion
 

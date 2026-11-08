@@ -1,5 +1,7 @@
 # Grudge: Brand Guidelines v2.0 ("Grudge Book")
 
+> **Visual sections superseded 2026-11-08 by PLAYBOOK v3.** Palette, type, marks and art direction below are retired with Grudge Book. Name, motto, voice, the copy bank and §5 writing rules still apply.
+
 > Last updated: 2026-11-07 · Status: Locked for hackathon
 > v2 replaces the dark/neon v1 look. Name, motto, voice and copy are unchanged.
 

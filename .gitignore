@@ -49,3 +49,8 @@ next-env.d.ts
 # Staging copy of the files uploaded to Claude Design; the originals live in docs/ and assets/
 design-handoff/
 design-handoff.zip
+
+# Claude Design exports and browser captures (local only)
+design-from-claude/
+Grudge Design.rar
+.playwright-mcp/
