@@ -8,7 +8,8 @@ Each item is `verified (source)` or `unverified (how to verify)`. Nothing unveri
 | --- | --- |
 | Memories are written to Walrus Memory on mainnet, more than the 10 required | verified (`/api/receipts` 15:48 UTC: 254 written, 141 records + 109 snapshots + 4 lessons; `verify-memory` 15:22 UTC read snapshot #106 and 99 records; flush logs show 0 refused) |
 | Wiping the database and rebuilding from Walrus reproduces the weights exactly | **was verified at 06:43 and 15:22 UTC, broke at ~16:30 UTC** when the records namespace passed 100 (recall returns a similarity-ranked sample, not the newest; see ARCHITECTURE, Hourly buckets). Fixed by hourly buckets; **re-verify live before any claim** (the next row was the earlier evidence) |
-| (earlier evidence for the row above) | verified (amnesia run 06:43 UTC: 5 grudges before and after, gap 0; production `verify-memory` gap 0 at 08:18) |
+| Rebuild from Walrus after the hourly-bucket fix | verified once, easy case (18:25 UTC: `verify-memory` read snapshot #143 from the bucket `grudge:v1:scoreboard:2026-11-08T18` plus 1 record, gap 0, nothing waiting). **Not yet verified:** a full amnesia wipe on production after the buckets hold several hours (the ledger after a wipe is thin until then, because older records live in the old namespaces and are not read). Rehearse once before the video |
+| (earlier evidence for the first row) | verified (amnesia run 06:43 UTC: 5 grudges before and after, gap 0; production `verify-memory` gap 0 at 08:18) |
 | DeepBook Predict is read through Tatum gRPC | verified (every lock since 06:17 UTC logs a DeepBook call and strike) |
 | Polymarket and Kalshi are reachable from Render Frankfurt without a VPN | verified (Render lock at 08:07 UTC with all three venues) |
 | Bitcoin spot comes from the Tatum Data API | verified (`bitcoinUsd` in `/api/board`, 08:18 UTC) |
