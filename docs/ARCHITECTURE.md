@@ -68,13 +68,14 @@ Started once per process from `src/instrumentation.ts` (which first applies migr
 ## Memory flow (`src/server/memory/`)
 1. A settled window adds a `record` to the `memories` outbox (status `pending`).
 2. `flusher.ts` sends waiting memories to Walrus in one bulk call (at most 20), every 5 minutes or at 15 waiting. When records are waiting it first queues a `scoreboard` snapshot taken in one repeatable-read transaction. On success the row becomes `done` with its blob id; a memory the relayer refuses five times becomes `failed`; a failed call backs off for a minute.
-3. `coldboot.ts`: `restoreIfEmpty` runs at boot. With no grudges in the database it reads the latest snapshot and up to 100 recent records from Walrus, rebuilds the grudges (`engine/rebuild.ts`: snapshot, then replay later records in resolution order) and restores the recent ledger with its blob ids. `checkAgainstWalrus` does the same read-only and reports the largest gap against the live scoreboard (`pnpm exec tsx ... scripts/verify-memory.mts`).
+3. `coldboot.ts`: `restoreIfEmpty` runs at boot. With no grudges in the database it reads the latest snapshot and up to 100 recent records from Walrus, rebuilds the grudges (`engine/rebuild.ts`: snapshot, then replay later records in resolution order) and restores the recent ledger with its blob ids. `checkAgainstWalrus` does the same read-only and reports the largest gap against the live scoreboard, with the blob ids it read (`pnpm exec tsx ... scripts/verify-memory.mts`). A recall that comes back empty is asked again after 2 s, up to four times, because a fresh process gets empty answers for its first seconds.
+4. `amnesia.ts`: `forget()` sets `paused` on the worker state, waits for a pass in flight, writes every waiting memory (`flushAll`), and checks that Walrus alone reproduces the live weights. If anything is unwritten or the gap exceeds 1e-9 it throws `AmnesiaRefused` and deletes nothing. Otherwise one transaction deletes picks, forecasts, lessons, questions, the scoreboard and the `record` memories that are done; `restoreFromWalrus` puts them back, and the report compares the weights before and after. `scoreboard` memories are kept so snapshot numbering continues.
 
 ## Deployment
 `render.yaml` describes one Render web service in Frankfurt (Starter plan), built with `pnpm build` and started with `pnpm start`. Secrets are typed into the dashboard when the Blueprint is created. The database is Supabase `grudge` (eu-central-1) through the session pooler.
 
 ## Not built yet
-The public board API and the UI, picks, lessons, the x402 payment path, the paying agent, the amnesia and verify-memory endpoints, and `/receipts`.
+The public board API and the UI, picks, lessons, the x402 payment path, the paying agent, an amnesia history table, and `/receipts`.
 
 ## Decisions that shaped the layout
 See `DECISIONS.md`. In short: all Tatum access is in one folder because it shares one rate budget; venue parsers are pure so they can be tested against real payloads; shared state goes through `singleton` because Next bundles the worker and the route handlers separately.

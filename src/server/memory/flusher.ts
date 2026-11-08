@@ -94,6 +94,25 @@ async function queueScoreboard(nowMs: number): Promise<void> {
   });
 }
 
+/** Writes everything still waiting, batch after batch. Returns how many memories remain unwritten. */
+export async function flushAll(): Promise<number> {
+  const state = progress();
+  while (state.inFlight) await new Promise((done) => setTimeout(done, 500));
+  state.inFlight = true;
+  try {
+    state.backoffUntilMs = 0;
+    for (let batches = 0; batches < 10; batches += 1) {
+      const [row] = await database().select({ n: count() }).from(memories).where(waiting);
+      if (!row?.n) return 0;
+      await flush(Date.now());
+    }
+  } finally {
+    state.inFlight = false;
+  }
+  const [left] = await database().select({ n: count() }).from(memories).where(waiting);
+  return left?.n ?? 0;
+}
+
 async function flush(nowMs: number): Promise<void> {
   const state = progress();
   try {

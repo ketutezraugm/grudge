@@ -16,15 +16,20 @@ const steps = [
 ] as const;
 
 async function tick(): Promise<void> {
-  for (const [step, run] of steps) {
-    try {
-      // Read the clock per step: a slow lock must not make the next step act on old time.
-      await run(Date.now());
-    } catch (err) {
-      log.error("worker.step.failed", { step, err });
+  const worker = workerState();
+  if (!worker.paused) {
+    worker.ticking = true;
+    for (const [step, run] of steps) {
+      try {
+        // Read the clock per step: a slow lock must not make the next step act on old time.
+        await run(Date.now());
+      } catch (err) {
+        log.error("worker.step.failed", { step, err });
+      }
     }
+    worker.ticking = false;
   }
-  workerState().lastTickMs = Date.now();
+  worker.lastTickMs = Date.now();
 }
 
 /** Starts the loop once per process, however many times the framework loads this module. */

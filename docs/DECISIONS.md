@@ -115,3 +115,12 @@ Why: a snapshot can already count a window whose own record is still queued, so 
 
 **2026-11-08 · The flusher runs in the background and never blocks the 5-second loop.**
 Why: a Walrus write takes 20 to 90 seconds. It flushes every 5 minutes, or at 15 waiting memories, in batches of at most 20, and queues a scoreboard snapshot only when new records arrived since the last one.
+
+**2026-11-08 · Amnesia refuses to wipe unless Walrus alone already reproduces the live weights.**
+Why: wiping is only safe if nothing is lost. `forget()` pauses the worker, writes every waiting memory, rebuilds from Walrus into a scratch board, and stops with a 409 if that board differs from the live one by more than 1e-9. It keeps `scoreboard` memories so snapshot numbering continues, and deletes only `record` memories, which come back with their blob ids. First live run: 5 grudges before, 5 after, gap 0, 4 ledger windows restored.
+
+**2026-11-08 · An empty recall is asked again, up to four times, 2 s apart.**
+Why: measured. A fresh process gets empty answers from the relayer for roughly its first 2 seconds (empty at 1.3 s and 1.7 s, full at 6 s) even though the memories exist. Without the wait, the first `verify-memory` after a restart reported a gap of 1, and a real cold boot could have restored nothing and started from zero.
+
+**2026-11-08 · `POST /api/verify-memory` is public, and everyone shares one check per minute.**
+Why: each check reads Walrus twice and the relayer's budget is shared with the writes. A cached check (and one in flight, shared) caps the cost at two reads a minute however often it is called.
