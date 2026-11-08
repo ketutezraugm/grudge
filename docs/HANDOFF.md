@@ -51,6 +51,6 @@
 - pnpm holds back packages published in the last 24 hours; three Mysten versions are excluded in `pnpm-workspace.yaml`.
 
 ## Open questions
-- **`btc-5m` split rate.** Only two venues settle a 5m window, so a 1–1 disagreement voids it (one of the first two settled windows). If it stays high, use DeepBook settlement as the tie-break for 5m and document it (PRD §10.5).
+- **`btc-5m` split rate: 2 of the first 3 settled windows split** (06:25: Pyth saw -$0.14, Polymarket said UP; 06:30: DeepBook UP, Polymarket DOWN). Only two venues settle a 5m window, so a 1–1 disagreement voids it. Polymarket resolves on a Chainlink 60-second average, which lags the exact Pyth price DeepBook settles on by about half a minute, so flat windows can split. n is 3, so measure overnight before deciding anything. If it stays above about 15%, use DeepBook settlement as the tie-break for 5m and document it (PRD §10.5). Query: `select state, split, count(*) from questions where category = 'btc-5m' and state in ('resolved','void') group by 1, 2`.
 - Credits per Tatum call: the dashboard decides.
 - Resolved: the first new-format snapshot restored with a gap of 0. The destructive path (wipe, then restore at boot) is not yet exercised end to end.
