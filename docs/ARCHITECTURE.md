@@ -74,11 +74,14 @@ Started once per process from `src/instrumentation.ts` (which first applies migr
 ## Board and picks (`src/server/board.ts`, `src/app/api/board`, `src/app/api/pick`)
 `boardSnapshot()` reads, per category, the open window, the newest locked window, the last 20 with a result, the grudges, the resolved count and the newest lesson, and works out weights, confidence and price with the engine's pure functions. It is cached for 3 s and shared, so polling costs the same however many visitors there are. The visitor's own pick is the only per-visitor read. `engine/ledger.ts` turns calls and outcomes into right/wrong marks. The board shows only what has locked: live odds before the lock are not built yet.
 
+## x402 payments (`src/server/x402/`, `src/app/api/consensus`, `scripts/agent.mts`)
+`protocol.ts` holds the x402 v2 shapes (zod) and the base64 header codec. `quote.ts` signs the price, category and expiry with HMAC-SHA256 (`QUOTE_SECRET`) so the server stores nothing between the 402 and the payment. `verify.ts` is `acceptPayment`: it takes the chain and the ledger as arguments and runs the checks in the order the spec gives, executing only when all have held; it is fully covered by tests that use a real recorded payment (`fixtures/gasless-usdc.json`: a gasless 0.01 USDC transfer built and signed by the agent wallet, with the simulation Tatum returned for it). `chain.ts` simulates and executes through `sui()` (Tatum gRPC, shared 3 rps budget) and caps attempts at 20 a minute. `ledger.ts` is the `payments` table; the digest is the primary key, so the database decides who is first and a replay is refused. The server never holds a key: the buyer signs the transaction. `scripts/agent.mts` builds the payment on the public fullnode, refuses to pay more than 0.05 USDC a call, and in `--loop` mode buys every 30 minutes only when the voices disagree, up to 2 USDC.
+
 ## Deployment
 `render.yaml` describes one Render web service in Frankfurt (Starter plan), built with `pnpm build` and started with `pnpm start`. Secrets are typed into the dashboard when the Blueprint is created. The database is Supabase `grudge` (eu-central-1) through the session pooler.
 
 ## Not built yet
-The UI, live odds before the lock, streak and split lessons (only the every-25-windows lesson exists), the x402 payment path, the paying agent, an amnesia history table, and `/receipts`.
+The UI, streak and split lessons (only the every-25-windows lesson exists), an amnesia history table, and `/receipts`. Live odds before the lock were decided against.
 
 ## Decisions that shaped the layout
 See `DECISIONS.md`. In short: all Tatum access is in one folder because it shares one rate budget; venue parsers are pure so they can be tested against real payloads; shared state goes through `singleton` because Next bundles the worker and the route handlers separately.

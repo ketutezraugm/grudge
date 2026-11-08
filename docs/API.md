@@ -63,3 +63,31 @@ Everything the board shows. Pollers share one set of queries (at most 3 s stale)
 
 ## `POST /api/pick`
 Body `{ "question": "btc-15m:1794123000", "direction": "up" | "down", "confidence": 55 | 65 | 80 | 95 }`. Sets the `grudge_visitor` cookie on the first pick. `200 { question, p }`; `400` for a bad body; `409` when the window is locked or this visitor already picked it. The Crowd voice at lock is the mean of the window's picks. `429` after 3 picks from one address on a window (the address is the visitor's, read from `X-Forwarded-For` behind Cloudflare and Render).
+
+## `GET /api/consensus?category=btc-5m|btc-15m` (x402)
+Grudge's trust-weighted call for one category, paid per request in USDC on Sui (x402 v2, scheme `exact`, network `sui:mainnet`). Settled through Tatum gRPC; gasless for the buyer, who needs no SUI. `400` for an unknown category, `503` before any window has locked.
+
+1. **Ask.** No payment header: `402` with the terms in the body and, base64, in the `PAYMENT-REQUIRED` header. `accepts[0]` is `{ scheme: "exact", network: "sui:mainnet", amount, asset: <USDC type>, payTo: <treasury>, maxTimeoutSeconds: 120, extra: { quote } }`. `amount` is atomic USDC (6 decimals), 10000 to 50000, and rises with Grudge's confidence. `extra.quote` is a signed price that holds for 120 seconds.
+2. **Pay.** Build a transaction that sends exactly `amount` of the asset to `payTo` with `0x2::balance::send_funds` (gasless), sign it, and send `PAYMENT-SIGNATURE: base64({ x402Version: 2, accepted: <the terms, unchanged>, payload: { signature, transaction } })`, where `transaction` is the base64 transaction bytes.
+3. **Receive.** `200` with the consensus and `PAYMENT-RESPONSE: base64({ success, transaction: <digest>, network, payer })`.
+
+The server checks in this order: header shape, quote signature and expiry, that the terms are exactly those offered, the signature over the transaction, a simulation through Tatum, that the treasury receives exactly `amount` USDC, then claims the digest (a used digest returns `402`, "this payment was already used") and executes. Nothing executes until every check has passed. Any refusal returns a fresh `402` whose `error` names the reason. At most 20 payment attempts a minute reach the chain across all callers.
+
+`200` body:
+```json
+{
+  "question": "btc-5m:1794151500",
+  "category": "btc-5m",
+  "grudgeLine": 0.74,
+  "calls": { "deepbook": 0.777, "polymarket": 0.495 },
+  "weights": { "deepbook": 0.844, "polymarket": 0.156 },
+  "confidence": 0.713,
+  "disagreement": 0.282,
+  "lesson": { "text": "…", "at": "…", "blobId": "…", "url": "https://walruscan.com/mainnet/blob/…" },
+  "receipts": {
+    "walrus": [{ "question": "…", "blobId": "…", "url": "…" }],
+    "sui": { "digest": "…", "url": "https://suiscan.xyz/mainnet/tx/…" }
+  }
+}
+```
+`pnpm agent` is a client that does steps 1 to 3 (see the header of `scripts/agent.mts`).
