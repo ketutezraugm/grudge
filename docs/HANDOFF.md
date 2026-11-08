@@ -64,7 +64,7 @@ The user's master playbook now guides the work; section 3 (Haiku/Sonnet subagent
 - pnpm holds back packages published in the last 24 hours; three Mysten versions are excluded in `pnpm-workspace.yaml`.
 
 ## Open questions
-- **The learning result is modest** (see `docs/ASSUMPTIONS.md`): memory beats equal weighting on 5m by 0.0078 Brier (95% interval ±0.0065) but not significantly on 15m, and DeepBook alone scores better than Grudge on both. The pitch, README and video must say exactly that. The hedge rate stays 0.5; tuning it on these windows would be fitting the test.
+- **The learning result is modest** (see `docs/ASSUMPTIONS.md`): Grudge is slightly ahead of equal weighting on both categories (5m +0.0061 ± 0.0072 at 97 windows, 15m +0.0018 ± 0.0035) but the 95% interval includes zero on both, and DeepBook alone scores better than Grudge on both. Recompute before quoting. The pitch, README and video must say exactly that. The hedge rate stays 0.5; tuning it on these windows would be fitting the test.
 - Tatum call counts are since the last deploy, not lifetime. The proof strip's "Tatum calls" would mislead unless the design labels it or we persist the counter.
 - **`btc-5m` split rate.** Only two venues settle a 5m window, so a 1-1 disagreement voids it (06:25 and 06:30 windows were voids; Pyth saw -$0.14 while Polymarket's Chainlink average said UP). If it stays high, use DeepBook settlement as the tie-break for 5m and document it (PRD §10.5).
 - Credits per Tatum call: the dashboard decides.

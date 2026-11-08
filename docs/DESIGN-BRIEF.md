@@ -37,7 +37,7 @@ Agents paying for the consensus matters but comes after these. The first viewer 
 - A social image of 1200 by 630 that the server renders from live data (it shows the current Grudge line), so design it as a template with variable slots.
 - README banner 1280 by 400, X image 1200 by 675, blog cover 1000 by 420, video thumbnail 1280 by 720.
 - Video title cards at 1920 by 1080: the hook ("Markets forget. Grudge doesn't."), "Four voices, one question", "Nothing forgiven", and a closing card with the motto and the names Walrus and Tatum set as text.
-- The learning chart as a hand-built figure: the Grudge line against the equal-weight average and against the best single voice, by rolling Brier score, with an interval. It must look right with few points.
+- The learning chart as a hand-built figure: the Grudge line against the equal-weight average and against the best single voice, by rolling Brier score, with an interval. It must look right with few points. The real numbers are in `data/receipts-sample.json` (`learning`): Grudge is slightly ahead of the equal-weight average on both categories, the 95% interval includes zero on both, and DeepBook alone scores slightly better than Grudge. The figure must show that plainly; do not draw Grudge winning.
 
 ## 5. The magic moment
 
@@ -110,4 +110,4 @@ It will be built in Next.js with real text and inline SVG marks; no pictures of 
 
 ## Files on the canvas
 
-`brand-guidelines.md` (palette, type constraints, marks, voice, copy bank), `assets/logo-mark.svg`, `data/board-sample.json` (a real board response), `data/verify-memory-sample.json` (a real memory check).
+`brand-guidelines.md` (palette, type constraints, marks, voice, copy bank), `assets/logo-mark.svg`, `data/board-sample.json` (a real board response), `data/verify-memory-sample.json` (a real memory check), `data/receipts-sample.json` (a real `/api/receipts` response: memory totals and blob links, one settled payment, the learning numbers).
