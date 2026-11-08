@@ -28,7 +28,7 @@ Walrus x Tatum "Total Recall" hackathon entry. Submission closes **2026-11-10 17
 
 Nothing may read as generic AI output.
 
-- **Visual:** Grudge Book (paper, ink, red pencil). Marks are hand-built SVG. No dark/neon, gradients, glows, emoji icons or default card grids. Run `impeccable` for any UI work.
+- **Visual:** Grudge Book (paper, ink, red pencil). Marks are hand-built SVG. No dark/neon, gradients, glows, emoji icons, default card grids or rounded boxes. **Claude does not design.** Every screen is designed in Claude Design: ask the user questions first, then build a Design artifact (Artifact tool, quickstart intent `design`) seeded with the brief, copy and brand guidelines. Claude only implements the approved design.
 - **Code:**
   - Domain vocabulary only: `voice`, `call`, `grudge`, `ledger`, `receipt`, `window`, `lock`, `resolve`.
   - No `utils`, `helpers`, `manager`, or wrapper services.

@@ -27,7 +27,7 @@
 
 ## Next (in order)
 1. **`engine/lessons.ts`** (templated lessons, one per 25 scored windows per category) and the lessons memory writer. PRD §5.4. Done when a unit test with real fixtures produces the PRD's example sentence shape and a lesson row queues a `lesson` memory.
-2. **Board API** `GET /api/board`, picks `POST /api/pick`, then the UI. Run `impeccable init` (PRODUCT.md) and `shape` first (PRD §12, §15). Authenticity rules in `CLAUDE.md` apply. Done when `/` shows a live gauge from real data.
+2. **Board API** `GET /api/board`, picks `POST /api/pick`, then stop at the UI. **The user's rule: Claude does not design.** Build the APIs, then ask the user questions about the design, and hand off to a Design artifact in Claude Design (PRD §12, §15 mention `impeccable`; that is superseded). Implement only what Claude Design returns. No dark/neon, no rounded boxes, no generic AI look. Done when `GET /api/board` returns real data and the Design artifact exists.
 3. **`/receipts`:** memory totals and Walruscan links, payments, Tatum counters, the verify-memory button, and amnesia history. Amnesia history needs a table (none yet; the report is only logged as `amnesia.restored`).
 4. x402 payment path (test-first), `scripts/agent.mts`, `/agents` (PRD §5.5).
 

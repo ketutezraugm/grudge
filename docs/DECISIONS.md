@@ -124,3 +124,6 @@ Why: measured. A fresh process gets empty answers from the relayer for roughly i
 
 **2026-11-08 · `POST /api/verify-memory` is public, and everyone shares one check per minute.**
 Why: each check reads Walrus twice and the relayer's budget is shared with the writes. A cached check (and one in flight, shared) caps the cost at two reads a minute however often it is called.
+
+**2026-11-08 · Claude does not design; every screen is designed in Claude Design and Claude only implements it.**
+Why: the user's call. They want no generic AI look (no black neon, no rounded boxes). Before each design handoff Claude asks the user questions, then builds a Design artifact seeded with the brief, copy, brand guidelines and real data. This supersedes the PRD's "run `impeccable` for UI work" (§12, §15).
