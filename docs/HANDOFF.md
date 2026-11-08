@@ -1,54 +1,55 @@
 # Handoff
 
 > Living state of the build. Overwritten (not appended) by `/handoff`. A new session reads this first, then the PRD sections named under **Next**.
-> Last updated: 2026-11-07 18:10 UTC · Session 1 (GATE 1 passed; database and worker next)
+> Last updated: 2026-11-08 06:35 UTC · Session 1 (worker, flusher and cold boot proven live; waiting on Render)
 
 ## Now
-- **Phase:** Day 0. **GATE 1 passed** at about 18:02 UTC: every external dependency answered through the real credentials, and the first memory is on Walrus mainnet.
-- **Not blocked on code.** The database works: both migrations are applied to Supabase `grudge`. Hosting is still undecided (see Waiting on the user).
+- **Phase:** the core loop works end to end against live data: it locks windows, settles them, scores the voices, queues memories and writes them to Walrus mainnet. It currently runs on this laptop (`next start -p 3100`, log in `%TEMP%\grudge\worker.log`, VPN required). **It should move to Render as soon as the user finishes the Blueprint steps; stop the local server then**, or two workers will double-write.
 - **Deadline:** submissions close 2026-11-10 17:00 UTC. Our own cutoff is 14:00 UTC.
-- **Checks right now:** `pnpm lint`, `pnpm typecheck`, `pnpm test` (53 tests) and `pnpm build` pass.
-- **Visual world:** Grudge Book (paper, ink, red pencil). See `docs/brand-guidelines.md` v2 and PRD §15.
+- **Checks:** `pnpm lint`, `pnpm typecheck`, `pnpm test` (74 tests) and `pnpm build` pass.
+- **GitHub:** private repo `ketutezraugm/grudge`, pushed over HTTPS, commits authored as `AkuTampanTay <ezradarkwing@gmail.com>`. **Stays private until the user says so.**
+- **Visual world:** Grudge Book (paper, ink, red pencil). See `docs/brand-guidelines.md` v2 and PRD §15. No UI built yet.
 
-## Done
-- Research, PRD, brand v2, decision log, research archive, as-built architecture doc.
-- Server foundation (`docs/ARCHITECTURE.md` describes each module): vocabulary, env, logger, singleton, Drizzle schema and first migration (`drizzle/0000_init.sql`, applied to Supabase together with `0001_row_level_security`), Tatum layer with a shared 3 rps budget and 429 retries, engine (windows, scoring, resolution), voices (DeepBook, Polymarket, Kalshi), memory codec and Walrus client.
-- **GATE 1 evidence** (`pnpm probe --write-memory`):
-  - DeepBook markets, pricer (Pyth age about 1 s) and the reference-price chain (gap under one cent) through Tatum gRPC.
-  - Tatum BTC rate, Polymarket and Kalshi live calls (VPN on).
-  - First Walrus mainnet memory: blob `U6j4ENe8kln_fFeuuThcB_eKL6-ogQGexVjTzMVDAfc`. Recalled by meaning with its write timestamp; the Walruscan link `https://walruscan.com/mainnet/blob/{blobId}` returns 200.
-  - Tatum cost of one probe run: 15 gRPC calls and 1 Data API call. **Check the Tatum dashboard for the credits that used.**
-- Single env file: everything is in `.env` (gitignored). `.env.local` was removed; its three generated secrets were moved into `.env`.
+## Done (see `docs/ARCHITECTURE.md` for how it fits together)
+- Research, PRD, brand v2, decisions, as-built architecture.
+- Server foundation, Tatum layer (shared 3 rps budget, retries on 429 / `ECONNRESET` / `UNAVAILABLE`), engine, voices, memory codec.
+- **Worker** (`src/server/worker/`): discover, lock, settle, flush, plus `GET /api/health`. Proven live:
+  - 06:17 UTC: a 5m window locked with a strike of $75,680.20 and a Grudge line of 75.3%, then settled UP with DeepBook and Polymarket agreeing. Brier scores matched a hand calculation (0.0098 and 0.2450).
+  - 06:22 UTC: a 15m window locked with all three venues (DeepBook, Polymarket, Kalshi).
+  - 06:25 UTC window **voided as a split**: Pyth saw the move as -$0.14, Polymarket's Chainlink average said UP. Two feeds can disagree when Bitcoin barely moves. Worth measuring (see Open questions).
+  - Two windows voided at 06:07 (VPN off) and one at 06:12 (Tatum connection reset); both causes are fixed or understood.
+- **Walrus mainnet memories:** the probe memory, then flushes at 06:27 and 06:31 UTC (2 stored each, 0 refused). The first two predate the current format (no `resolvedAt` / `through`) and are skipped when restoring.
+- **Cold boot and verification** (`memory/coldboot.ts`, `engine/rebuild.ts`): rebuilds the grudges from the latest snapshot plus later records in resolution order. A unit test proves the rebuild equals the live computation exactly. `restoreIfEmpty` runs at boot. `pnpm exec tsx --conditions=react-server --env-file=.env scripts/verify-memory.mts` compares live with rebuilt, read-only.
+- Database: Supabase `grudge` (eu-central-1), three migrations applied, row-level security on every table.
+- `render.yaml` Blueprint committed (Frankfurt, Starter).
 
 ## Next (in order)
-1. **Worker** (`src/server/worker/`, PRD §5.1–5.4, §6): discover windows with `openWindows`, create `questions`, capture every voice at `lockMs`, resolve after the end with `resolve`, update `scoreboard` with `scoreCall`, write records to the `memories` outbox. Start it from `src/instrumentation.ts` with a `globalThis` guard (use `singleton`).
-   Done when both categories lock and resolve against a real database for an hour.
-3. **Outbox flusher + cold boot** (`src/server/memory/flusher.ts`, `coldboot.ts`): bulk-flush at most 20 items every 5 minutes; rebuild the scoreboard from Walrus when the database is empty. Deploy to Render so data accumulates overnight (GATE 2).
-4. `engine/lessons.ts` (templated lessons, one per 25 scored windows per category).
-5. Design context: `impeccable init` → `PRODUCT.md`, then `shape` the board (PRD §12, Day 0 22:00).
+1. **Prove cold boot against real Walrus data:** run `scripts/verify-memory.mts` once new-format memories are readable; the largest gap should be 0 except for memories still waiting to be written. Then build the destructive amnesia endpoint (admin token, flush first, wipe working tables, restore, report restored counts and whether the weights match) and the public read-only `POST /api/verify-memory` (PRD §15.6).
+2. **Confirm Render is live:** with the service URL from the user, check `/api/health` and the Render logs through the Render MCP tools, then stop the local server.
+3. `engine/lessons.ts` (templated lessons, one per 25 scored windows per category) and the lessons memory writer.
+4. **Board API** (`GET /api/board`), picks (`POST /api/pick`), then the UI. Run `impeccable init` → `PRODUCT.md` and `shape` first (PRD §12, §15). Authenticity rules in `CLAUDE.md` apply.
+5. x402 payment path (test-first), `scripts/agent.mts`, `/receipts`, `/agents` (PRD §5.5).
 
 ## Waiting on the user
-- [ ] **Hosting.** The user has a paid DigitalOcean droplet from another project (ssh alias `bot`, `167.71.197.78`, user root, key `~/.ssh/id_ed25519`). SSH from this laptop is refused with a **changed host key** warning (stored ECDSA entry at known_hosts line 3; the server now presents ED25519 `SHA256:68hb/8WunD00S/kEe4r+Fm1MZ4UFMFFwndaWjeQdvCA`). Do not bypass it. The user should compare that fingerprint in the DigitalOcean web console (`ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub`); if it matches, the droplet was rebuilt and the old entry can be removed. Then inspect it read-only (size, what runs there) before deploying. Fallback: Render Starter (about $7 a month, billed by the second).
-- [x] **GitHub:** private repo `ketutezraugm/grudge`, pushed over HTTPS, 16 commits authored as `AkuTampanTay <ezradarkwing@gmail.com>`. Flip it public on Nov 10 (see DECISIONS).
-- [ ] **Agent wallet funding:** about 2 USDC on Sui mainnet to `0x132643284ef48e256d2b31fe7907d87032f7be6c21086e68df89d36ba536d76c`. Its private key is in `.env` as `AGENT_PRIVATE_KEY`, and the user can sweep any leftover USDC back out. Balance was 0 at last check.
-- [ ] Look at the Tatum dashboard for credit use after the probe, and decide on a paid plan.
+- [ ] **Render Blueprint:** dashboard.render.com, New, Blueprint, connect GitHub with access to `ketutezraugm/grudge`, paste four values from `.env` (`DATABASE_URL`, `TATUM_API_KEY`, `MEMWAL_PRIVATE_KEY`, `TREASURY_ADDRESS`), confirm Starter ($7 a month), Apply. Never set `AGENT_PRIVATE_KEY` there. Then send the service URL.
+- [ ] **Agent wallet funding:** about 2 USDC on Sui mainnet to `0x132643284ef48e256d2b31fe7907d87032f7be6c21086e68df89d36ba536d76c`. Its key is in `.env` as `AGENT_PRIVATE_KEY`. Balance was 0 at last check.
+- [ ] Look at the Tatum dashboard for credit use (the worker makes a few gRPC calls per window, plus 429 retries) and decide on a paid plan.
+- [ ] The `bot` host in `~/.ssh/config` (`167.71.197.78`) is not the user's DigitalOcean droplet and its host key changed. Do not connect to it; the user may want to remove the entry.
 
 ## Gotchas learned
-- **Walrus has four look-alike values.** The owner address (here a Google-made address, because the dashboard's "Continue with Google" creates one), the account object ID (`MEMWAL_ACCOUNT_ID`, what the code needs), the delegate private key, and the delegate public key (the "Agent ID" for the form). Our account ID is `0x38de8cce40f73eeb500055ec3330b12fe0ad8347ee4d6fc5274ebe078bc20a04` (public). The owner is `0xcabb5dd8…116e`.
-- To find an account ID from an owner address: read the `AccountRegistry` object `0x8bf82c9e…199f`, then the dynamic field keyed by the owner address in its `accounts` table. The value is the account object ID.
-- On-chain delegate keys are returned as **base64**, not hex. Compare after converting.
-- The treasury address does not have to own the Walrus account. It only receives payments.
-- Gamma `markets?slug=` returns open markets only; add `&closed=true` for resolved ones. Resolution lands about 80 s after the window ends. The live call uses `bestBid`/`bestAsk`, because `outcomePrices` lags.
-- Kalshi: `min_close_ts` and `max_close_ts` return exactly the market that closes with a window, whatever its status.
-- DeepBook mainnet has 1m and 5m markets only. A 1m market's reference price chains on a 60 s step, so check chaining on 5m markets only. `referencePrice` is `null` until the window opens, but `pricer()` still works then. The 5m market for T is listed about 10 minutes ahead (the probe skips that case).
-- Tatum answers a burst of calls with HTTP 429 even within the plan's average rate. `ThrottledTransport` retries after 1 s and then 3 s.
-- Node's `fetch` cannot use DNS-over-HTTPS, so Polymarket and Kalshi need the VPN (EU exit) locally. Render needs nothing.
-- The Walrus relayer picks its own Sui RPC; it cannot be routed through Tatum. A 401 from it means a wrong account ID, a key that is not registered, or a testnet/mainnet mix-up.
-- `create-next-app` 16.4.5 turns on `cacheComponents` and `partialPrefetching`; both were removed. `next typegen` (run by `pnpm typecheck`) adds `allowJs` to `tsconfig.json` once; it is committed.
+- **Local runs need the VPN** (EU exit): Polymarket and Kalshi are DNS-blocked by the ISP. Turning the VPN on or off resets open connections, which cost one window each time. Render needs neither.
+- Polymarket closes a window anywhere between 80 seconds and several minutes after it ends; the worker asks again every 20 s and waits up to 20 minutes. Gamma `markets?slug=` returns open markets only; add `&closed=true` for resolved ones. The live call uses `bestBid`/`bestAsk` because `outcomePrices` lags.
+- Kalshi: `min_close_ts` and `max_close_ts` return exactly the market that closes with a window.
+- DeepBook mainnet has 1m and 5m markets only. The 5m market for T is listed about 10 minutes ahead. `referencePrice` is `null` until the window opens, but `pricer()` works then.
+- **Walrus has four look-alike values:** the owner address (here a Google-made one), the account object ID (`MEMWAL_ACCOUNT_ID`, public: `0x38de8cce40f73eeb500055ec3330b12fe0ad8347ee4d6fc5274ebe078bc20a04`), the delegate private key and the delegate public key. To find an account ID from an owner address, read the `accounts` table in the `AccountRegistry` object `0x8bf82c9e…199f`. On-chain delegate keys are base64, not hex.
+- The treasury address does not have to own the Walrus account.
+- Tatum answers bursts with 429 and drops idle connections; `ThrottledTransport` retries after 1 s then 3 s.
+- One env file, `.env` (gitignored); `.env.local` no longer exists. An empty placeholder in a second env file once blanked a real key.
+- `tsx` treats `.ts` as CommonJS, so scripts are `.mts`, run with `--conditions=react-server --env-file=.env`.
 - Biome would reformat the markdown docs, so `docs`, `.claude` and `*.md` are excluded.
-- `tsx` treats `.ts` as CommonJS here, so scripts are `.mts`.
 - pnpm holds back packages published in the last 24 hours; three Mysten versions are excluded in `pnpm-workspace.yaml`.
 
 ## Open questions
-- What does a Tatum gRPC call cost in credits? The dashboard decides; the probe makes about 15 calls.
-- The `btc-5m` void rate (only two venues resolve) needs measuring overnight. Above 15%, use DeepBook settlement as the tie-break.
+- **`btc-5m` split rate.** Only two venues settle a 5m window, so a 1–1 disagreement voids it (one of the first two settled windows). If it stays high, use DeepBook settlement as the tie-break for 5m and document it (PRD §10.5).
+- Credits per Tatum call: the dashboard decides.
+- Whether the first new-format snapshot restores cleanly from real Walrus data (Next, step 1).
