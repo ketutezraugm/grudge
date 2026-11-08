@@ -4,6 +4,7 @@
 > Last updated: 2026-11-08 06:35 UTC · Session 1 (worker, flusher and cold boot proven live; waiting on Render)
 
 ## Now
+- **The local server is still running** (`next start -p 3100`, started 06:30 UTC, VPN required) and is the only worker. Do not start a second one until Render is live and this one is stopped (`netstat -ano | grep :3100`, then `taskkill //PID <pid> //F`).
 - **Phase:** the core loop works end to end against live data: it locks windows, settles them, scores the voices, queues memories and writes them to Walrus mainnet. It currently runs on this laptop (`next start -p 3100`, log in `%TEMP%\grudge\worker.log`, VPN required). **It should move to Render as soon as the user finishes the Blueprint steps; stop the local server then**, or two workers will double-write.
 - **Deadline:** submissions close 2026-11-10 17:00 UTC. Our own cutoff is 14:00 UTC.
 - **Checks:** `pnpm lint`, `pnpm typecheck`, `pnpm test` (74 tests) and `pnpm build` pass.
@@ -24,7 +25,7 @@
 - `render.yaml` Blueprint committed (Frankfurt, Starter).
 
 ## Next (in order)
-1. **Prove cold boot against real Walrus data:** run `scripts/verify-memory.mts` once new-format memories are readable; the largest gap should be 0 except for memories still waiting to be written. Then build the destructive amnesia endpoint (admin token, flush first, wipe working tables, restore, report restored counts and whether the weights match) and the public read-only `POST /api/verify-memory` (PRD §15.6).
+1. **Cold boot is proven read-only** (06:33 UTC): `scripts/verify-memory.mts` rebuilt the grudges from Walrus alone (snapshot #2 plus 1 record) and the largest gap against the live scoreboard was **0**. Still to build: the destructive amnesia endpoint (admin token, flush first, wipe working tables, restore, report restored counts and whether the weights match) and the public read-only `POST /api/verify-memory` (PRD §15.6).
 2. **Confirm Render is live:** with the service URL from the user, check `/api/health` and the Render logs through the Render MCP tools, then stop the local server.
 3. `engine/lessons.ts` (templated lessons, one per 25 scored windows per category) and the lessons memory writer.
 4. **Board API** (`GET /api/board`), picks (`POST /api/pick`), then the UI. Run `impeccable init` → `PRODUCT.md` and `shape` first (PRD §12, §15). Authenticity rules in `CLAUDE.md` apply.
@@ -52,4 +53,4 @@
 ## Open questions
 - **`btc-5m` split rate.** Only two venues settle a 5m window, so a 1–1 disagreement voids it (one of the first two settled windows). If it stays high, use DeepBook settlement as the tie-break for 5m and document it (PRD §10.5).
 - Credits per Tatum call: the dashboard decides.
-- Whether the first new-format snapshot restores cleanly from real Walrus data (Next, step 1).
+- Resolved: the first new-format snapshot restored with a gap of 0. The destructive path (wipe, then restore at boot) is not yet exercised end to end.
