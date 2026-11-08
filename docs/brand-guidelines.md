@@ -106,7 +106,7 @@ Everything below is hand-built SVG for this project. No icon packs.
 | ----------------- | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | Red-pencil strike | A wrong call                                                                            | A single slightly wavy line through the call, in Red pencil, 2 px, round caps. Draws in over 250 ms.           |
 | Tally marks       | Grudges held (one stroke each, the fifth crosses the four)                              | Red pencil, 2 px, per voice card                                                                               |
-| Stamps            | NOTED (wrong, held), FORGIVEN (trust recovered), SPLIT (venues disagreed about reality) | Rounded-rect outline with a double rule, uppercase serif, rotated 1–3°. Presses in: scale 1.06 → 1 over 180 ms |
+| Stamps            | NOTED (wrong, held), FORGIVEN (trust recovered), SPLIT (venues disagreed about reality) | Square-cornered outline (2 px radius at most) with a double rule, uppercase serif, rotated 1–3°. Presses in: scale 1.06 → 1 over 180 ms |
 | Receipt tick      | A Walrus blob or Sui digest exists for this row                                         | Small ink-blue check inside a bracket, linking out                                                             |
 | Ink texture       | Paper grain and slight ink spread on large type                                         | A subtle SVG turbulence filter. Never a stock raster.                                                          |
 
