@@ -13,7 +13,9 @@ Each item is `verified (source)` or `unverified (how to verify)`. Nothing unveri
 | Bitcoin spot comes from the Tatum Data API | verified (`bitcoinUsd` in `/api/board`, 08:18 UTC) |
 | Lessons appear on the board | verified (`/api/board` 15:14 UTC: btc-5m "DeepBook was closer 72% of the time" over n=54 disagreements; btc-15m "Kalshi was closer 45%", n=22) |
 | Grudge learns something real | partly verified (15:14 UTC: btc-5m trusts DeepBook 0.846 vs Polymarket 0.154 after 92 resolved windows. Whether the Grudge line beats the equal-weight average is unverified: compute rolling Brier of the stored lock-time line against the equal-weight pool of the same stored calls) |
-| x402 payment: a gasless USDC transfer built, simulated and executed through Tatum gRPC | unverified (not built; PRD §10.5 rates it Low-Med risk. Verify with `scripts/agent.mts` against production) |
+| x402 payment: a gasless USDC transfer built, simulated and executed through Tatum gRPC | verified (production, 15:33 UTC: `pnpm agent --replay` got a 402 for 0.038 USDC, paid, got a 200; digest `4f3bXYdm…eSnTY` is SUCCESS on Sui GraphQL with USDC −38000 on the agent and +38000 on the treasury; the `payments` row is `settled`; the same payment replayed returned 402 "already used") |
+| Payments cost the buyer no SUI | verified (the agent wallet holds no SUI and paid). "Zero gas" is not verified: the gas summary shows computation cost equal to the storage rebate |
+| The paying agent runs continuously until Nov 16 | unverified (`--loop` exists; it needs a machine that stays on, and the key must not go on Render. Ask the user where it runs) |
 | The agent wallet can pay | verified (3.095552 USDC at `0x1326…d76c`, Sui GraphQL 06:50 UTC; payments are gasless so no SUI needed) |
 | The pick cap keys on the visitor's address | verified for the header shape (live `X-Forwarded-For` 07:20 and 08:14 UTC); the cap itself only by unit test, no live pick sent |
 | The board stays fast under many visitors | unverified (snapshot is shared and cached 3 s by design; measure with a short load test before the demo) |

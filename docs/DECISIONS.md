@@ -145,3 +145,12 @@ Why: Presentation scores near zero with no UI at T−47 h, Best Agent Payments n
 
 **2026-11-08 · The Claude Design handoff follows the playbook's Phase 7: a full `docs/DESIGN-BRIEF.md` on the canvas, surfaces in two batches.**
 Why: the first brief covered three screens. Phase 7 also asks for every surface, a motion spec with the magic-moment choreography, an accessibility floor, the full ban list and copy for each screen. Batch 1 stays the user's three screens; batch 2 (favicon, social image, README banner, X image, blog cover, thumbnail, video cards, learning chart) waits for batch 1's approval. The brief now leads with the real result (DeepBook closer 72% over 54 disagreements, 84% of the line) and tells Claude Design to push the hand-built marks, because another entry also uses a paper-and-pencil look. Layout decisions, such as how the ledger reflows on a phone, stay with Claude Design.
+
+**2026-11-08 · x402 is verified and settled through Tatum; the payment checks run in a tested function that takes the chain and the ledger as arguments.**
+Why: this is the money path, so `acceptPayment` (`x402/verify.ts`) is written test-first against a real recorded payment, with the chain and ledger passed in because they are the boundaries. It refuses, in order: a malformed header, a bad or expired quote, terms that differ from the offer (including a lowered price or another category), a signature that does not match, a simulation that fails, any amount other than exactly the quote paid to the treasury in USDC (under and over are both refused), and a digest already claimed. Nothing is claimed or executed before the amount is simulated. The quote is an HMAC-signed price, category and expiry, so the server keeps no state between the 402 and the payment. First live run: 0.038 USDC, settled on mainnet, replay refused.
+
+**2026-11-08 · Payment attempts that reach simulation are capped at 20 a minute across all callers.**
+Why: each attempt spends Tatum calls from the same 3 rps budget the worker uses to lock windows, and anyone can fetch a free quote and sign junk. A flood can lock honest buyers out of the paid API for a minute but cannot delay the worker. A per-address cap is the upgrade if it happens.
+
+**2026-11-08 · "Zero gas" is not claimed.**
+Why: the settled transaction's gas summary shows computation cost 1,322,268 and a storage rebate of 1,322,268. What was verified is that the payer holds no SUI and the payment still settled. The two PRD lines that said "0 gas" were corrected.

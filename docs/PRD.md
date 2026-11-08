@@ -609,7 +609,7 @@ ANTHROPIC_API_KEY=
 3. Every resolved question has exactly one forecast row per present voice, and all were captured at its `lockAt` (±5 s).
 4. Weights recomputed from scratch over the records equal the stored scoreboard (a test plus `scripts/seed-check.ts`).
 5. Amnesia: wipe → restart → `/api/board` weights equal the pre-wipe weights (to 1e-9), and the UI shows "N restored".
-6. `scripts/agent.ts` against production gets 402 → pays → 200 with a valid `PAYMENT-RESPONSE`, and the digest is visible on Suiscan with a USDC transfer to the treasury and **0 gas**. Replaying the same header returns 402 `duplicate`.
+6. `scripts/agent.ts` against production gets 402 → pays → 200 with a valid `PAYMENT-RESPONSE`, and the digest is visible on Suiscan with a USDC transfer to the treasury paid by a wallet holding no SUI. (Verified 2026-11-08: the gas summary shows computation cost equal to the storage rebate, so do not claim "0 gas".) Replaying the same header returns 402 `duplicate`.
 7. A disagreement card shows a lesson recalled from Walrus with a working blob link.
 8. Lighthouse: Accessibility ≥ 95 on `/`. Layout works at 375 px.
 9. `pnpm lint && pnpm typecheck && pnpm test` all green. No `any`, no TODOs, no AI co-author trailers in `git log`.
@@ -674,7 +674,7 @@ Each gate is a go/no-go. If a gate fails, take its fallback **immediately**; don
 2. **0:15–0:45 The problem.** DeepBook, Polymarket and Kalshi disagree by 13 points on the same 15-minute BTC question. Who do you trust?
 3. **0:45–1:15 Memory.** A window resolves, a tally mark lands, the trust bar shrinks, and the disagreement card recalls a lesson. Click the receipt and Walruscan opens.
 4. **1:15–1:40 Amnesia.** Wipe the server live. _"212 grudges restored from Walrus. Nothing forgiven."_ The weights are identical.
-5. **1:40–2:10 Agents pay.** Run `agent.ts` in a terminal: 402, then a payment, then 200. The Suiscan tx shows USDC with zero gas, settled via Tatum. The price rose from 0.010 to 0.023 as Grudge learned.
+5. **1:40–2:10 Agents pay.** Run `agent.ts` in a terminal: 402, then a payment, then 200. The Suiscan tx shows USDC moving from a wallet that holds no SUI, settled via Tatum. The price rose from 0.010 to 0.023 as Grudge learned.
 6. **2:10–2:30 Proof.** The learning chart (Grudge vs no-memory Brier), the receipts page, the stack logos, the motto.
 
 ### Blog post: "I built an app that holds grudges, on mainnet"
