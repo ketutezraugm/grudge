@@ -5,14 +5,14 @@
 
 ## Now
 - **Phase:** Day 0. **GATE 1 passed** at about 18:02 UTC: every external dependency answered through the real credentials, and the first memory is on Walrus mainnet.
-- **Blocked:** Supabase rejects the password in `DATABASE_URL` (project `grudge`, `eu-central-1`, healthy; migration not applied). Hosting is undecided (see Waiting on the user).
+- **Not blocked on code.** The database works: both migrations are applied to Supabase `grudge`. Hosting is still undecided (see Waiting on the user).
 - **Deadline:** submissions close 2026-11-10 17:00 UTC. Our own cutoff is 14:00 UTC.
 - **Checks right now:** `pnpm lint`, `pnpm typecheck`, `pnpm test` (53 tests) and `pnpm build` pass.
 - **Visual world:** Grudge Book (paper, ink, red pencil). See `docs/brand-guidelines.md` v2 and PRD §15.
 
 ## Done
 - Research, PRD, brand v2, decision log, research archive, as-built architecture doc.
-- Server foundation (`docs/ARCHITECTURE.md` describes each module): vocabulary, env, logger, singleton, Drizzle schema and first migration (`drizzle/0000_init.sql`, **not applied anywhere yet**), Tatum layer with a shared 3 rps budget and 429 retries, engine (windows, scoring, resolution), voices (DeepBook, Polymarket, Kalshi), memory codec and Walrus client.
+- Server foundation (`docs/ARCHITECTURE.md` describes each module): vocabulary, env, logger, singleton, Drizzle schema and first migration (`drizzle/0000_init.sql`, applied to Supabase together with `0001_row_level_security`), Tatum layer with a shared 3 rps budget and 429 retries, engine (windows, scoring, resolution), voices (DeepBook, Polymarket, Kalshi), memory codec and Walrus client.
 - **GATE 1 evidence** (`pnpm probe --write-memory`):
   - DeepBook markets, pricer (Pyth age about 1 s) and the reference-price chain (gap under one cent) through Tatum gRPC.
   - Tatum BTC rate, Polymarket and Kalshi live calls (VPN on).
@@ -23,13 +23,11 @@
 ## Next (in order)
 1. **Worker** (`src/server/worker/`, PRD §5.1–5.4, §6): discover windows with `openWindows`, create `questions`, capture every voice at `lockMs`, resolve after the end with `resolve`, update `scoreboard` with `scoreCall`, write records to the `memories` outbox. Start it from `src/instrumentation.ts` with a `globalThis` guard (use `singleton`).
    Done when both categories lock and resolve against a real database for an hour.
-2. **Apply the migration** once a database exists: `pnpm db:migrate`.
 3. **Outbox flusher + cold boot** (`src/server/memory/flusher.ts`, `coldboot.ts`): bulk-flush at most 20 items every 5 minutes; rebuild the scoreboard from Walrus when the database is empty. Deploy to Render so data accumulates overnight (GATE 2).
 4. `engine/lessons.ts` (templated lessons, one per 25 scored windows per category).
 5. Design context: `impeccable init` → `PRODUCT.md`, then `shape` the board (PRD §12, Day 0 22:00).
 
 ## Waiting on the user
-- [ ] **Database password.** The Supabase project `grudge` exists (Frankfurt). `pnpm db:migrate` fails with "password authentication failed" even though the URL is well-formed. Reset it: Project Settings → Database → Reset database password (letters and digits only), then Connect → Session pooler → paste the URI into `DATABASE_URL`.
 - [ ] **Hosting.** The user has a paid DigitalOcean droplet from another project (ssh alias `bot`, `167.71.197.78`, user root, key `~/.ssh/id_ed25519`). SSH from this laptop is refused with a **changed host key** warning (stored ECDSA entry at known_hosts line 3; the server now presents ED25519 `SHA256:68hb/8WunD00S/kEe4r+Fm1MZ4UFMFFwndaWjeQdvCA`). Do not bypass it. The user should compare that fingerprint in the DigitalOcean web console (`ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub`); if it matches, the droplet was rebuilt and the old entry can be removed. Then inspect it read-only (size, what runs there) before deploying. Fallback: Render Starter (about $7 a month, billed by the second).
 - [x] **GitHub:** private repo `ketutezraugm/grudge`, pushed over HTTPS, 16 commits authored as `AkuTampanTay <ezradarkwing@gmail.com>`. Flip it public on Nov 10 (see DECISIONS).
 - [ ] **Agent wallet funding:** about 2 USDC on Sui mainnet to `0x132643284ef48e256d2b31fe7907d87032f7be6c21086e68df89d36ba536d76c`. Its private key is in `.env` as `AGENT_PRIVATE_KEY`, and the user can sweep any leftover USDC back out. Balance was 0 at last check.

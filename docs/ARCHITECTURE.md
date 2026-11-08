@@ -45,7 +45,7 @@ Every Tatum request shares one budget of 3 requests per second (the free plan).
 - `store.ts`: the Walrus Memory client. `writeBulk` (one `rememberBulkAndWait` call per batch) and `recall`. Namespaces: `grudge:v1:records`, `grudge:v1:scoreboard`, `grudge:v1:lessons`.
 
 ### `src/server/db/`
-Drizzle schema (`schema.ts`) and the lazy Postgres connection (`client.ts`, session pooler, SSL required). Migrations are generated into `drizzle/` and applied by `runMigrations`.
+Drizzle schema (`schema.ts`) and the lazy Postgres connection (`client.ts`, session pooler, SSL required). Migrations are generated into `drizzle/` and applied by `runMigrations`. Every table has row-level security enabled with no policies, so Supabase's public REST API sees nothing; the server connects as `postgres`, which bypasses it. Two migrations so far: `0000_init` and `0001_row_level_security`, both applied to the Supabase project `grudge` (eu-central-1).
 
 ### Shared plumbing
 - `env.ts`: one zod-parsed getter per concern (`tatumEnv`, `memoryEnv`, `databaseEnv`, ...), so a half-filled `.env` works while accounts are still being created. Errors name the variables, never print values.

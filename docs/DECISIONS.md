@@ -97,3 +97,6 @@ Why: the hackathon needs a public repo only at submission, and about 150 competi
 
 **2026-11-08 · The git remote uses HTTPS with the `gh` credential helper (repo-local), not SSH.**
 Why: SSH to github.com failed host-key verification on this machine, and trusting a host key blindly is not something to do silently. The helper is set in the repo's own git config only.
+
+**2026-11-08 · Row-level security is on for every table, with no policies.**
+Why: Supabase serves the `public` schema over a REST API, and the `anon` and `authenticated` roles had full privileges on all seven tables, `payments` included. With no policies the API sees nothing. The server connects as `postgres`, which bypasses row-level security (checked), so nothing changes for the app. Declared in the schema with `.enableRLS()` so new tables inherit the habit.

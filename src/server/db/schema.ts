@@ -26,6 +26,8 @@ import {
   voices,
 } from "../domain";
 
+// Supabase serves the public schema over a REST API. Row-level security with no policies keeps
+// it closed to that API; the server connects as the table owner, which is not subject to it.
 const at = () => timestamp({ withTimezone: true });
 
 /** The values come from our own constants, so inlining them into DDL is safe. */
@@ -55,7 +57,7 @@ export const questions = pgTable(
     check("questions_category_check", oneOf(t.category, categories)),
     check("questions_state_check", oneOf(t.state, questionStates)),
   ],
-);
+).enableRLS();
 
 export const forecasts = pgTable(
   "forecasts",
@@ -72,7 +74,7 @@ export const forecasts = pgTable(
     check("forecasts_voice_check", oneOf(t.voice, voices)),
     check("forecasts_p_check", sql`${t.p} > 0 and ${t.p} < 1`),
   ],
-);
+).enableRLS();
 
 export const picks = pgTable(
   "picks",
@@ -88,7 +90,7 @@ export const picks = pgTable(
     primaryKey({ columns: [t.questionId, t.visitorId] }),
     check("picks_p_check", sql`${t.p} > 0 and ${t.p} < 1`),
   ],
-);
+).enableRLS();
 
 /** Discounted Brier loss and effective sample count per (category, voice). */
 export const scoreboard = pgTable(
@@ -101,7 +103,7 @@ export const scoreboard = pgTable(
     updatedAt: at().notNull().defaultNow(),
   },
   (t) => [primaryKey({ columns: [t.category, t.voice] })],
-);
+).enableRLS();
 
 /** Outbox: every memory is written here first and flushed to Walrus in batches. */
 export const memories = pgTable(
@@ -123,7 +125,7 @@ export const memories = pgTable(
     check("memories_kind_check", oneOf(t.kind, memoryKinds)),
     check("memories_status_check", oneOf(t.status, memoryStatuses)),
   ],
-);
+).enableRLS();
 
 export const payments = pgTable(
   "payments",
@@ -137,7 +139,7 @@ export const payments = pgTable(
     settledAt: at(),
   },
   (t) => [check("payments_status_check", oneOf(t.status, paymentStatuses))],
-);
+).enableRLS();
 
 export const lessons = pgTable("lessons", {
   id: uuid().primaryKey().defaultRandom(),
@@ -145,4 +147,4 @@ export const lessons = pgTable("lessons", {
   text: text().notNull(),
   memoryId: uuid().references(() => memories.id),
   createdAt: at().notNull().defaultNow(),
-});
+}).enableRLS();
