@@ -26,6 +26,8 @@ services:
         value: "0x38de8cce40f73eeb500055ec3330b12fe0ad8347ee4d6fc5274ebe078bc20a04"
       - key: MEMWAL_SERVER_URL
         value: https://relayer.memory.walrus.xyz
+      - key: PUBLIC_BASE_URL
+        value: https://grudge-l19c.onrender.com
       # Random values Render makes for us.
       - key: QUOTE_SECRET
         generateValue: true
