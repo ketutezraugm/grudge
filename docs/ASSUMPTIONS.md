@@ -6,11 +6,12 @@ Each item is `verified (source)` or `unverified (how to verify)`. Nothing unveri
 
 | Claim | Status |
 | --- | --- |
-| Memories are written to Walrus Memory on mainnet, more than the 10 required | verified (production `verify-memory` 08:18 UTC: snapshot #22, 26 records read; flush logs show 0 refused) |
+| Memories are written to Walrus Memory on mainnet, more than the 10 required | verified (`/api/receipts` 15:48 UTC: 254 written, 141 records + 109 snapshots + 4 lessons; `verify-memory` 15:22 UTC read snapshot #106 and 99 records; flush logs show 0 refused) |
 | Wiping the database and rebuilding from Walrus reproduces the weights exactly | verified (amnesia run 06:43 UTC: 5 grudges before and after, gap 0; production `verify-memory` gap 0 at 08:18) |
 | DeepBook Predict is read through Tatum gRPC | verified (every lock since 06:17 UTC logs a DeepBook call and strike) |
 | Polymarket and Kalshi are reachable from Render Frankfurt without a VPN | verified (Render lock at 08:07 UTC with all three venues) |
 | Bitcoin spot comes from the Tatum Data API | verified (`bitcoinUsd` in `/api/board`, 08:18 UTC) |
+| The disagreement lesson is read back from Walrus at view time | verified (`/api/board` 15:48 UTC: `lesson.recalled` true with a Walrus blob id on both categories while the voices disagreed; falls back to the stored lesson otherwise) |
 | Lessons appear on the board | verified (`/api/board` 15:14 UTC: btc-5m "DeepBook was closer 72% of the time" over n=54 disagreements; btc-15m "Kalshi was closer 45%", n=22) |
 | Grudge learns something real | verified, and smaller than hoped (15:40 UTC, `engine/learning.ts` on the stored lock-time line, last 100 resolved windows). btc-5m, 96 windows: Brier Grudge 0.1747, equal weights 0.1825, DeepBook alone 0.1690. Gain over equal weights +0.0078 ± 0.0065 (95%, excludes zero); against DeepBook alone −0.0057 ± 0.0074 (not distinguishable from zero). btc-15m, 36 windows: Grudge 0.1839, equal 0.1857, DeepBook 0.1727; gain over equal +0.0018 ± 0.0035 (not significant), against DeepBook −0.0112 ± 0.0170. **Claim only: memory beats equal-weight averaging on 5m. Do not claim Grudge beats its best voice** |
 | x402 payment: a gasless USDC transfer built, simulated and executed through Tatum gRPC | verified (production, 15:33 UTC: `pnpm agent --replay` got a 402 for 0.038 USDC, paid, got a 200; digest `4f3bXYdm…eSnTY` is SUCCESS on Sui GraphQL with USDC −38000 on the agent and +38000 on the treasury; the `payments` row is `settled`; the same payment replayed returned 402 "already used") |
