@@ -2,7 +2,7 @@
 
 What exists in the repo today. The plan lives in `PRD.md`; this file describes only code that has landed. Update it in the same commit as the module it describes.
 
-Last updated: 2026-11-07, after the probe and the memory codec.
+Last updated: 2026-11-08, after the worker, flusher and cold boot ran against live data.
 
 ## Vocabulary
 
@@ -57,8 +57,24 @@ Run with `tsx --conditions=react-server` (so `server-only` resolves to an empty 
 - `pnpm probe`: asks every dependency a live question and prints the result. `--write-memory` also stores one memory on Walrus mainnet.
 - `pnpm db:migrate`: applies the migrations.
 
+## The worker (`src/server/worker/`)
+Started once per process from `src/instrumentation.ts` (which first applies migrations and restores from Walrus if the scoreboard is empty). It wakes every 5 s and runs four steps in order, each isolated so one failure cannot stop the rest.
+- `discover.ts`: creates a `questions` row for every window that can still take a call.
+- `lock.ts`: at each window's lock instant, reads every voice and writes the calls to `forecasts`. The strike comes from DeepBook, or from Kalshi when DeepBook has none. A window with fewer than two voices, or locked more than 30 s late, is voided. It stores the Grudge line as it stood at lock time.
+- `settle.ts`: after a window ends, asks each settling venue (every 20 s until it answers; Polymarket takes between 80 s and several minutes). When all have answered, or after 20 minutes, it resolves the window, scores each voice into `scoreboard`, and queues a record in `memories`, all in one transaction that only the first caller can win.
+- `flush` (`memory/flusher.ts`): see below.
+- `status.ts`: shared state the health route reads. `GET /api/health` returns 200 while the loop has finished a pass within the last minute, 503 otherwise.
+
+## Memory flow (`src/server/memory/`)
+1. A settled window adds a `record` to the `memories` outbox (status `pending`).
+2. `flusher.ts` sends waiting memories to Walrus in one bulk call (at most 20), every 5 minutes or at 15 waiting. When records are waiting it first queues a `scoreboard` snapshot taken in one repeatable-read transaction. On success the row becomes `done` with its blob id; a memory the relayer refuses five times becomes `failed`; a failed call backs off for a minute.
+3. `coldboot.ts`: `restoreIfEmpty` runs at boot. With no grudges in the database it reads the latest snapshot and up to 100 recent records from Walrus, rebuilds the grudges (`engine/rebuild.ts`: snapshot, then replay later records in resolution order) and restores the recent ledger with its blob ids. `checkAgainstWalrus` does the same read-only and reports the largest gap against the live scoreboard (`pnpm exec tsx ... scripts/verify-memory.mts`).
+
+## Deployment
+`render.yaml` describes one Render web service in Frankfurt (Starter plan), built with `pnpm build` and started with `pnpm start`. Secrets are typed into the dashboard when the Blueprint is created. The database is Supabase `grudge` (eu-central-1) through the session pooler.
+
 ## Not built yet
-The worker loop (discover, lock, resolve), the memory outbox and flusher, cold boot and amnesia, the x402 payment path, the paying agent, the API routes and the UI.
+The public board API and the UI, picks, lessons, the x402 payment path, the paying agent, the amnesia and verify-memory endpoints, and `/receipts`.
 
 ## Decisions that shaped the layout
 See `DECISIONS.md`. In short: all Tatum access is in one folder because it shares one rate budget; venue parsers are pure so they can be tested against real payloads; shared state goes through `singleton` because Next bundles the worker and the route handlers separately.
