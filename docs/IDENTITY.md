@@ -17,4 +17,4 @@ PLAYBOOK Phase 3 asks for this file. The detailed spec is [brand-guidelines.md](
 
 **Not decided here, left to Claude Design:** the final typefaces within those constraints, every layout, and how the marks are drawn.
 
-**Not done, flagged:** the playbook's three-direction choice was not run (the owner picked this direction directly); a check of the name against known products, domains and GitHub handles has no record in the docs; the motto was written before the  skill was available to this project. Say so if any of these should be reopened.
+**Not done, flagged:** the playbook's three-direction choice was not run (the owner picked this direction directly); a check of the name against known products, domains and GitHub handles has no record in the docs; the motto was written before the `copywriting` skill was available to this project. Say so if any of these should be reopened.
