@@ -1,0 +1,312 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-09T07:55:16.258Z",
+  "title": "Design System: Grudge",
+  "extensions": {
+    "colorMeta": {
+      "cold-front-cobalt": {
+        "role": "primary",
+        "displayName": "Cold-Front Cobalt",
+        "canonical": "#2B54C9",
+        "tonalRamp": [
+          "#171F35",
+          "#162C69",
+          "#1F3D93",
+          "#284FBD",
+          "#4F73D9",
+          "#819BE4",
+          "#B3C3EF",
+          "#EAEDF6"
+        ]
+      },
+      "wind-sock-orange": {
+        "role": "secondary",
+        "displayName": "Wind-Sock Orange",
+        "canonical": "#FF6A2B",
+        "tonalRamp": [
+          "#3D1D0F",
+          "#802600",
+          "#B33500",
+          "#E64400",
+          "#FF6829",
+          "#FF9366",
+          "#FFBEA3",
+          "#F9ECE7"
+        ]
+      },
+      "drum-chart-paper": {
+        "role": "neutral",
+        "displayName": "Drum-Chart Paper",
+        "canonical": "#D9ECE6",
+        "tonalRamp": [
+          "#1F2E29",
+          "#2A5548",
+          "#3B7764",
+          "#4C9981",
+          "#70B8A1",
+          "#99CCBC",
+          "#C2E0D7",
+          "#EDF3F1"
+        ]
+      },
+      "forecaster-ink": {
+        "role": "neutral",
+        "displayName": "Forecaster Ink",
+        "canonical": "#0F1B44",
+        "tonalRamp": [
+          "#181E35",
+          "#172968",
+          "#203A92",
+          "#294BBC",
+          "#506ED8",
+          "#8298E3",
+          "#B4C1EE",
+          "#EAECF6"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#949494",
+          "#B3B3B3",
+          "#D1D1D1",
+          "#F0F0F0"
+        ]
+      },
+      "white-muted": {
+        "role": "neutral",
+        "displayName": "White Muted",
+        "canonical": "#DCE4FA",
+        "tonalRamp": [
+          "#151E37",
+          "#102970",
+          "#163A9C",
+          "#1D4BC9",
+          "#446EE4",
+          "#7998EC",
+          "#AFC1F4",
+          "#E9ECF7"
+        ]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "Ink Muted",
+        "canonical": "#44507A",
+        "tonalRamp": [
+          "#20232D",
+          "#2E3652",
+          "#404B73",
+          "#526193",
+          "#7583B2",
+          "#9DA6C8",
+          "#C4CADE",
+          "#EDEEF2"
+        ]
+      },
+      "chart-grid": {
+        "role": "neutral",
+        "displayName": "Chart Grid",
+        "canonical": "rgb(15 27 68 / 0.18)",
+        "tonalRamp": []
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The Grudge line, the one big number. Martian Mono wide, 800."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles and the motto. Martian Mono, 800."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section heads in Atkinson Hyperlegible Next, 700."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Sentences in Atkinson, weight 300; never mono."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Column heads, notes and captions, 12 to 14px."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Secondary numbers, times, codes and addresses in narrow Martian Mono."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "instant",
+        "value": "100ms",
+        "purpose": "Press and hover."
+      },
+      {
+        "name": "quick",
+        "value": "200ms",
+        "purpose": "UI changes and a value updating."
+      },
+      {
+        "name": "deliberate",
+        "value": "400ms",
+        "purpose": "Panels, page changes, a front drawing."
+      },
+      {
+        "name": "ease-enter",
+        "value": "cubic-bezier(0.2, 0, 0, 1)",
+        "purpose": "Things arriving."
+      },
+      {
+        "name": "ease-exit",
+        "value": "cubic-bezier(0.4, 0, 1, 1)",
+        "purpose": "Things leaving."
+      },
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.2, 0, 0.2, 1)",
+        "purpose": "State changes."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tab",
+        "value": "600px"
+      },
+      {
+        "name": "desk",
+        "value": "1200px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Pick Direction",
+      "kind": "button",
+      "refersTo": "pick-direction",
+      "description": "Up or down choice in the pick panel; fills orange when chosen.",
+      "html": "<button class=\"ds-pick\">▲ Up</button> <button class=\"ds-pick ds-pick-on\">▼ Down</button>",
+      "css": ".ds-pick{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-size:15px;font-weight:700;border-radius:0;cursor:pointer;height:48px;width:96px;border:1.5px solid #0F1B44;background:transparent;color:#0F1B44}.ds-pick-on{background:#FF6A2B}.ds-pick:focus-visible{outline:2px solid #0F1B44;outline-offset:2px}"
+    },
+    {
+      "name": "Confidence Choice",
+      "kind": "chip",
+      "refersTo": "pick-direction",
+      "description": "Native radio wrapped in a 48px square label; mono at width 75.",
+      "html": "<label class=\"ds-conf\">55%</label><label class=\"ds-conf ds-conf-on\">80%</label>",
+      "css": ".ds-conf{display:inline-flex;align-items:center;justify-content:center;height:48px;width:48px;border:1.5px solid #0F1B44;color:#0F1B44;margin-right:4px;font-family:'Martian Mono',ui-monospace,monospace;font-stretch:75%;font-size:14px;background:transparent}.ds-conf-on{background:#FF6A2B}"
+    },
+    {
+      "name": "Solid Button",
+      "kind": "button",
+      "refersTo": "button-solid",
+      "description": "The one filled ink button, used on paper.",
+      "html": "<button class=\"ds-solid\">Rebuild from Walrus and compare</button>",
+      "css": ".ds-solid{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-size:15px;font-weight:700;border-radius:0;cursor:pointer;height:48px;padding:0 20px;border:none;background:#0F1B44;color:#FFFFFF}.ds-solid:focus-visible{outline:2px solid #0F1B44;outline-offset:2px}"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action on paper.",
+      "html": "<button class=\"ds-outline\">Run again</button>",
+      "css": ".ds-outline{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-size:15px;font-weight:700;border-radius:0;cursor:pointer;font-size:14px;height:44px;padding:0 16px;border:1.5px solid #0F1B44;background:transparent;color:#0F1B44}.ds-outline:focus-visible{outline:2px solid #0F1B44;outline-offset:2px}"
+    },
+    {
+      "name": "Category Tabs",
+      "kind": "nav",
+      "refersTo": "tab",
+      "description": "Two tabs on cobalt; the selected one fills with paper.",
+      "html": "<div class=\"ds-tabs\"><span class=\"ds-tab ds-tab-on\">15 min <b>98</b></span><span class=\"ds-tab\">5 min <b>267</b></span></div>",
+      "css": ".ds-tabs{display:flex;background:#2B54C9;padding:16px}.ds-tab{height:44px;display:flex;align-items:center;gap:8px;padding:0 14px;border:1.5px solid #FFFFFF;color:#FFFFFF;font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-size:14px}.ds-tab b{font-family:'Martian Mono',ui-monospace,monospace;font-stretch:75%;font-weight:400}.ds-tab-on{background:#D9ECE6;border-color:#D9ECE6;color:#0F1B44;font-weight:700}"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Three pages; the current one is white, bold and underlined.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-link ds-link-on\">Board</a><a class=\"ds-link\">Receipts</a><a class=\"ds-link\">Agents</a></nav>",
+      "css": ".ds-nav{display:flex;gap:24px;background:#2B54C9;padding:12px 24px;font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-size:15px}.ds-link{color:#DCE4FA;padding:12px 0;text-decoration:none}.ds-link-on{color:#FFFFFF;font-weight:700;border-bottom:1.5px solid #FFFFFF}"
+    },
+    {
+      "name": "Data Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Drum-chart paper holding a heading and a figure; the only container.",
+      "html": "<div class=\"ds-panel\"><span class=\"ds-panel-head\">Memory check</span><span class=\"ds-panel-fig\">0.000</span><span class=\"ds-panel-note\">Largest gap against the live weights.</span></div>",
+      "css": ".ds-panel{background:#D9ECE6;color:#0F1B44;padding:24px;display:flex;flex-direction:column;gap:8px;width:320px;font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif}.ds-panel-head{font-size:18px;font-weight:700}.ds-panel-fig{font-family:'Martian Mono',ui-monospace,monospace;font-weight:800;font-stretch:112.5%;font-size:40px;line-height:1}.ds-panel-note{font-size:14px;color:#44507A}"
+    },
+    {
+      "name": "Station Mark",
+      "kind": "custom",
+      "refersTo": "panel",
+      "description": "A circle filled to a call; the logo, the call and the empty state in one shape.",
+      "html": "<svg width=\"48\" height=\"48\" viewBox=\"0 0 48 48\"><circle cx=\"24\" cy=\"24\" r=\"22\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"1.5\"/><path d=\"M24,24L24,2A22,22 0 0,1 44,33Z\" fill=\"#FFFFFF\"/></svg> <svg width=\"48\" height=\"48\" viewBox=\"0 0 48 48\"><circle cx=\"24\" cy=\"24\" r=\"22\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/></svg>",
+      "css": "svg{background:#2B54C9;margin-right:12px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Verification Chart",
+    "overview": "The page is a weather-forecast verification sheet. The Brier score Grudge uses was published in 1950 to grade weather forecasters, so the interface borrows that trade's instruments: the barograph drum chart, the station-model circle filled by eighths, front symbols with teeth, wind barbs and wind-sock orange. A forecaster's log is plain, numeric and dry. This is the same voice: it says what was called, what happened, and the score.\n\nCold-front cobalt is the ground and drum-chart paper holds the data. Numbers carry the display: a 120px mono figure against 15px light text, an eight-fold jump on purpose. Everything is square. Circles exist only as station marks, and a mark is a fact (filled, empty, half), not decoration.\n\nDensity is medium on the Board, higher on Receipts and low in the first viewport. Motion is measured and near-still around live numbers, with one signature moment when a window resolves.",
+    "keyCharacteristics": [
+      "Cobalt ground (about 60%), chart paper panels (about 30%), orange fill (about 5%).",
+      "Martian Mono for every number and the display, Atkinson Hyperlegible Next for every sentence.",
+      "Zero radius. Hairline 1.5px ink or white strokes, never shadows.",
+      "Up and down are the glyphs ▲ and ▼; right and wrong are filled and empty marks. Never colour alone, never red against green.",
+      "Every graphic has a text equivalent, and every claim links to a blob or a transaction."
+    ],
+    "rules": [
+      {
+        "name": "The Fill-Only Orange Rule",
+        "body": "Orange is a fill, never text and never a line: it is 2.29:1 on cobalt and 2.33:1 on paper. Keep it to about 5% of a screen; its rarity is how the open window and the pick action are found.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ground Rule",
+        "body": "The ground is cobalt, not slate and not blue-black. A near-black navy page is the crypto-dashboard look this system exists to avoid.",
+        "section": "colors"
+      },
+      {
+        "name": "The Number Is Mono Rule",
+        "body": "Every number, time, address and code is Martian Mono; every sentence is Atkinson. Mixing them mid-sentence is fine when a figure is quoted in prose.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Rule",
+        "body": "If a surface needs to stand out, change its fill or its stroke. Never add a shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Square Rule",
+        "body": "A rounded card, pill or badge is a defect. The only round shape is a station mark, and it always means something.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "**Do** use cobalt `#2B54C9` as the ground and paper `#D9ECE6` for every data panel.",
+      "**Do** use orange only as a fill, on about 5% of a screen.",
+      "**Do** set every number in Martian Mono and every sentence in Atkinson Hyperlegible Next.",
+      "**Do** show up and down as ▲ and ▼, and right and wrong as filled and empty marks.",
+      "**Do** keep every touch target at 44px or more and every focus ring visible.",
+      "**Do** show missing, stale or empty data as such: a dashed ring and a plain sentence.",
+      "**Do** draw the layout for each of desk, tab and phone.",
+      "**Do** keep motion to 100, 200 and 400 ms, animating only transform, opacity and stroke offset."
+    ],
+    "donts": [
+      "**Don't** use a near-black navy page, neon green and red, glass cards, Inter or Space Grotesk, candlesticks or gradient badges: that is the generic crypto dashboard.",
+      "**Don't** use a warm paper ground, a serif display, stamps or red pencil: that is the retired Grudge Book.",
+      "**Don't** use flat yellow, thick black borders or offset shadows: that is neobrutalism.",
+      "**Don't** round a corner, add a shadow, or draw a gauge, dial or speedometer.",
+      "**Don't** set orange as text or as a line, or ink as text on cobalt.",
+      "**Don't** set running text in mono.",
+      "**Don't** claim Grudge beats its best source; the learning figures are shown as they are, with the interval."
+    ]
+  }
+}
