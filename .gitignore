@@ -55,3 +55,7 @@ design-from-claude/
 Grudge Design.rar
 .playwright-mcp/
 *.rar
+
+# Playwright
+test-results/
+playwright-report/

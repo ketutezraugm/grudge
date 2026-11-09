@@ -73,7 +73,7 @@ function describeRecord(entry: RecordPayload): string {
   return `${window} went ${entry.outcome === 1 ? "UP" : "DOWN"}. ${calls.join(", ")}.${line}`;
 }
 
-function describe(entry: MemoryPayload): string {
+function sentence(entry: MemoryPayload): string {
   switch (entry.kind) {
     case "record":
       return describeRecord(entry);
@@ -86,7 +86,7 @@ function describe(entry: MemoryPayload): string {
 
 /** A sentence for semantic recall, then the exact data on a last line for rebuilding state. */
 export function encode(entry: MemoryPayload): string {
-  return `${describe(entry)}\n${TAIL}${JSON.stringify(entry)}`;
+  return `${sentence(entry)}\n${TAIL}${JSON.stringify(entry)}`;
 }
 
 /** The structured data from a memory's last line, or null if the tail is missing or damaged. */

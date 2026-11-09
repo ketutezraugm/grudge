@@ -58,6 +58,7 @@ pnpm dev
 | Command | Does |
 | --- | --- |
 | `pnpm test` | Vitest: the engine, the memory codec, the x402 path and each page's model |
+| `pnpm e2e` | One Playwright test: board, a pick, the memory check, the price and the 404, with every API call answered from a recorded fixture (first run: `pnpm exec playwright install chromium`) |
 | `pnpm lint`, `pnpm typecheck` | Biome, and `tsc` in strict mode |
 | `pnpm probe` | A live check of every external source Grudge reads |
 | `pnpm agent` | Buys one line over x402 (needs `AGENT_PRIVATE_KEY` in `.env`) |

@@ -10,6 +10,7 @@
     "format": "biome format --write",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
+    "e2e": "playwright test",
     "probe": "tsx --conditions=react-server --env-file-if-exists=.env scripts/probe.mts",
     "agent": "tsx --conditions=react-server --env-file-if-exists=.env scripts/agent.mts",
     "db:generate": "drizzle-kit generate",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.6",
+    "@playwright/test": "^1.65.0",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^24.19.2",
     "@types/react": "^19",
