@@ -42,5 +42,5 @@ If the venues are DNS-blocked on the machine, turn on DNS-over-HTTPS (1.1.1.1) o
 - [ ] Local copy of the video; fresh saved copies of `/api/board` and `/api/receipts`
 - [ ] Learning numbers recomputed from `/api/receipts`
 - [ ] DNS-over-HTTPS or VPN on
-- [ ] Notifications off, light theme, zoom 100%
+- [ ] Notifications off, zoom 100%
 - [ ] No "zero gas" in notes
