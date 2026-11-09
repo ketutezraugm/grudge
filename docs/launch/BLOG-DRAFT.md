@@ -1,4 +1,4 @@
-# Grudge: what a bookkeeper for Bitcoin calls taught me (draft, not final)
+# I built an app that holds grudges, on mainnet (draft, not final)
 
 [BLOG URL] / [LIVE URL] / [REPO URL]
 
