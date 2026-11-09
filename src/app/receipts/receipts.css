@@ -429,7 +429,8 @@
   grid-template-columns: minmax(0, 1fr);
   gap: 24px;
 }
-.receipts:not([data-layout="phone"]) .learning__grid {
+/* Two plots side by side need a desk width: at 768 each is too narrow for its axis labels. */
+.receipts[data-layout="desk"] .learning__grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .figure {
