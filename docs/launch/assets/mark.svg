@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Grudge">
+  <rect width="64" height="64" fill="#2B54C9"/>
+  <circle cx="28" cy="38" r="13" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+  <path d="M28 38 L28 25 A13 13 0 1 1 15 38 Z" fill="#FFFFFF"/>
+  <path d="M37.5 28.5 L54 10 M54 10 L62 18 M48.5 16.2 L54.5 22.2" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
