@@ -6,6 +6,8 @@ export async function register(): Promise<void> {
   ) {
     return;
   }
+  // A second worker double-writes memories, so a dev server for UI work can run without one.
+  if (process.env.GRUDGE_WORKER === "off") return;
   const { runMigrations } = await import("./server/db/client");
   const { restoreIfEmpty } = await import("./server/memory/coldboot");
   const { log } = await import("./server/log");
