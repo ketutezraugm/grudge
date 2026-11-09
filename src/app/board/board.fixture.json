@@ -1,0 +1,710 @@
+{
+  "asOf": "2026-11-08T17:57:55.736Z",
+  "workerAgeMs": 1016,
+  "bitcoinUsd": 75695.479764,
+  "categories": {
+    "btc-5m": {
+      "open": {
+        "id": "btc-5m:1794161100",
+        "startsAt": "2026-11-08T18:00:00.000Z",
+        "endsAt": "2026-11-08T18:05:00.000Z",
+        "lockAt": "2026-11-08T18:02:00.000Z"
+      },
+      "locked": {
+        "id": "btc-5m:1794160800",
+        "startsAt": "2026-11-08T17:55:00.000Z",
+        "endsAt": "2026-11-08T18:00:00.000Z",
+        "strike": 75688.19,
+        "line": 0.482618332873924,
+        "calls": { "deepbook": 0.479342177740552, "polymarket": 0.495 },
+        "disagreement": 0.015657822259448007,
+        "disagrees": false,
+        "confidence": 0.720313831753906,
+        "priceAtomic": "39000"
+      },
+      "voices": [
+        {
+          "voice": "deepbook",
+          "name": "DeepBook",
+          "call": 0.479342177740552,
+          "weight": 0.7906167521451384,
+          "loss": 8.24834483657343,
+          "samples": 45.7484113516994,
+          "marks": [
+            "wrong",
+            "right",
+            "wrong",
+            "right",
+            "right",
+            "right",
+            "right",
+            "wrong",
+            "right",
+            "right"
+          ]
+        },
+        {
+          "voice": "polymarket",
+          "name": "Polymarket",
+          "call": 0.495,
+          "weight": 0.2093832478548617,
+          "loss": 10.9056389270714,
+          "samples": 45.7484113516994,
+          "marks": [
+            "right",
+            "right",
+            "wrong",
+            "right",
+            "wrong",
+            "right",
+            "right",
+            "right",
+            "right",
+            "right"
+          ]
+        }
+      ],
+      "resolved": 121,
+      "lesson": {
+        "text": "In btc-5m disagreements of 7+ pts (n=70), DeepBook was closer 74% of the time; Polymarket was closer 26%.",
+        "at": "2026-11-08T16:00:27.924Z",
+        "blobId": "t8vN8HULs_kmJDMowOeP-RNdqkAyKShOMMwCf1jpB0g",
+        "recalled": false
+      },
+      "ledger": [
+        {
+          "id": "btc-5m:1794160200",
+          "endsAt": "2026-11-08T17:50:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.582125487960445,
+          "calls": {
+            "deepbook": { "p": 0.597540871957546, "mark": "right" },
+            "polymarket": { "p": 0.525, "mark": "right" }
+          },
+          "blobId": "EE7tZ1kKKK3d-5thzcYbGPMCDU6NQCRJmBfenJKkQFo"
+        },
+        {
+          "id": "btc-5m:1794159900",
+          "endsAt": "2026-11-08T17:45:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.686242613819845,
+          "calls": {
+            "deepbook": { "p": 0.718551092991953, "mark": "right" },
+            "polymarket": { "p": 0.555, "mark": "right" }
+          },
+          "blobId": "fl5C1P98W2MS1adASNFCZV9JoKpOyW5a4rOLsYM1JDI"
+        },
+        {
+          "id": "btc-5m:1794159600",
+          "endsAt": "2026-11-08T17:40:00.000Z",
+          "state": "void",
+          "outcome": null,
+          "split": true,
+          "line": 0.433332666396532,
+          "calls": {
+            "deepbook": { "p": 0.409967400614079, "mark": null },
+            "polymarket": { "p": 0.535, "mark": null }
+          },
+          "blobId": "j8-2hsY1eLGv9AzN8Fw2qsG8YJfGDfg9YI5kvWfwdqs"
+        },
+        {
+          "id": "btc-5m:1794159300",
+          "endsAt": "2026-11-08T17:35:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.325558456418011,
+          "calls": {
+            "deepbook": { "p": 0.28766449415138, "mark": "wrong" },
+            "polymarket": { "p": 0.505, "mark": "right" }
+          },
+          "blobId": "htiXEze2dCuOXqx6kcC6ABIUlVPOOaZoAEyLInRrTNk"
+        },
+        {
+          "id": "btc-5m:1794159000",
+          "endsAt": "2026-11-08T17:30:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.177308234860974,
+          "calls": {
+            "deepbook": { "p": 0.150584427747892, "mark": "right" },
+            "polymarket": { "p": 0.335, "mark": "right" }
+          },
+          "blobId": "F_Tl4CXhALAm4cg-h-IyQJkfA2XuRsVod_OCa5Km-mU"
+        },
+        {
+          "id": "btc-5m:1794158700",
+          "endsAt": "2026-11-08T17:25:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.158209963540588,
+          "calls": {
+            "deepbook": { "p": 0.167630251226295, "mark": "right" },
+            "polymarket": { "p": 0.125, "mark": "right" }
+          },
+          "blobId": "7oJo7YbrJmg1jxD1SwcLZHTV-klycOJua_QbtinkJhY"
+        },
+        {
+          "id": "btc-5m:1794158400",
+          "endsAt": "2026-11-08T17:20:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.748752597654833,
+          "calls": {
+            "deepbook": { "p": 0.801809201114404, "mark": "right" },
+            "polymarket": { "p": 0.475, "mark": "wrong" }
+          },
+          "blobId": "lfVRbUR1QjH0W4wHUMahtMDQOaziKSeUU-OPGbYUIik"
+        },
+        {
+          "id": "btc-5m:1794158100",
+          "endsAt": "2026-11-08T17:15:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.361513620447646,
+          "calls": {
+            "deepbook": { "p": 0.341821772220052, "mark": "right" },
+            "polymarket": { "p": 0.455, "mark": "right" }
+          },
+          "blobId": "aAG2LdCqec8BBsENnS788jtWdTYw8-KZqtbK2j4ZqtQ"
+        },
+        {
+          "id": "btc-5m:1794157800",
+          "endsAt": "2026-11-08T17:10:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.659467292438059,
+          "calls": {
+            "deepbook": { "p": 0.692118024526922, "mark": "wrong" },
+            "polymarket": { "p": 0.505, "mark": "wrong" }
+          },
+          "blobId": "3TjhxGYp67QilITAfq6XCfDlFASzOx0uMHP0Z6P01xI"
+        },
+        {
+          "id": "btc-5m:1794157500",
+          "endsAt": "2026-11-08T17:05:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.659886359643354,
+          "calls": {
+            "deepbook": { "p": 0.688476357496601, "mark": "right" },
+            "polymarket": { "p": 0.505, "mark": "right" }
+          },
+          "blobId": "EqW9uJ02fzbonPhhPkG2CFC2dwYXvd4LKefspg27bG0"
+        },
+        {
+          "id": "btc-5m:1794157200",
+          "endsAt": "2026-11-08T17:00:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.400788930400653,
+          "calls": {
+            "deepbook": { "p": 0.365771982209657, "mark": "wrong" },
+            "polymarket": { "p": 0.565, "mark": "right" }
+          },
+          "blobId": "zPcQJUH4o4P0FTFbmzz7La2JgRALKy-GqPNXaER3r8M"
+        },
+        {
+          "id": "btc-5m:1794156900",
+          "endsAt": "2026-11-08T16:55:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.0420230201547641,
+          "calls": {
+            "deepbook": { "p": 0.00124564159934407, "mark": "right" },
+            "polymarket": { "p": 0.505, "mark": "wrong" }
+          },
+          "blobId": "DLS646S0JVXZSMpi4SpQLudcgGMqLAAWKcYeaTPjCqY"
+        },
+        {
+          "id": "btc-5m:1794156600",
+          "endsAt": "2026-11-08T16:50:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.562149943272841,
+          "calls": {
+            "deepbook": { "p": 0.519777039450136, "mark": "wrong" },
+            "polymarket": { "p": 0.705, "mark": "wrong" }
+          },
+          "blobId": "Mgy7HW8HP7sLoQN9ZEdUAJGX7sLdKn_ZthnGH458iWA"
+        },
+        {
+          "id": "btc-5m:1794156300",
+          "endsAt": "2026-11-08T16:45:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.744898849038675,
+          "calls": {
+            "deepbook": { "p": 0.814206762153996, "mark": "right" },
+            "polymarket": { "p": 0.425, "mark": "wrong" }
+          },
+          "blobId": "9PEe3t2UlzD3ylA7-0sFTvShFqoVAGNDP6cM1zSc7HU"
+        },
+        {
+          "id": "btc-5m:1794156000",
+          "endsAt": "2026-11-08T16:40:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.301494356995278,
+          "calls": {
+            "deepbook": { "p": 0.246899701954522, "mark": "right" },
+            "polymarket": { "p": 0.505, "mark": "wrong" }
+          },
+          "blobId": "84XURdYu8EGxRfseAgAPhsevCBFhynPd16no1MKRx-s"
+        },
+        {
+          "id": "btc-5m:1794155700",
+          "endsAt": "2026-11-08T16:35:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.284934700076217,
+          "calls": {
+            "deepbook": { "p": 0.227814861144198, "mark": "right" },
+            "polymarket": { "p": 0.505, "mark": "wrong" }
+          },
+          "blobId": "PNqZop9NAW0kyVej8fFRFVfYP8glAs62Ukp9dmTLGj4"
+        },
+        {
+          "id": "btc-5m:1794155400",
+          "endsAt": "2026-11-08T16:30:00.000Z",
+          "state": "void",
+          "outcome": null,
+          "split": true,
+          "line": 0.609935473019893,
+          "calls": {
+            "deepbook": { "p": 0.622314007285281, "mark": null },
+            "polymarket": { "p": 0.565, "mark": null }
+          },
+          "blobId": "w9SyyQLsFzhzp5x8CXJ41hu6rL-laQ6zeo-d2Po51bI"
+        },
+        {
+          "id": "btc-5m:1794155100",
+          "endsAt": "2026-11-08T16:25:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.369990746603941,
+          "calls": {
+            "deepbook": { "p": 0.332894503848922, "mark": "wrong" },
+            "polymarket": { "p": 0.505, "mark": "right" }
+          },
+          "blobId": "6Z3QyTjiYnq53mNhO_rE1hekraLe1b6FKewS-SLGdPo"
+        },
+        {
+          "id": "btc-5m:1794154800",
+          "endsAt": "2026-11-08T16:20:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.643054822886558,
+          "calls": {
+            "deepbook": { "p": 0.672693047277713, "mark": "right" },
+            "polymarket": { "p": 0.505, "mark": "right" }
+          },
+          "blobId": "C02rwm3JqjlJAFgf0KYHxfqdI6pUUG9CVftgGqVHag4"
+        },
+        {
+          "id": "btc-5m:1794154500",
+          "endsAt": "2026-11-08T16:15:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.776521530183993,
+          "calls": {
+            "deepbook": { "p": 0.824119105991128, "mark": "wrong" },
+            "polymarket": { "p": 0.505, "mark": "wrong" }
+          },
+          "blobId": "3DJctrTJGD6wjpIsSQrb_p7a2Xx3aJ0guLj93ngKacQ"
+        }
+      ]
+    },
+    "btc-15m": {
+      "open": {
+        "id": "btc-15m:1794161700",
+        "startsAt": "2026-11-08T18:00:00.000Z",
+        "endsAt": "2026-11-08T18:15:00.000Z",
+        "lockAt": "2026-11-08T18:07:00.000Z"
+      },
+      "locked": {
+        "id": "btc-15m:1794160800",
+        "startsAt": "2026-11-08T17:45:00.000Z",
+        "endsAt": "2026-11-08T18:00:00.000Z",
+        "strike": 75672.2782507,
+        "line": 0.68246921227952,
+        "calls": { "deepbook": 0.675425109460538, "kalshi": 0.695, "polymarket": 0.675 },
+        "disagreement": 0.019999999999999907,
+        "disagrees": false,
+        "confidence": 0.25520674897053136,
+        "priceAtomic": "20000"
+      },
+      "voices": [
+        {
+          "voice": "deepbook",
+          "name": "DeepBook",
+          "call": 0.675425109460538,
+          "weight": 0.43005342271339736,
+          "loss": 5.97749078625579,
+          "samples": 29.8561067863287,
+          "marks": [
+            "right",
+            "right",
+            "right",
+            "right",
+            "wrong",
+            "right",
+            "right",
+            "wrong",
+            "wrong",
+            "right"
+          ]
+        },
+        {
+          "voice": "polymarket",
+          "name": "Polymarket",
+          "call": 0.675,
+          "weight": 0.2094617106467998,
+          "loss": 7.41622775143474,
+          "samples": 29.8561067863287,
+          "marks": [
+            "right",
+            "right",
+            "right",
+            "wrong",
+            "right",
+            "right",
+            "wrong",
+            "wrong",
+            "wrong",
+            "right"
+          ]
+        },
+        {
+          "voice": "kalshi",
+          "name": "Kalshi",
+          "call": 0.695,
+          "weight": 0.36048486663980284,
+          "loss": 6.3304097118615,
+          "samples": 29.8561067863287,
+          "marks": [
+            "right",
+            "wrong",
+            "right",
+            "wrong",
+            "wrong",
+            "right",
+            "right",
+            "wrong",
+            "wrong",
+            "right"
+          ]
+        }
+      ],
+      "resolved": 45,
+      "lesson": {
+        "text": "In btc-15m disagreements of 7+ pts (n=22), Kalshi was closer 45% of the time; DeepBook was closer 36%.",
+        "at": "2026-11-08T12:49:47.059Z",
+        "blobId": "Z7KTXbXFU9Q-oAdMs0UjKNAUpAA9ZVJSw1i8E5QsryY",
+        "recalled": false
+      },
+      "ledger": [
+        {
+          "id": "btc-15m:1794159900",
+          "endsAt": "2026-11-08T17:45:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.66703302134493,
+          "calls": {
+            "deepbook": { "p": 0.64656084202294, "mark": "right" },
+            "polymarket": { "p": 0.525, "mark": "right" },
+            "kalshi": { "p": 0.765, "mark": "right" }
+          },
+          "blobId": "I3rd6_AkfoYpa6Oa59CM0a28bxIFR7dtrdKFrbZIm7Y"
+        },
+        {
+          "id": "btc-15m:1794159000",
+          "endsAt": "2026-11-08T17:30:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": true,
+          "line": 0.658019965546692,
+          "calls": {
+            "deepbook": { "p": 0.667635126894562, "mark": "wrong" },
+            "polymarket": { "p": 0.765, "mark": "wrong" },
+            "kalshi": { "p": 0.555, "mark": "wrong" }
+          },
+          "blobId": "TPlP6cNvgnZGrr3vYFBXZft9ZyXlx6Uk_YRaWlYX4Lo"
+        },
+        {
+          "id": "btc-15m:1794158100",
+          "endsAt": "2026-11-08T17:15:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.873635652270535,
+          "calls": {
+            "deepbook": { "p": 0.853796232715685, "mark": "wrong" },
+            "polymarket": { "p": 0.605, "mark": "wrong" },
+            "kalshi": { "p": 0.9505, "mark": "wrong" }
+          },
+          "blobId": "IBCiOF1Z6MEiupkkJkB_KjBH5Y9UEzweIH4w0e2XF0c"
+        },
+        {
+          "id": "btc-15m:1794157200",
+          "endsAt": "2026-11-08T17:00:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.0506475186887621,
+          "calls": {
+            "deepbook": { "p": 0.00948734238558098, "mark": "right" },
+            "polymarket": { "p": 0.525, "mark": "wrong" },
+            "kalshi": { "p": 0.0265, "mark": "right" }
+          },
+          "blobId": "o7_jpH5K8jDm9KYvdmiOAhw6nkk7_znv0iF-LhkMvZs"
+        },
+        {
+          "id": "btc-15m:1794156300",
+          "endsAt": "2026-11-08T16:45:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.163574741184064,
+          "calls": {
+            "deepbook": { "p": 0.258693041595617, "mark": "right" },
+            "polymarket": { "p": 0.195, "mark": "right" },
+            "kalshi": { "p": 0.0755, "mark": "right" }
+          },
+          "blobId": "MQlNyRlNDofDN4uxyDmg9Z47k1u3a_6Jr2SF9lBneuE"
+        },
+        {
+          "id": "btc-15m:1794155400",
+          "endsAt": "2026-11-08T16:30:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.452663650640352,
+          "calls": {
+            "deepbook": { "p": 0.476187834440967, "mark": "wrong" },
+            "polymarket": { "p": 0.545, "mark": "right" },
+            "kalshi": { "p": 0.375, "mark": "wrong" }
+          },
+          "blobId": "NZm2UQGVkum-450VnNYqvdRF2hZsBG50G4rdIQN6zM4"
+        },
+        {
+          "id": "btc-15m:1794154500",
+          "endsAt": "2026-11-08T16:15:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.535148244367153,
+          "calls": {
+            "deepbook": { "p": 0.479118895062453, "mark": "right" },
+            "polymarket": { "p": 0.685, "mark": "wrong" },
+            "kalshi": { "p": 0.505, "mark": "wrong" }
+          },
+          "blobId": "k-srAT3GdKhwVNYXmf6l3YPpS7mknKwXtI4ogSCjLKA"
+        },
+        {
+          "id": "btc-15m:1794153600",
+          "endsAt": "2026-11-08T16:00:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.317556531578303,
+          "calls": {
+            "deepbook": { "p": 0.371670036806452, "mark": "right" },
+            "polymarket": { "p": 0.285, "mark": "right" },
+            "kalshi": { "p": 0.275, "mark": "right" }
+          },
+          "blobId": "BIHRywIr8PTZc1jMhkbYtKuXYOMTg0bO3jqzfOnRYKs"
+        },
+        {
+          "id": "btc-15m:1794152700",
+          "endsAt": "2026-11-08T15:45:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.504723650628121,
+          "calls": {
+            "deepbook": { "p": 0.502013380217311, "mark": "right" },
+            "polymarket": { "p": 0.635, "mark": "right" },
+            "kalshi": { "p": 0.435, "mark": "wrong" }
+          },
+          "blobId": "LpkygaEIcNihHbThSRSSvB1oZ2eh0IsgAean-kZrcNA"
+        },
+        {
+          "id": "btc-15m:1794151800",
+          "endsAt": "2026-11-08T15:30:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.648367588645377,
+          "calls": {
+            "deepbook": { "p": 0.66461782539911, "mark": "right" },
+            "polymarket": { "p": 0.505, "mark": "right" },
+            "kalshi": { "p": 0.705, "mark": "right" }
+          },
+          "blobId": "h3OmAMZndrit5p5UFPosqWjM0LeahVbxCVObG-UUYZg"
+        },
+        {
+          "id": "btc-15m:1794150900",
+          "endsAt": "2026-11-08T15:15:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.70838958808044,
+          "calls": {
+            "deepbook": { "p": 0.689641188075977, "mark": "wrong" },
+            "polymarket": { "p": 0.655, "mark": "wrong" },
+            "kalshi": { "p": 0.755, "mark": "wrong" }
+          },
+          "blobId": "sAAb9GX6KG4_EY16G8wWx2yY8JnWbt5TPnSF-aECz8I"
+        },
+        {
+          "id": "btc-15m:1794150000",
+          "endsAt": "2026-11-08T15:00:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.794906980951648,
+          "calls": {
+            "deepbook": { "p": 0.801237417966031, "mark": "right" },
+            "polymarket": { "p": 0.565, "mark": "right" },
+            "kalshi": { "p": 0.875, "mark": "right" }
+          },
+          "blobId": "KPlBFkZQds-iWTl5evq9aaLUPR9mbb3_C3z5lfSJiZA"
+        },
+        {
+          "id": "btc-15m:1794149100",
+          "endsAt": "2026-11-08T14:45:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.876238600625505,
+          "calls": {
+            "deepbook": { "p": 0.779612223114699, "mark": "right" },
+            "polymarket": { "p": 0.855, "mark": "right" },
+            "kalshi": { "p": 0.9485, "mark": "right" }
+          },
+          "blobId": "RNeXpCl_LeSRb4reSLKxxAHpgqTn6fujT1kbI8qCU6o"
+        },
+        {
+          "id": "btc-15m:1794148200",
+          "endsAt": "2026-11-08T14:30:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.209862613313934,
+          "calls": {
+            "deepbook": { "p": 0.24904872628951, "mark": "right" },
+            "polymarket": { "p": 0.215, "mark": "right" },
+            "kalshi": { "p": 0.165, "mark": "right" }
+          },
+          "blobId": "rKtquXaQHeUnisS8vJWvbQffeWFy08AXiPG6EiYQcE0"
+        },
+        {
+          "id": "btc-15m:1794147300",
+          "endsAt": "2026-11-08T14:15:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.590991079932151,
+          "calls": {
+            "deepbook": { "p": 0.694776920284293, "mark": "right" },
+            "polymarket": { "p": 0.325, "mark": "wrong" },
+            "kalshi": { "p": 0.635, "mark": "right" }
+          },
+          "blobId": "Zc6ZzMzfY_D66m43i9xu05dB_wRGYcK6Ed6j-1lRvF8"
+        },
+        {
+          "id": "btc-15m:1794146400",
+          "endsAt": "2026-11-08T14:00:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": true,
+          "line": 0.495763800216245,
+          "calls": {
+            "deepbook": { "p": 0.47814121508643, "mark": "wrong" },
+            "polymarket": { "p": 0.515, "mark": "right" },
+            "kalshi": { "p": 0.505, "mark": "right" }
+          },
+          "blobId": "vcInDC27R931z9GHsPHX44TF6UC-eLouru9rYkPaSPM"
+        },
+        {
+          "id": "btc-15m:1794145500",
+          "endsAt": "2026-11-08T13:45:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.221137101637232,
+          "calls": {
+            "deepbook": { "p": 0.178324481351627, "mark": "right" },
+            "polymarket": { "p": 0.675, "mark": "wrong" },
+            "kalshi": { "p": 0.0705, "mark": "right" }
+          },
+          "blobId": "uLkOfaVwXxJvhDnYb0IMRlz_44hUzOaVvDIrGer0pB0"
+        },
+        {
+          "id": "btc-15m:1794144600",
+          "endsAt": "2026-11-08T13:30:00.000Z",
+          "state": "resolved",
+          "outcome": 0,
+          "split": false,
+          "line": 0.897113630295964,
+          "calls": {
+            "deepbook": { "p": 0.851633315383122, "mark": "wrong" },
+            "polymarket": { "p": 0.845, "mark": "wrong" },
+            "kalshi": { "p": 0.9535, "mark": "wrong" }
+          },
+          "blobId": "YrnCa4bF4zAg39EWoP8Om4Lt6aW-zLj9XZjYL8IN-2s"
+        },
+        {
+          "id": "btc-15m:1794143700",
+          "endsAt": "2026-11-08T13:15:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.866205413413797,
+          "calls": {
+            "deepbook": { "p": 0.837222714771419, "mark": "right" },
+            "polymarket": { "p": 0.785, "mark": "right" },
+            "kalshi": { "p": 0.9295, "mark": "right" }
+          },
+          "blobId": "yIs4xDupYX2UGxEDLVrsoxjZK3P4MptS8rWlbZxs8_U"
+        },
+        {
+          "id": "btc-15m:1794142800",
+          "endsAt": "2026-11-08T13:00:00.000Z",
+          "state": "resolved",
+          "outcome": 1,
+          "split": false,
+          "line": 0.708132239646879,
+          "calls": {
+            "deepbook": { "p": 0.649110402624449, "mark": "right" },
+            "polymarket": { "p": 0.655, "mark": "right" },
+            "kalshi": { "p": 0.805, "mark": "right" }
+          },
+          "blobId": "Z4FMSmbh54q7aNBq7RQw3iGzLnet4EF1kYvLb1SpxEY"
+        }
+      ]
+    }
+  },
+  "yourPicks": { "btc-5m": null, "btc-15m": null }
+}

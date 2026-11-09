@@ -1,0 +1,95 @@
+/*
+ * The shared header, from design-from-claude/SiteHeader.dc.html. It sets its own side margin
+ * (--bar-m) so it works on pages that have no .board wrapper. Orange never appears here.
+ */
+
+.bar {
+  --bar-m: 56px;
+  height: 72px;
+  padding: 0 var(--bar-m);
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  color: var(--white);
+  font-family: var(--font-body);
+}
+.bar[data-layout="tab"] {
+  --bar-m: 32px;
+}
+.bar[data-layout="phone"] {
+  --bar-m: 16px;
+}
+.bar--compact {
+  height: auto;
+  padding: 12px var(--bar-m) 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+.bar__top {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-height: 48px;
+}
+.bar__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+.bar__fill {
+  flex: 1;
+}
+.bar__judges {
+  font-size: 14px;
+  color: var(--white);
+  padding: 12px 0;
+}
+.bar__judges--end {
+  margin-left: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--white);
+}
+.bar--compact .brand {
+  gap: 8px;
+}
+.brand__name {
+  font-size: 18px;
+}
+
+.nav {
+  display: flex;
+  gap: 24px;
+  font-size: 15px;
+}
+.bar[data-layout="phone"] .nav {
+  gap: 16px;
+}
+.nav a {
+  text-decoration: none;
+  color: var(--white-muted);
+  padding: 12px 0;
+}
+.nav a[aria-current="page"] {
+  color: var(--white);
+  font-weight: 700;
+  border-bottom: 1.5px solid var(--white);
+}
+
+.status {
+  font-size: 14px;
+  color: var(--white-muted);
+}
+.status[data-alert="true"] {
+  color: var(--white);
+  font-weight: 700;
+  border: 1.5px solid var(--white);
+  padding: 10px 12px;
+}

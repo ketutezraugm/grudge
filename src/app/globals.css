@@ -1,50 +1,108 @@
 @import "tailwindcss";
 
-/* Grudge Book. Source of truth for the palette: docs/brand-guidelines.md §2. */
+/*
+ * Tokens from docs/IDENTITY.md. The contrast pairs are verified there: orange is a fill only
+ * (2.3:1 on cobalt and on chart), ink is never text on cobalt (2.6:1).
+ */
 :root {
-  --paper: #f4efe4;
-  --ink: #1e1a16;
-  --rule: #b9c7d3;
-  --pencil: #c2361f; /* wrong, strike-through, tally, disagreement */
-  --stamp: #2e6a4c; /* right, forgiven, settled */
-  --blue: #22385c; /* memory, receipts, links */
+  --cobalt: #2b54c9;
+  --chart: #d9ece6;
+  --ink: #0f1b44;
+  --white: #ffffff;
+  --white-muted: #dce4fa;
+  --ink-muted: #44507a;
+  --orange: #ff6a2b;
+  --grid: rgb(15 27 68 / 0.18);
+  --skeleton-on-cobalt: rgb(255 255 255 / 0.16);
+  --skeleton-on-chart: rgb(15 27 68 / 0.08);
 
-  --paper-shadow: color-mix(in srgb, var(--ink) 6%, var(--paper));
-  --ink-soft: color-mix(in srgb, var(--ink) 68%, var(--paper));
+  --font-display: var(--font-mono), ui-monospace, monospace;
+  --font-body: var(--font-text), system-ui, sans-serif;
 
-  --needle-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --needle-ms: 600ms;
-  --draw-ms: 250ms;
-  --stamp-ms: 180ms;
+  --instant: 100ms;
+  --quick: 200ms;
+  --deliberate: 400ms;
+  --ease-enter: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-standard: cubic-bezier(0.2, 0, 0.2, 1);
 }
 
-@theme inline {
-  --color-paper: var(--paper);
-  --color-ink: var(--ink);
-  --color-rule: var(--rule);
-  --color-pencil: var(--pencil);
-  --color-stamp: var(--stamp);
-  --color-blue: var(--blue);
-  --color-paper-shadow: var(--paper-shadow);
-  --color-ink-soft: var(--ink-soft);
-  --radius-sm: 2px;
+html {
+  background: var(--cobalt);
 }
 
 body {
-  background: var(--paper);
+  margin: 0;
+  background: var(--cobalt);
+  color: var(--white);
+  font-family: var(--font-body);
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+::selection {
+  background: var(--orange);
   color: var(--ink);
 }
 
-.num {
-  font-variant-numeric: tabular-nums;
+:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
 }
 
-/* Reduced motion has to win over utility classes, so it needs !important. */
+/* White would vanish on the pale panels, so focus there is ink. */
+.on-chart :focus-visible {
+  outline-color: var(--ink);
+}
+
+/* Martian Mono carries a width axis: wide for the big numbers, narrow for the small ones. */
+.wide {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 112.5%;
+}
+.narrow {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-stretch: 75%;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+}
+.skip:focus {
+  left: 8px;
+  z-index: 1;
+  padding: 8px 12px;
+  background: var(--white);
+  color: var(--ink);
+}
+
+/* Reduced motion has to win over every transition, so it needs !important. */
 @media (prefers-reduced-motion: reduce) {
   * {
-    /* biome-ignore lint/complexity/noImportantStyles: must override utility classes */
+    /* biome-ignore lint/complexity/noImportantStyles: must override component transitions */
     transition: none !important;
-    /* biome-ignore lint/complexity/noImportantStyles: must override utility classes */
+    /* biome-ignore lint/complexity/noImportantStyles: must override component animations */
     animation: none !important;
   }
 }
