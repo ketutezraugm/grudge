@@ -23,10 +23,10 @@
 - **Drift check on every screen:** ground `#2B54C9`, panels `#D9ECE6`, Martian Mono plus Atkinson Hyperlegible Next, orange only as a fill (about 5%), square corners, no gauge or dial. "Not this" in `docs/IDENTITY.md`.
 
 ## Claims we can make (numbers drift; recompute from `/api/receipts`)
-- **Learning:** slightly ahead of an equal-weight average, not statistically clear (the 95% interval includes zero), and DeepBook alone scores better. Never claim Grudge beats its best source. The hedge rate stays 0.5; a change would be disclosed and labelled.
-- **x402:** one real mainnet payment, 0.038 USDC, digest `4f3bXYdmR1XYJTvVrm17HEat4aDSePvShTcqAZmeSnTY`, replay refused. Price 0.012 to 0.04 USDC, rising with confidence. The payer needs no SUI; "zero gas" is not verified. The agent wallet holds about 3.057 USDC.
+- **Learning:** slightly ahead of an equal-weight average, not statistically clear (the 95% interval includes zero), and about level with the best single source (the order flips between days: see Open questions and `docs/research/raw/facts-2026-11-09.md`). Never claim Grudge beats its best source. The hedge rate stays 0.5; a change would be disclosed and labelled.
+- **x402:** one real mainnet payment, 0.038 USDC, digest `4f3bXYdmR1XYJTvVrm17HEat4aDSePvShTcqAZmeSnTY`, replay refused. Price 0.010 to 0.050 USDC (`priceAtomic`), rising with confidence. The payer needs no SUI; "zero gas" is not verified. The agent wallet holds about 3.057 USDC.
 - **Crowd:** no visitor picks yet, so the Crowd has not called.
-- The number source for all drafts is `docs/research/raw/facts-2026-11-08.md` (16:00 UTC Nov 8; the live board has moved on).
+- The number source for all drafts is `docs/research/raw/facts-2026-11-09.md` (08:03 UTC Nov 9; the drafts in `docs/SUBMISSION.md` and `docs/launch/` were corrected to it; the live board has moved on).
 
 ## Next (in order)
 1. **Done (Session 3):** the shared header and `/receipts` (see Now). Still unchecked on Receipts: the 768 layout and the running and failed states at 390 against `Receipts Step B`.
@@ -70,7 +70,8 @@
 - **Tests of app code** need the `@` alias, now in `vitest.config.mts`.
 
 ## Open questions
-- **The sources' ranking moved.** At 07:36 UTC Nov 9 in btc-5m Grudge (0.1875) was nominally ahead of DeepBook alone (0.1897), gain +0.0022 ± 0.0054, not clear of zero; in btc-15m Kalshi alone (0.1682) beat Grudge (0.1711). `docs/SUBMISSION.md` and the pitches still say "DeepBook alone scores better"; recompute them from `/api/receipts` before pasting.
+- **The sources' ranking moved.** At 07:36 UTC Nov 9 in btc-5m Grudge (0.1875) was nominally ahead of DeepBook alone (0.1897), gain +0.0022 ± 0.0054, not clear of zero; in btc-15m Kalshi alone (0.1682) beat Grudge (0.1711). At 08:03 UTC: btc-5m Grudge 0.1823 vs DeepBook 0.1838, btc-15m Grudge 0.1741 vs Kalshi 0.1720, all inside the intervals. `docs/SUBMISSION.md` and `docs/launch/*` now say "about level with the best single source" and use those numbers; recompute once more at the cutoff.
+- **The wipe is not rehearsed since the bucket fix.** `amnesia` is empty, and the pitch, blog and video (0:08 to 0:20) say the server was wiped and rebuilt on real data. That ran on Nov 8, before `cad6d98`. Run `POST /api/admin/amnesia` on production before filming and confirm the weights come back identical; until then the safe claim is the memory check (gap 0).
 - **The learning result is modest.** The pitch, README and video must say exactly that.
 - btc-5m split rate: the DeepBook tie-break was **not** adopted (it would score Polymarket against DeepBook's own feed; the void rate fell to about 10%).
 - Does `nancy197/sibyl` deploy or move to mainnet before Nov 10? The scheduled re-scan answers it.

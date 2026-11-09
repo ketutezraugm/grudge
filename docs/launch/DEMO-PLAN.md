@@ -1,6 +1,6 @@
 # Live demo plan
 
-Numbers: `docs/research/raw/facts-2026-11-08.md`. Re-read the live page before going on.
+Numbers: `docs/research/raw/facts-2026-11-09.md`. Re-read the live page before going on.
 
 ## Happy path
 
@@ -9,7 +9,7 @@ Numbers: `docs/research/raw/facts-2026-11-08.md`. Re-read the live page before g
 3. Open `/receipts`. Read the memory counts off the page.
 4. Press "Rebuild from Walrus and compare". Wait for the result; the gap should read 0.
 5. Run amnesia with the admin token. Return to the board and watch it refill. Say what was restored.
-6. Show the learning chart. State the claim as it is: slightly ahead of an equal-weight average, not statistically clear, DeepBook alone scores better.
+6. Show the learning chart. State the claim as it is: slightly ahead of an equal-weight average, not statistically clear, and level with the best single source.
 7. Open `/agents`. Run `pnpm agent` in a terminal. Open the Suiscan digest.
 8. If a window locks during the demo, stay on the board and let it resolve.
 9. Close on [REPO URL] and [BLOG URL].

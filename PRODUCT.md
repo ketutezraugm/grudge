@@ -32,7 +32,7 @@ A public record of who was right. Every resolved window, every scoreboard snapsh
 
 - Public API: `GET /api/board`, `POST /api/pick`, `GET /api/receipts`, `POST /api/verify-memory`, x402 `GET /api/consensus`. Contracts: `docs/API.md`.
 - Per-source Brier figures are not an API field today; they are computed from the ledger the board returns.
-- Learning claim: slightly ahead of an equal-weight average, not statistically clear (the 95% interval includes zero), and DeepBook alone scores better. Never claim Grudge beats its best source or the market.
+- Learning claim: slightly ahead of an equal-weight average, not statistically clear (the 95% interval includes zero), and about level with the best single source (which source is best changes from day to day). Never claim Grudge beats its best source or the market.
 - The payer of an x402 call needs no SUI. "Zero gas" is not verified and is never written.
 - Tatum call counters reset on every deploy and are labelled "since the last deploy".
 - Vocabulary in copy and code: voice (the code calls them sources in copy), call, grudge, ledger, receipt, window, lock, resolve.

@@ -112,7 +112,7 @@ No springs. Animate only `transform`, `opacity` and SVG stroke offsets. Traces e
 
 - **From the field.** Crypto prediction entries look like trading dashboards: dark navy, neon up and down, candlesticks, rounded stat cards. One entry with the same core idea uses an oracle name and a mystical register; another uses paper and pencil. Ours reads as an instrument: weather-verification charts on a cobalt ground. Nobody else's page will look measured.
 - **From our own past.** The retired look (warm paper, serif, red pencil, stamps, a gauge) must not come back in any form. No dials, gauges or speedometers: a call is a station circle filled to its probability.
-- **The honest result is a feature.** Grudge is slightly ahead of an equal-weight average, not by a clear margin, and DeepBook alone scores better. A verification chart can show that plainly, and it must: never draw Grudge winning.
+- **The honest result is a feature.** Grudge is slightly ahead of an equal-weight average, not by a clear margin, and about level with the best single source. A verification chart can show that plainly, and it must: never draw Grudge winning.
 
 ## 4. Surfaces and order of work
 
@@ -224,7 +224,7 @@ Voice: a duty forecaster's log, with the grudge in the name doing the joke. Plai
 - Title: Receipts. Under it: "Everything Grudge remembers is on Walrus. Check it yourself."
 - Memory check: "Rebuild from Walrus and compare". Waiting: "Reading Walrus. This takes a few seconds." Result: "Rebuilt from snapshot #{n} and {n} records. Largest gap against the live weights: {gap}."
 - Amnesia: "Server wiped. {n} records restored from Walrus. Nothing forgiven." Empty: "No wipes logged yet."
-- Learning: "Brier score over the last {n} windows. Lower is better." Caption shape: "Grudge {a}, equal weights {b}, DeepBook alone {c}. Slightly ahead of the average; the interval includes zero. DeepBook alone is better."
+- Learning: "Brier score over the last {n} windows. Lower is better." Caption shape: "Grudge {a}, equal weights {b}, {best source} alone {c}. Slightly ahead of the average; the interval includes zero. {best source} alone is better (or no better, when Grudge's number is lower)."
 - Tatum: "{n} gRPC calls · {n} Data API calls since the last deploy."
 
 **Agents**

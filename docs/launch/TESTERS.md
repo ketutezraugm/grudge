@@ -15,7 +15,7 @@ Send this, nothing more:
 1. Open [LIVE URL]. Make a pick on any open window before it locks.
 2. Say in one sentence what Grudge does, without looking.
 3. What did you not understand?
-4. An agent can buy the consensus for 0.012 to 0.04 USDC. Would you? Why or why not?
+4. An agent can buy the consensus for 0.010 to 0.050 USDC. Would you? Why or why not?
 5. May I quote you, and under what name?
 
 ## Capture

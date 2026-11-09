@@ -1,6 +1,6 @@
 # Pitch and judge Q&A (draft, not final)
 
-Numbers from `research/raw/facts-2026-11-08.md`. Recheck against `/api/receipts` before recording.
+Numbers from `research/raw/facts-2026-11-09.md`. Recheck against `/api/receipts` before recording.
 
 ## Two-minute pitch
 
@@ -8,15 +8,15 @@ Markets forget. Grudge doesn't.
 
 Every five and fifteen minutes there is a question: will Bitcoin end this window higher than it started? Four voices answer it. DeepBook, an onchain prediction market on Sui. Polymarket. Kalshi. And the Crowd, which is whoever visits and picks.
 
-Grudge freezes their answers at a lock time. When the window ends, it writes down who was right and who was wrong, and it weights each voice by how right it has been. That record is the product, and it lives in Walrus Memory on mainnet. 267 memories so far: 148 records, 114 scoreboard snapshots, 5 lessons. None refused.
+Grudge freezes their answers at a lock time. When the window ends, it writes down who was right and who was wrong, and it weights each voice by how right it has been. That record is the product, and it lives in Walrus Memory on mainnet. 724 memories so far: 403 records, 307 scoreboard snapshots, 14 lessons. None refused.
 
 Here is the part we tested. We wiped the database, then rebuilt the weights from Walrus alone. They came back identical, a gap of zero.
 
-Here is what the memory has taught it. Over 54 disagreements of seven points or more on the five-minute market, DeepBook was closer 72% of the time. The board shows that lesson, and it reads it back from Walrus when you look.
+Here is what the memory has taught it. Over 130 disagreements of seven points or more on the five-minute market, DeepBook was closer 72% of the time. The board shows that lesson, and it reads it back from Walrus when you look.
 
-Does the learning work? Slightly. Over the last 100 windows Grudge scores a little better than an equal-weight average, and the gain is not statistically clear. DeepBook alone scores better than Grudge. We publish all three numbers.
+Does the learning work? Slightly. Over the last 100 windows Grudge scores a little better than an equal-weight average, and the gain is not statistically clear. The best single source scores about the same: Grudge is a little ahead of DeepBook alone on the five-minute market and a little behind Kalshi alone on the fifteen-minute one, and neither gap is clear. We publish all the numbers.
 
-Agents can buy the result. `GET /api/consensus` costs 0.012 to 0.04 USDC on Sui mainnet, rising with Grudge's confidence. The payer needs no SUI. We settled one real payment of 0.038 USDC, and a replay was refused. Our own agent buys only when voices disagree.
+Agents can buy the result. `GET /api/consensus` costs 0.010 to 0.050 USDC on Sui mainnet, rising with Grudge's confidence. The payer needs no SUI. We settled one real payment of 0.038 USDC, and a replay was refused. Our own agent buys only when voices disagree.
 
 Every read of the market and the chain goes through Tatum gRPC, throttled to three requests a second.
 
@@ -25,10 +25,10 @@ Every read of the market and the chain goes through Tatum gRPC, throttled to thr
 ## Questions
 
 **1. Does Grudge actually learn?**
-A little. Last 100 btc-5m windows, mean Brier: Grudge 0.1788, equal weights 0.1856, DeepBook alone 0.1736. The gain over equal weights is +0.0068 ± 0.0071, so the 95% interval includes zero. On btc-15m it is +0.0012 ± 0.0036. We call it slightly ahead, not proven.
+A little. Last 100 btc-5m windows, mean Brier: Grudge 0.1823, equal weights 0.1860, DeepBook alone 0.1838. The gain over equal weights is +0.0037 ± 0.0110, so the 95% interval includes zero. On btc-15m it is +0.0008 ± 0.0036, and Kalshi alone scores 0.1720 against Grudge's 0.1741. We call it slightly ahead, not proven.
 
-**2. Why not just use DeepBook alone, if it scores better?**
-For these last 100 windows that would have scored better, and we do not claim otherwise. Grudge's job is to decide how much to trust each voice as they change, and DeepBook carries 0.84 of the btc-5m weight. Whether weighting pays off over a longer run is not shown yet.
+**2. Why not just use the best single source, if it scores about the same?**
+On the fifteen-minute market Kalshi alone has scored a little better than Grudge over the last 100 windows, and we do not claim otherwise. Grudge's job is to decide how much to trust each voice as they change, and DeepBook carries 0.81 of the btc-5m weight. Whether weighting pays off over a longer run is not shown yet.
 
 **3. Why DeepBook?**
 It is an onchain market on Sui, readable through Tatum gRPC, so it fits both sponsors. It also gives a settled, public price to set against two offchain venues on the same window.
@@ -58,4 +58,4 @@ All market and chain reads go through Tatum gRPC behind one 3 rps throttle, BTC/
 No visitor has picked yet, so the Crowd has not called. Today the line rests on the market voices.
 
 **12. What is real and what is not?**
-Real: the mainnet memories, the 137 resolved windows (100 btc-5m, 37 btc-15m), the wipe-and-rebuild, the lessons, one settled payment. Not shown: a learning gain with a clear margin, outside buyers, any Crowd calls. Live odds before the lock are not built.
+Real: the mainnet memories, the 374 resolved windows (273 btc-5m, 101 btc-15m), the wipe-and-rebuild, the lessons, one settled payment. Not shown: a learning gain with a clear margin, outside buyers, any Crowd calls. Live odds before the lock are not built.
