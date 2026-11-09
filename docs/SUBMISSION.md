@@ -8,9 +8,9 @@ Numbers: `research/raw/facts-2026-11-09.md`. Recompute from `/api/receipts` befo
 | --- | --- |
 | Project name | Grudge |
 | One line | Markets forget. Grudge doesn't. |
-| Tatum account ID | [TATUM ACCOUNT ID] |
-| Sui address | [SUI ADDRESS] (treasury that receives payments) |
-| MEMWAL_AGENT_ID | [WALRUS DELEGATE KEY] |
+| Tatum account ID | 6aeee02146ca44fe36bd2e92 |
+| Sui address | 0x257c40edfb58d7e6574f0b7df816398db3f191fcaffcaefaaa6523a696f3f46e (treasury that receives payments) |
+| MEMWAL_AGENT_ID | 69ca178fa1c3a285164ca434d601e9bae6be2cc183ec376e1be3988b993c29f6 (hex; base64 acoXj6HDooUWTKQ01gHpuua+LMGD7DduG+OYi5k8KfY=) |
 | Live demo | [LIVE URL] |
 | Repo | [REPO URL] |
 | Video | [VIDEO URL] |

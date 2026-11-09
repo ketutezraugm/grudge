@@ -51,4 +51,4 @@ One real payment has settled: 0.038 USDC, digest 4f3bXYdmR1XYJTvVrm17HEat4aDSePv
 
 No visitor has picked yet, so the Crowd has not called. There are no live odds before the lock. The learning gain is not statistically clear.
 
-Walrus delegate key: [WALRUS DELEGATE KEY]. Tatum account: [TATUM ACCOUNT ID].
+Walrus delegate key: 69ca178fa1c3a285164ca434d601e9bae6be2cc183ec376e1be3988b993c29f6. Tatum account: 6aeee02146ca44fe36bd2e92.
