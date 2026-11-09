@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { type KeyboardEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { SiteHeader } from "../site-header";
 import { useLayout } from "./breakpoint";
 import { type Clock, countdown, makeClock } from "./clock";
@@ -228,16 +228,39 @@ export function Board() {
   );
   const legendVoices = stations.map((station) => station.voice);
 
+  // Arrow keys move between the tabs (roving tabindex), so Tab goes past them in one stop.
+  const arrowBetweenTabs = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    const last = CATEGORIES.length - 1;
+    const next =
+      event.key === "ArrowRight"
+        ? (index + 1) % CATEGORIES.length
+        : event.key === "ArrowLeft"
+          ? (index + last) % CATEGORIES.length
+          : event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? last
+              : null;
+    const target = next === null ? undefined : CATEGORIES[next];
+    if (next === null || !target) return;
+    event.preventDefault();
+    setCategory(target.id);
+    event.currentTarget.parentElement
+      ?.querySelectorAll<HTMLButtonElement>("[role=tab]")
+      [next]?.focus();
+  };
   const tabs = (
     <div role="tablist" aria-label="Category" className="tabs">
-      {CATEGORIES.map(({ id, label }) => (
+      {CATEGORIES.map(({ id, label }, index) => (
         <button
           key={id}
           type="button"
           role="tab"
           aria-selected={category === id}
+          tabIndex={category === id ? 0 : -1}
           className="tab"
           onClick={() => setCategory(id)}
+          onKeyDown={(event) => arrowBetweenTabs(event, index)}
         >
           {label} <span className="narrow">{data?.categories[id].resolved ?? ""}</span>
         </button>
