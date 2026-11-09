@@ -49,6 +49,15 @@
 .bar__judges--end {
   margin-left: auto;
 }
+/*
+ * On a phone the link always takes its own row, as it does once the status text is long. Left to
+ * wrap on its own it sits beside the short "Loading." and drops a row when the real status lands,
+ * which pushes the whole page down.
+ */
+.bar[data-layout="phone"] .bar__judges--end {
+  flex: 0 0 100%;
+  text-align: right;
+}
 
 .brand {
   display: flex;

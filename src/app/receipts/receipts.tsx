@@ -229,7 +229,9 @@ export function Receipts() {
   if (layout === null) return <div className="receipts" />;
 
   const phone = layout === "phone";
-  const totals = data ? totalsOf(data.memories.totals) : null;
+  // The totals are drawn before the data arrives, with dashes for numbers, so the page keeps its
+  // height and the memory check beside or below them does not jump when the numbers land.
+  const totals = totalsOf(data?.memories.totals ?? {});
   const blobs = data ? blobsOf(data.memories.latest, clock, phone ? 8 : 12) : [];
   const payments = data ? paymentsOf(data.payments, clock).slice(0, 3) : [];
   const wipes = data ? amnesiaOf(data.amnesia, clock) : [];
@@ -248,22 +250,20 @@ export function Receipts() {
           <p className="receipts__lead">
             Everything Grudge remembers is on Walrus. Check it yourself.
           </p>
-          {totals ? (
-            <>
-              <div className="totals">
-                {totals.cards.map((card) => (
-                  <div key={card.label} className="total">
-                    <span className="total__n wide">{card.n}</span>
-                    <span className="total__label">{card.label}</span>
-                    <span className="total__sub">{card.sub}</span>
-                  </div>
-                ))}
+          <div className="totals">
+            {totals.cards.map((card) => (
+              <div key={card.label} className="total">
+                <span className="total__n wide">{data ? card.n : "–"}</span>
+                <span className="total__label">{card.label}</span>
+                <span className="total__sub">{card.sub}</span>
               </div>
-              <span className="receipts__tally">
-                <span className="narrow">{totals.all}</span> blobs on Walrus mainnet.{" "}
-                <span className="narrow">{totals.waiting}</span> still writing.
-              </span>
-            </>
+            ))}
+          </div>
+          {data ? (
+            <span className="receipts__tally">
+              <span className="narrow">{totals.all}</span> blobs on Walrus mainnet.{" "}
+              <span className="narrow">{totals.waiting}</span> still writing.
+            </span>
           ) : (
             <span className="receipts__tally" role="status">
               {failed ? "Couldn't reach Grudge. Reload to try again." : "Loading."}
@@ -551,9 +551,12 @@ export function Receipts() {
         </>
       ) : null}
 
-      <footer className="receipts__foot">
-        <Link href="/">Every grudge is a Walrus blob. Board ↗</Link>
-      </footer>
+      {/* Drawn with the content it closes: before that it would sit under a short page and jump. */}
+      {data || failed ? (
+        <footer className="receipts__foot">
+          <Link href="/">Every grudge is a Walrus blob. Board ↗</Link>
+        </footer>
+      ) : null}
     </div>
   );
 }
