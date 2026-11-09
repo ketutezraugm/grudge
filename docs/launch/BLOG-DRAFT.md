@@ -2,6 +2,8 @@
 
 [BLOG URL] / [LIVE URL] / [REPO URL]
 
+Cover image: `docs/launch/assets/blog-cover.png` (1600x900, no title text; upload it with the post). Learning figure: `docs/launch/assets/learning-figure.png`, with Nov 9 numbers; recompute before it is used.
+
 I built Grudge for the Walrus x Tatum Total Recall hackathon. It asks four voices the same question every five and every fifteen minutes: will Bitcoin end this window higher than it started? The voices are DeepBook (an onchain prediction market on Sui), Polymarket, Kalshi and the Crowd, which is visitors' picks. It writes down who was right.
 
 ## The loop
@@ -16,7 +18,7 @@ Every resolved window becomes a record. Records are queued in a Postgres outbox 
 
 Each memory is a readable sentence followed by `#grudge {json}`, so a person can read it and the decoder can parse it exactly.
 
-The test I cared about was the wipe. The amnesia endpoint writes everything pending, checks that Walrus alone reproduces the live weights, and only then deletes the learned state. Then it rebuilds from the latest snapshot plus later records. The weights came back identical. [Rerun the wipe on production before publishing, since the hourly namespaces came after the first run, and keep this sentence only if the weights match again.] A fresh process gets empty recall answers for its first seconds, so the restore asks again after 2 seconds, up to four times.
+The test I cared about was the wipe. The amnesia endpoint writes everything pending, checks that Walrus alone reproduces the live weights, and only then deletes the learned state. Then it rebuilds from the latest snapshot plus later records. The weights came back identical. I reran it on production after the hourly namespaces landed: 124 windows and 15 lessons came back, with a largest difference of 0. A fresh process gets empty recall answers for its first seconds, so the restore asks again after 2 seconds, up to four times.
 
 ## What it learned
 

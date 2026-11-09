@@ -1,5 +1,7 @@
 # Grudge
 
+![Grudge: markets forget, Grudge doesn't](docs/launch/assets/readme-banner.png)
+
 Markets forget. Grudge doesn't.
 
 Every five and fifteen minutes, four sources call whether Bitcoin ends the window higher: DeepBook (an onchain market on Sui), Polymarket, Kalshi, and the Crowd, which is whatever visitors pick. Grudge freezes their calls at a lock time, waits for the result, and grades each call like a weather forecast. A source that keeps missing counts for less next time. The record lives on Walrus.

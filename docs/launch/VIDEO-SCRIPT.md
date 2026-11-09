@@ -24,7 +24,7 @@ Numbers come from `docs/research/raw/facts-2026-11-09.md`. Recompute from `/api/
 6. Memory check result (1:30).
 7. Receipts learning figure, 5 min (1:50).
 8. Terminal agent run, Suiscan digest page (2:10).
-9. Title and closing cards from Claude Design.
+9. Title and closing cards from Claude Design: `docs/launch/assets/video-title.png` (0:00) and `docs/launch/assets/video-close.png` (2:25), both 1920x1080.
 
 ## Recording checklist
 
