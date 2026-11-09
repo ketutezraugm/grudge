@@ -1,6 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Grudge">
   <rect width="64" height="64" fill="#2B54C9"/>
-  <circle cx="28" cy="38" r="13" fill="none" stroke="#FFFFFF" stroke-width="4"/>
-  <path d="M28 38 L28 25 A13 13 0 1 1 15 38 Z" fill="#FFFFFF"/>
-  <path d="M37.5 28.5 L54 10 M54 10 L62 18 M48.5 16.2 L54.5 22.2" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(2 0)" color="#FFFFFF">
+    <circle cx="42" cy="45" r="13" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+    <path d="M42 45 L42 32 A13 13 0 1 1 29 45 Z" fill="#FFFFFF"/>
+    <path d="M35.5 33.74 L19 5.16 L2.25 8.12" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="butt" stroke-linejoin="miter"/>
+    <path d="M23.5 12.95 L6.75 15.91" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+    <path d="M28 20.75 L19.13 22.32" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+  </g>
 </svg>
