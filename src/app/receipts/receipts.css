@@ -1,0 +1,579 @@
+/*
+ * Receipts, built from the approved Claude Design export (design-from-claude/Receipts*.dc.html).
+ * Values are the design's; tokens come from globals.css. Same three layouts as the Board:
+ * desk (1200 and up), tab (600 to 1199) and phone (under 600). Orange never appears here.
+ */
+
+.receipts {
+  --m: 56px;
+  --top-pad: 40px;
+  --top-gap: 40px;
+  --section-pad: 72px;
+  --total-size: 120px;
+  --total-gap: 32px;
+  --title-size: 52px;
+  --table-pad: 16px;
+  --row-h: 36px;
+  --fig-pad: 24px;
+  --label-w: 136px;
+  --learning-pad: 88px;
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  min-height: 100vh;
+  background: var(--cobalt);
+  color: var(--white);
+  font-family: var(--font-body);
+  padding-bottom: 1px;
+  position: relative;
+}
+.receipts[data-layout="tab"] {
+  --m: 32px;
+  --total-size: 88px;
+  --label-w: 104px;
+}
+.receipts[data-layout="phone"] {
+  --m: 16px;
+  --top-pad: 24px;
+  --top-gap: 32px;
+  --section-pad: 48px;
+  --total-size: 40px;
+  --total-gap: 16px;
+  --title-size: 32px;
+  --table-pad: 8px;
+  --row-h: 44px;
+  --fig-pad: 16px;
+  --label-w: 96px;
+  --learning-pad: 56px;
+}
+
+.receipts h1,
+.receipts h2 {
+  margin: 0;
+}
+.receipts h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Top: the title and totals, beside the memory check */
+
+.top,
+.mid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+.top {
+  padding: var(--top-pad) var(--m) 0;
+  gap: var(--top-gap) 24px;
+}
+.mid {
+  padding: var(--section-pad) var(--m) 0;
+  gap: 48px 24px;
+}
+.receipts[data-layout="desk"] .top,
+.receipts[data-layout="desk"] .mid {
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+}
+.top__left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.receipts__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 100%;
+  font-size: var(--title-size);
+  line-height: 1.1;
+}
+.receipts__lead {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+.totals {
+  margin-top: var(--total-gap);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.receipts[data-layout="desk"] .totals {
+  grid-template-columns: repeat(3, max-content);
+  column-gap: 72px;
+}
+.total {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.total__n {
+  font-size: var(--total-size);
+  line-height: 1;
+}
+.total__label {
+  font-size: 15px;
+  font-weight: 700;
+}
+.total__sub {
+  font-size: 14px;
+  color: var(--white-muted);
+  line-height: 1.35;
+}
+.receipts__tally {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--white-muted);
+}
+.receipts__tally .narrow {
+  color: var(--white);
+}
+
+/* Memory check */
+
+.check {
+  background: var(--chart);
+  color: var(--ink);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+}
+.receipts[data-layout="desk"] .check {
+  min-height: 380px;
+}
+.check__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.check__head h2 {
+  font-size: 18px;
+}
+.check__lead {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.45;
+}
+.check__note {
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+.check__note .narrow {
+  color: var(--ink);
+}
+.check__strong {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+.check__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+.check__link {
+  font-size: 14px;
+  padding: 12px 0;
+}
+
+.button {
+  align-self: flex-start;
+  height: 48px;
+  padding: 0 20px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.button--solid {
+  border: none;
+  background: var(--ink);
+  color: var(--white);
+}
+.button--outline {
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+}
+.button--small {
+  height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+/* The endpoint reports no progress, so this only moves to show it is waiting. */
+.wait {
+  height: 3px;
+  background: rgb(15 27 68 / 0.18);
+  position: relative;
+  overflow: hidden;
+}
+.wait::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 30%;
+  background: var(--ink);
+  animation: wait 1.2s var(--ease-standard) infinite;
+}
+@keyframes wait {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(340%);
+  }
+}
+
+.log th,
+.log td {
+  padding: 0 12px 0 0;
+  text-align: left;
+  font-weight: 400;
+  min-height: var(--row-h);
+  height: var(--row-h);
+  border-top: 1px solid var(--grid);
+  white-space: nowrap;
+}
+.compare {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.compare th,
+.compare td {
+  height: 32px;
+  padding: 0;
+  text-align: left;
+  font-weight: 400;
+  border-top: 1px solid var(--grid);
+}
+.compare thead th {
+  height: 28px;
+  border-top: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+.compare th:not(:first-child),
+.compare td {
+  width: 72px;
+  text-align: right;
+}
+
+/* Middle: the blob log, beside payments, amnesia and Tatum */
+
+.blobs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.section-head__note {
+  font-size: 14px;
+  color: var(--white-muted);
+}
+
+.log {
+  background: var(--chart);
+  color: var(--ink);
+  padding: 4px var(--table-pad) 8px;
+}
+.log table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.log thead th {
+  height: 36px;
+  border-top: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+.log .log__end {
+  padding-right: 0;
+  text-align: right;
+}
+.log .log__ref {
+  width: 100%;
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.kind {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.blob-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  text-decoration: none;
+}
+.blob-link:hover {
+  text-decoration: underline;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  min-width: 0;
+}
+.side__block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.side__note {
+  font-size: 14px;
+  color: var(--white-muted);
+  line-height: 1.4;
+}
+.side__time {
+  color: var(--white);
+}
+
+.payment {
+  background: var(--chart);
+  color: var(--ink);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.payment__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.payment__amount {
+  font-size: 24px;
+}
+.payment__status {
+  font-size: 14px;
+  font-weight: 700;
+}
+.payment__meta {
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+.payment__meta .narrow {
+  color: var(--ink);
+}
+.payment__link {
+  align-self: flex-start;
+  font-size: 14px;
+  padding: 8px 0;
+}
+
+.empty {
+  border: 1.5px dashed var(--white);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.counts {
+  display: flex;
+  gap: 32px;
+}
+.count {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+.count__n {
+  font-size: 32px;
+}
+
+/* Learning */
+
+.learning {
+  margin-top: var(--learning-pad);
+  padding: 0 var(--m);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.learning__head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 300;
+}
+.learning__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+}
+.receipts:not([data-layout="phone"]) .learning__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.figure {
+  margin: 0;
+  background: var(--chart);
+  color: var(--ink);
+  padding: var(--fig-pad);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+.figure__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.figure__title {
+  font-size: 18px;
+  font-weight: 700;
+}
+.figure__sub {
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+.figure__sub .narrow {
+  color: var(--ink);
+}
+.figure__caption {
+  font-size: 15px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.plot {
+  display: grid;
+  grid-template-columns: var(--label-w) minmax(0, 1fr) 56px;
+  gap: 12px;
+  height: 36px;
+  align-items: center;
+}
+.plot--axis,
+.plot--note {
+  height: auto;
+  align-items: start;
+}
+.plot__name {
+  font-size: 14px;
+}
+.plot__name[data-strong="true"],
+.plot__value[data-strong="true"] {
+  font-weight: 700;
+}
+.plot__value {
+  text-align: right;
+  font-size: 14px;
+}
+.plot__field {
+  position: relative;
+  height: 36px;
+}
+.tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--grid);
+}
+.plot__rule {
+  position: absolute;
+  top: 17px;
+  left: 0;
+  height: 1.5px;
+  background: var(--ink);
+  opacity: 0.35;
+}
+.plot__dot {
+  position: absolute;
+  top: 11px;
+}
+.plot__axis {
+  position: relative;
+  height: 20px;
+}
+.plot__tick {
+  position: absolute;
+  top: 4px;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.gains {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid var(--grid);
+  padding-top: 16px;
+}
+.gains__title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+.gains__ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+.gain__zero {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1.5px;
+  background: var(--ink);
+}
+.gain__span {
+  position: absolute;
+  top: 17px;
+  height: 1.5px;
+  background: var(--ink);
+}
+.gain__cap {
+  position: absolute;
+  top: 12px;
+  width: 1.5px;
+  height: 12px;
+  background: var(--ink);
+}
+.gain__dot {
+  position: absolute;
+  top: 12px;
+}
+
+.receipts__foot {
+  margin-top: 72px;
+  padding: 20px var(--m) 40px;
+  border-top: 1.5px solid var(--white);
+  font-size: 15px;
+}
+.receipts__foot a {
+  display: inline-block;
+  padding: 12px 0;
+}

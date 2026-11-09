@@ -1,0 +1,430 @@
+{
+  "asOf": "2026-11-09T05:49:48.105Z",
+  "memories": {
+    "totals": {
+      "scoreboard": {
+        "done": 279
+      },
+      "lesson": {
+        "done": 13
+      },
+      "record": {
+        "done": 368
+      }
+    },
+    "latest": [
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-279",
+        "blobId": "onVNUJrzSina91723vFuU17hctt9VG8XIB2Fw3qOF8E",
+        "at": "2026-11-09T05:46:53.405Z",
+        "url": "https://walruscan.com/mainnet/blob/onVNUJrzSina91723vFuU17hctt9VG8XIB2Fw3qOF8E"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794202800",
+        "blobId": "94dam51U-3A5asWmxXn8bV02du34ZjBhNm5FO4vJ4tA",
+        "at": "2026-11-09T05:46:53.398Z",
+        "url": "https://walruscan.com/mainnet/blob/94dam51U-3A5asWmxXn8bV02du34ZjBhNm5FO4vJ4tA"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-278",
+        "blobId": "lzTpk6bQr7nVylyrkp0BQ48RdTYdWyJaYqM5YgM5VvA",
+        "at": "2026-11-09T05:42:03.957Z",
+        "url": "https://walruscan.com/mainnet/blob/lzTpk6bQr7nVylyrkp0BQ48RdTYdWyJaYqM5YgM5VvA"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794202500",
+        "blobId": "7Sypkgm2r5oNQVS7cmoJTQ7Ut0Hc-V8LYu3GCvlgH_k",
+        "at": "2026-11-09T05:42:03.949Z",
+        "url": "https://walruscan.com/mainnet/blob/7Sypkgm2r5oNQVS7cmoJTQ7Ut0Hc-V8LYu3GCvlgH_k"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-277",
+        "blobId": "ps79ODn95tDqYCB6YD1xDBBhK2weO9zJsWvXonxloRw",
+        "at": "2026-11-09T05:36:53.101Z",
+        "url": "https://walruscan.com/mainnet/blob/ps79ODn95tDqYCB6YD1xDBBhK2weO9zJsWvXonxloRw"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794202200",
+        "blobId": "bCAHezcdxj6yxVuFXKVYlQxNNj9O0Q8NA-JFJNuDvYk",
+        "at": "2026-11-09T05:36:53.090Z",
+        "url": "https://walruscan.com/mainnet/blob/bCAHezcdxj6yxVuFXKVYlQxNNj9O0Q8NA-JFJNuDvYk"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-15m:1794202200",
+        "blobId": "FgHVzt96bfncDdUhid2pYQCaS3PelNOUuNl2JhvdnwE",
+        "at": "2026-11-09T05:36:53.078Z",
+        "url": "https://walruscan.com/mainnet/blob/FgHVzt96bfncDdUhid2pYQCaS3PelNOUuNl2JhvdnwE"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-276",
+        "blobId": "2h8ye-YDwj-jWWJNXU8N1reiQrv3EP-KJ5566eHkhgk",
+        "at": "2026-11-09T05:31:48.973Z",
+        "url": "https://walruscan.com/mainnet/blob/2h8ye-YDwj-jWWJNXU8N1reiQrv3EP-KJ5566eHkhgk"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794201900",
+        "blobId": "spXkZidb1JwVhSiISnjLLXwuOVEgXWkqH0lgkBE4tCg",
+        "at": "2026-11-09T05:31:48.964Z",
+        "url": "https://walruscan.com/mainnet/blob/spXkZidb1JwVhSiISnjLLXwuOVEgXWkqH0lgkBE4tCg"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-275",
+        "blobId": "DMVz8xlCz3T4R1R1PXiCDEuE6cd7_cWJ3eS-ilLOJTs",
+        "at": "2026-11-09T05:26:52.563Z",
+        "url": "https://walruscan.com/mainnet/blob/DMVz8xlCz3T4R1R1PXiCDEuE6cd7_cWJ3eS-ilLOJTs"
+      },
+      {
+        "kind": "lesson",
+        "ref": "lesson-btc-5m-250",
+        "blobId": "OQFhDEciIk2ylolZzWnwrjeGJ3-XNxrMu53j3VjHL0U",
+        "at": "2026-11-09T05:26:52.556Z",
+        "url": "https://walruscan.com/mainnet/blob/OQFhDEciIk2ylolZzWnwrjeGJ3-XNxrMu53j3VjHL0U"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794201600",
+        "blobId": "oPytWWaCXRVYKEubNkL9npT8w5nz6tQa-WDO8y2hzWo",
+        "at": "2026-11-09T05:26:52.548Z",
+        "url": "https://walruscan.com/mainnet/blob/oPytWWaCXRVYKEubNkL9npT8w5nz6tQa-WDO8y2hzWo"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-274",
+        "blobId": "DAwlJwuyds7-ztG9ZM4fQ03PVlmArcQSuS5jiaCM_ZY",
+        "at": "2026-11-09T05:21:53.959Z",
+        "url": "https://walruscan.com/mainnet/blob/DAwlJwuyds7-ztG9ZM4fQ03PVlmArcQSuS5jiaCM_ZY"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794201300",
+        "blobId": "YqTINLATvaKpqUxinK23t7WghhzJ-nEuyTCti73eJhA",
+        "at": "2026-11-09T05:21:53.951Z",
+        "url": "https://walruscan.com/mainnet/blob/YqTINLATvaKpqUxinK23t7WghhzJ-nEuyTCti73eJhA"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-15m:1794201300",
+        "blobId": "gCiwHdR5ds2O92tSNkR7UR7-YjePFyN8EdiBw_S4nZk",
+        "at": "2026-11-09T05:21:53.909Z",
+        "url": "https://walruscan.com/mainnet/blob/gCiwHdR5ds2O92tSNkR7UR7-YjePFyN8EdiBw_S4nZk"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-273",
+        "blobId": "sdJ97lKtv0DC-uddacvNozM1zUiT4zkAWOsJEQzVqbY",
+        "at": "2026-11-09T05:16:47.148Z",
+        "url": "https://walruscan.com/mainnet/blob/sdJ97lKtv0DC-uddacvNozM1zUiT4zkAWOsJEQzVqbY"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794201000",
+        "blobId": "QvaGBCmT5oGEzzVe2v3UaIQbwujI_1i7zxS22WMdM34",
+        "at": "2026-11-09T05:16:47.141Z",
+        "url": "https://walruscan.com/mainnet/blob/QvaGBCmT5oGEzzVe2v3UaIQbwujI_1i7zxS22WMdM34"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-272",
+        "blobId": "bDGwzjvOWUo2H-oFxcT403Q4RUo3HoErAkfYmaYY1RQ",
+        "at": "2026-11-09T05:11:48.585Z",
+        "url": "https://walruscan.com/mainnet/blob/bDGwzjvOWUo2H-oFxcT403Q4RUo3HoErAkfYmaYY1RQ"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794200700",
+        "blobId": "3qmmuYHtAe9x4rxQH0MNqyUHQskcntXMoqBn4EECOCg",
+        "at": "2026-11-09T05:11:48.576Z",
+        "url": "https://walruscan.com/mainnet/blob/3qmmuYHtAe9x4rxQH0MNqyUHQskcntXMoqBn4EECOCg"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-271",
+        "blobId": "30kn2smLSEZNPucfPu8f7jmUGJzNk8xpflFH8Ziini0",
+        "at": "2026-11-09T05:06:53.983Z",
+        "url": "https://walruscan.com/mainnet/blob/30kn2smLSEZNPucfPu8f7jmUGJzNk8xpflFH8Ziini0"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794200400",
+        "blobId": "eNSdBZSbr51Jdm0M0C7cW97VA8YAiW-Zu_ovNd5VsUQ",
+        "at": "2026-11-09T05:06:53.976Z",
+        "url": "https://walruscan.com/mainnet/blob/eNSdBZSbr51Jdm0M0C7cW97VA8YAiW-Zu_ovNd5VsUQ"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-15m:1794200400",
+        "blobId": "lRDb1iWX7znXK6ecS2PcvWph6h5OcG_W9qC5BvQig44",
+        "at": "2026-11-09T05:06:53.969Z",
+        "url": "https://walruscan.com/mainnet/blob/lRDb1iWX7znXK6ecS2PcvWph6h5OcG_W9qC5BvQig44"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-270",
+        "blobId": "_6KWx6njwuuJWiCb-Fmws4rv_XGkBvIDR-oYWlNrCgU",
+        "at": "2026-11-09T05:02:03.262Z",
+        "url": "https://walruscan.com/mainnet/blob/_6KWx6njwuuJWiCb-Fmws4rv_XGkBvIDR-oYWlNrCgU"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794200100",
+        "blobId": "nFBKzPDm9ABV2-YJGaUHTkzz9GJWzOOM3ijedG4msis",
+        "at": "2026-11-09T05:02:03.254Z",
+        "url": "https://walruscan.com/mainnet/blob/nFBKzPDm9ABV2-YJGaUHTkzz9GJWzOOM3ijedG4msis"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-269",
+        "blobId": "KVR4NhaePJEe9TsJevHKWJfjkNBxXk70t8mSiD0lhzE",
+        "at": "2026-11-09T04:56:53.110Z",
+        "url": "https://walruscan.com/mainnet/blob/KVR4NhaePJEe9TsJevHKWJfjkNBxXk70t8mSiD0lhzE"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794199800",
+        "blobId": "IGtzfPSaWjdAnmnlnQJilWEbE3OXAbSBRz-0kKgIBsA",
+        "at": "2026-11-09T04:56:53.102Z",
+        "url": "https://walruscan.com/mainnet/blob/IGtzfPSaWjdAnmnlnQJilWEbE3OXAbSBRz-0kKgIBsA"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-268",
+        "blobId": "jtEo3qaB3Qx3OcDAvnls8BLIdDNqakC24r-lGg7q1ZM",
+        "at": "2026-11-09T04:51:52.013Z",
+        "url": "https://walruscan.com/mainnet/blob/jtEo3qaB3Qx3OcDAvnls8BLIdDNqakC24r-lGg7q1ZM"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794199500",
+        "blobId": "1lVOsex-_Ap1r60xKijG4zvgRM9tA0mjDz59AkXVt10",
+        "at": "2026-11-09T04:51:52.005Z",
+        "url": "https://walruscan.com/mainnet/blob/1lVOsex-_Ap1r60xKijG4zvgRM9tA0mjDz59AkXVt10"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-15m:1794199500",
+        "blobId": "IIY5WShahWTrpnkuqHKAKi7HJVE18-iLnRexYg8xFSM",
+        "at": "2026-11-09T04:51:51.985Z",
+        "url": "https://walruscan.com/mainnet/blob/IIY5WShahWTrpnkuqHKAKi7HJVE18-iLnRexYg8xFSM"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-267",
+        "blobId": "PivIxT85laeCQiZNWzx6cmfsXkVaWe6DoY4VgpA5sds",
+        "at": "2026-11-09T04:46:53.517Z",
+        "url": "https://walruscan.com/mainnet/blob/PivIxT85laeCQiZNWzx6cmfsXkVaWe6DoY4VgpA5sds"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794199200",
+        "blobId": "JS0j2B0og10IC6t2g3zh3AvzM5qSctk9trcIYEIY_kY",
+        "at": "2026-11-09T04:46:53.489Z",
+        "url": "https://walruscan.com/mainnet/blob/JS0j2B0og10IC6t2g3zh3AvzM5qSctk9trcIYEIY_kY"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-266",
+        "blobId": "vjRNkWkTJppEcGyPQLoQ7TUrxgWteUouVAqxcBL5Jy4",
+        "at": "2026-11-09T04:41:54.067Z",
+        "url": "https://walruscan.com/mainnet/blob/vjRNkWkTJppEcGyPQLoQ7TUrxgWteUouVAqxcBL5Jy4"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794198900",
+        "blobId": "O8TMGDTN57VrPJblu6ywmBtaHrr74LvYyI2zFnCtqZA",
+        "at": "2026-11-09T04:41:54.049Z",
+        "url": "https://walruscan.com/mainnet/blob/O8TMGDTN57VrPJblu6ywmBtaHrr74LvYyI2zFnCtqZA"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-265",
+        "blobId": "v1D5U67Ms8eDScf2E6iy9cNw3zxDTq3aDGX7lh7TIXs",
+        "at": "2026-11-09T04:36:52.054Z",
+        "url": "https://walruscan.com/mainnet/blob/v1D5U67Ms8eDScf2E6iy9cNw3zxDTq3aDGX7lh7TIXs"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794198600",
+        "blobId": "ICz77TQYbGfk-QJNtTj4d2hRb1Vi3vEFqh1tIN4feic",
+        "at": "2026-11-09T04:36:52.047Z",
+        "url": "https://walruscan.com/mainnet/blob/ICz77TQYbGfk-QJNtTj4d2hRb1Vi3vEFqh1tIN4feic"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-15m:1794198600",
+        "blobId": "0B7APFaeB-tec6DFxC4IVmsXa2a-4TQUnm7kZZPOz6Q",
+        "at": "2026-11-09T04:36:52.040Z",
+        "url": "https://walruscan.com/mainnet/blob/0B7APFaeB-tec6DFxC4IVmsXa2a-4TQUnm7kZZPOz6Q"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-264",
+        "blobId": "LuX-hgmLJAsPLXPbPSWpfAcMZtfNXwYNT0BvrsShiAo",
+        "at": "2026-11-09T04:31:48.150Z",
+        "url": "https://walruscan.com/mainnet/blob/LuX-hgmLJAsPLXPbPSWpfAcMZtfNXwYNT0BvrsShiAo"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794198300",
+        "blobId": "cPk9R-0YcSVyu27FROmSGN76gc2fwYyDpLd1q7Zi_1g",
+        "at": "2026-11-09T04:31:48.141Z",
+        "url": "https://walruscan.com/mainnet/blob/cPk9R-0YcSVyu27FROmSGN76gc2fwYyDpLd1q7Zi_1g"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-263",
+        "blobId": "uYqiiAJ2InQHmioleHzhCtvMiaDFjGZgi1C6U2jNSeI",
+        "at": "2026-11-09T04:26:42.672Z",
+        "url": "https://walruscan.com/mainnet/blob/uYqiiAJ2InQHmioleHzhCtvMiaDFjGZgi1C6U2jNSeI"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794198000",
+        "blobId": "ZO2OfvzT030XxGH7UCgNeZAhp2HOshK0PHURoGEQ1dg",
+        "at": "2026-11-09T04:26:42.665Z",
+        "url": "https://walruscan.com/mainnet/blob/ZO2OfvzT030XxGH7UCgNeZAhp2HOshK0PHURoGEQ1dg"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-262",
+        "blobId": "aaMuIDMpZ8_U8Vs-DEeHQohsZZIVig1MdGJpUfYUyp4",
+        "at": "2026-11-09T04:21:46.916Z",
+        "url": "https://walruscan.com/mainnet/blob/aaMuIDMpZ8_U8Vs-DEeHQohsZZIVig1MdGJpUfYUyp4"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794197700",
+        "blobId": "H2GBO-XiML4UhY-j9JIaOWgrlOSodK-vSvGCXTxgoAQ",
+        "at": "2026-11-09T04:21:46.907Z",
+        "url": "https://walruscan.com/mainnet/blob/H2GBO-XiML4UhY-j9JIaOWgrlOSodK-vSvGCXTxgoAQ"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-15m:1794197700",
+        "blobId": "e6PtdBePvFvraPwQc_qPmJm6Zd8Gu79gHYMyrZWBuBk",
+        "at": "2026-11-09T04:21:46.891Z",
+        "url": "https://walruscan.com/mainnet/blob/e6PtdBePvFvraPwQc_qPmJm6Zd8Gu79gHYMyrZWBuBk"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-261",
+        "blobId": "gANYBL-n2vZOsR16jmh72KIBNXGB-BHT_zpDCdJf98E",
+        "at": "2026-11-09T04:16:42.415Z",
+        "url": "https://walruscan.com/mainnet/blob/gANYBL-n2vZOsR16jmh72KIBNXGB-BHT_zpDCdJf98E"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794197400",
+        "blobId": "TDogoa1sSvGW_s8LA04UBH-5cypFQ3vCVClsWrw-jvs",
+        "at": "2026-11-09T04:16:42.408Z",
+        "url": "https://walruscan.com/mainnet/blob/TDogoa1sSvGW_s8LA04UBH-5cypFQ3vCVClsWrw-jvs"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-260",
+        "blobId": "s3hyvYDgfFWcuxuV_IRL2q432ey-54xkiI7x7OooyNI",
+        "at": "2026-11-09T04:11:43.715Z",
+        "url": "https://walruscan.com/mainnet/blob/s3hyvYDgfFWcuxuV_IRL2q432ey-54xkiI7x7OooyNI"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794197100",
+        "blobId": "0eHDRv1I_FB2o1WT0UdUAhkAdEWZEKfDrUTDLODzSkA",
+        "at": "2026-11-09T04:11:43.705Z",
+        "url": "https://walruscan.com/mainnet/blob/0eHDRv1I_FB2o1WT0UdUAhkAdEWZEKfDrUTDLODzSkA"
+      },
+      {
+        "kind": "scoreboard",
+        "ref": "scoreboard-259",
+        "blobId": "vXxs6rvRILNEq_0S3buQRSvPogZ31N6O1vpHLirhU1U",
+        "at": "2026-11-09T04:06:47.473Z",
+        "url": "https://walruscan.com/mainnet/blob/vXxs6rvRILNEq_0S3buQRSvPogZ31N6O1vpHLirhU1U"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-5m:1794196800",
+        "blobId": "x2rdV1U2Lrcx7rBbqlSHYcDc5pE0k8OnYWc7tBelG9w",
+        "at": "2026-11-09T04:06:47.467Z",
+        "url": "https://walruscan.com/mainnet/blob/x2rdV1U2Lrcx7rBbqlSHYcDc5pE0k8OnYWc7tBelG9w"
+      },
+      {
+        "kind": "record",
+        "ref": "btc-15m:1794196800",
+        "blobId": "R6dp1EamFh_cV3EJlCZmgI28onKawwfAckOwiM8UJo8",
+        "at": "2026-11-09T04:06:47.459Z",
+        "url": "https://walruscan.com/mainnet/blob/R6dp1EamFh_cV3EJlCZmgI28onKawwfAckOwiM8UJo8"
+      }
+    ]
+  },
+  "payments": [
+    {
+      "digest": "4f3bXYdmR1XYJTvVrm17HEat4aDSePvShTcqAZmeSnTY",
+      "payer": "0x132643284ef48e256d2b31fe7907d87032f7be6c21086e68df89d36ba536d76c",
+      "amount": "38000",
+      "category": "btc-5m",
+      "status": "settled",
+      "settledAt": "2026-11-08T15:33:20.335Z",
+      "url": "https://suiscan.xyz/mainnet/tx/4f3bXYdmR1XYJTvVrm17HEat4aDSePvShTcqAZmeSnTY"
+    }
+  ],
+  "tatum": {
+    "grpc": 0,
+    "data": 1,
+    "sinceStartedAt": "2026-11-09T05:48:06.953Z"
+  },
+  "amnesia": [],
+  "learning": {
+    "btc-5m": {
+      "windows": 100,
+      "grudge": 0.17281831850751211,
+      "equalWeight": 0.17795934690514906,
+      "voices": {
+        "deepbook": 0.17244895387499837,
+        "polymarket": 0.2377934999999999
+      },
+      "best": {
+        "voice": "deepbook",
+        "mean": 0.17244895387499837
+      },
+      "gainOverEqual": {
+        "mean": 0.005141028397636856,
+        "halfWidth": 0.010669880352691487
+      },
+      "gainOverBest": {
+        "mean": -0.0003693646325137627,
+        "halfWidth": 0.005321767884797259
+      }
+    },
+    "btc-15m": {
+      "windows": 92,
+      "grudge": 0.1818150763353353,
+      "equalWeight": 0.18310568398313584,
+      "voices": {
+        "deepbook": 0.1809282448571275,
+        "polymarket": 0.2241358695652174,
+        "kalshi": 0.17944067119565213
+      },
+      "best": {
+        "voice": "kalshi",
+        "mean": 0.17944067119565213
+      },
+      "gainOverEqual": {
+        "mean": 0.001290607647800591,
+        "halfWidth": 0.0036183969196699898
+      },
+      "gainOverBest": {
+        "mean": -0.0023744051396831405,
+        "halfWidth": 0.009421637386850546
+      }
+    }
+  }
+}
