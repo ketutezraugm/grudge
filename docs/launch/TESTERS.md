@@ -43,3 +43,31 @@ Picks go through `POST /api/pick` with `{ question, direction, confidence }`. Th
 ## Count
 
 Testers who picked: [N, from the table]. Report this number only after counting the table.
+
+## Drafts to send (written for the owner to reword)
+
+### Direct message
+
+Hey, I built something for the Walrus x Tatum hackathon and need a few people to try it for two minutes. It's called Grudge. DeepBook, Polymarket, Kalshi and visitors each call whether Bitcoin ends the next 5 or 15 minutes higher, and Grudge writes down who was wrong. Could you open https://grudge-l19c.onrender.com, pick up or down on an open window before it locks, and tell me in one sentence what you think it does? The confusing parts are the useful part.
+
+### Hackathon channel
+
+Grudge is live: https://grudge-l19c.onrender.com. Every 5 and 15 minutes it grades DeepBook, Polymarket and Kalshi on the same Bitcoin call, stores each result on Walrus Memory (mainnet), and lets agents pay for the consensus in USDC over x402. If you have 2 minutes, make one pick on an open window and tell me what you didn't understand.
+
+### X post (attach a real Board screenshot taken at post time; 254 characters, with the link counted as 23)
+
+Markets forget. I built one that doesn't.
+
+Grudge asks DeepBook, Polymarket and Kalshi the same Bitcoin question every 5 minutes, writes each wrong call to @WalrusFoundation, and reads the chain through @Tatum_io. Make a call too: https://grudge-l19c.onrender.com
+
+### Follow-up reply under the X post (after you have counted real picks)
+
+[N] people have made picks so far. The Crowd is the only voice with no record yet, so it is the one to beat.
+
+Fill [N] only from the Testers table, after counting it.
+
+### Notes
+
+- The channel post and DM ask for one pick; the board allows three per address per window.
+- People on one network share an address, so groups should pick one at a time.
+- The learning result is modest (slightly ahead of an equal-weight average, interval includes zero). None of these drafts claims more.
