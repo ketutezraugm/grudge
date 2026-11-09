@@ -77,6 +77,8 @@
   grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
 }
 .top__left {
+  /* The totals size themselves from this column, not the screen: see the container query below. */
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -101,8 +103,10 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
 }
+/* A row that wraps, not a grid: when a count gains a digit the last figure drops a line instead of running under the memory check. */
 .receipts[data-layout="desk"] .totals {
-  grid-template-columns: repeat(3, max-content);
+  display: flex;
+  flex-wrap: wrap;
   column-gap: 72px;
 }
 .total {
@@ -131,6 +135,19 @@
 }
 .receipts__tally .narrow {
   color: var(--white);
+}
+/*
+ * Three 120px figures and their 72px gaps need about 820px. Between 1200 and about 1400 wide the
+ * left column is narrower than that, and the figures ran under the memory check. Below that width
+ * they shrink with the column (the 1440 layout is untouched).
+ */
+@container (max-width: 860px) {
+  .receipts[data-layout="desk"] .totals {
+    column-gap: 6cqw;
+  }
+  .receipts[data-layout="desk"] .total__n {
+    font-size: 12.5cqw;
+  }
 }
 
 /* Memory check */
