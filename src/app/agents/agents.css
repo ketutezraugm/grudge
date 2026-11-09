@@ -1,0 +1,344 @@
+/*
+ * Agents, built from the approved Claude Design export (design-from-claude/Agents.dc.html).
+ * Same three layouts as the Board. Orange never appears here. Classes are prefixed ag- so they
+ * cannot meet the Receipts page's when both stylesheets are loaded.
+ */
+
+.agents {
+  --m: 56px;
+  --top-pad: 40px;
+  --steps-pad: 72px;
+  --code-pad: 64px;
+  --paid-pad: 72px;
+  --title-size: 52px;
+  --price-size: 120px;
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  min-height: 100vh;
+  background: var(--cobalt);
+  color: var(--white);
+  font-family: var(--font-body);
+  padding-bottom: 1px;
+  position: relative;
+}
+.agents[data-layout="tab"] {
+  --m: 32px;
+}
+.agents[data-layout="phone"] {
+  --m: 16px;
+  --top-pad: 24px;
+  --steps-pad: 48px;
+  --code-pad: 48px;
+  --paid-pad: 48px;
+  --title-size: 32px;
+  --price-size: 88px;
+}
+.agents h1,
+.agents h2 {
+  margin: 0;
+}
+
+.ag-top {
+  padding: var(--top-pad) var(--m) 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px 24px;
+  align-items: end;
+}
+.agents[data-layout="desk"] .ag-top {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+}
+.ag-top__left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ag-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 100%;
+  font-size: var(--title-size);
+  line-height: 1.1;
+}
+.ag-lead {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+.ag-price {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ag-price__label {
+  font-size: 14px;
+  color: var(--white-muted);
+}
+.ag-price__row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.ag-price__n {
+  font-size: var(--price-size);
+  line-height: 1;
+}
+/* A range ("0.010 to 0.050") is longer than a price, so it is set smaller to stay on one line. */
+.ag-price__n[data-range="true"] {
+  font-size: calc(var(--price-size) / 2.4);
+  line-height: 1.1;
+}
+.ag-price__unit {
+  font-size: 24px;
+}
+.ag-price__note {
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-stretch: 75%;
+  font-size: 14px;
+  color: var(--white-muted);
+}
+
+/* The five steps hang on a rail: across on wide screens, down the side on a phone. */
+.ag-steps {
+  padding: var(--steps-pad) var(--m) 0;
+}
+.ag-steps ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0 24px;
+}
+.ag-steps ol::before {
+  content: "";
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 23.25px;
+  height: 1.5px;
+  background: var(--white);
+}
+.ag-steps li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+.ag-steps svg {
+  flex: none;
+  background: var(--cobalt);
+  border-radius: 50%;
+}
+.ag-step__text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ag-step__n {
+  font-size: 14px;
+  color: var(--white-muted);
+}
+.ag-step__title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+.agents[data-layout="phone"] .ag-steps ol {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+}
+.agents[data-layout="phone"] .ag-steps ol::before {
+  left: 23.25px;
+  right: auto;
+  top: 24px;
+  bottom: 24px;
+  width: 1.5px;
+  height: auto;
+}
+.agents[data-layout="phone"] .ag-steps li {
+  flex-direction: row;
+}
+.agents[data-layout="phone"] .ag-step__text {
+  padding-top: 4px;
+}
+
+/* Request and response */
+
+.ag-samples {
+  padding: var(--code-pad) var(--m) 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+}
+.agents[data-layout="desk"] .ag-samples {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.ag-sample {
+  margin: 0;
+  background: var(--chart);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.ag-sample figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 8px 8px 16px;
+  border-bottom: 1px solid var(--grid);
+  font-size: 14px;
+  font-weight: 700;
+}
+.ag-sample button {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 400;
+}
+.ag-sample__scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink) transparent;
+}
+.ag-sample pre {
+  margin: 0;
+  padding: 16px;
+  font-family: var(--font-display);
+  font-stretch: 75%;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Paid calls */
+
+.ag-paid {
+  padding: var(--paid-pad) var(--m) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ag-paid__head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+.ag-paid__head h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+.ag-paid__head .wide {
+  font-size: 24px;
+}
+.ag-table {
+  background: var(--chart);
+  color: var(--ink);
+  padding: 4px 16px 8px;
+}
+.ag-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.ag-table th,
+.ag-table td {
+  padding: 0 16px 0 0;
+  text-align: left;
+  font-weight: 400;
+  height: 44px;
+  border-top: 1px solid var(--grid);
+  white-space: nowrap;
+}
+.ag-table thead th {
+  height: 36px;
+  border-top: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+.ag-table .ag-table__payer {
+  width: 100%;
+}
+.ag-table a {
+  display: inline-block;
+  padding: 12px 0;
+}
+.ag-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 0;
+  border-top: 1px solid var(--grid);
+}
+.ag-card:first-child {
+  border-top: none;
+}
+.ag-card__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+.ag-card__amount {
+  font-size: 18px;
+}
+.ag-card__meta {
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+.ag-card__meta .narrow {
+  color: var(--ink);
+}
+.ag-card a {
+  align-self: flex-start;
+  font-size: 14px;
+  padding: 12px 0;
+}
+
+.ag-empty {
+  border: 1.5px dashed var(--white);
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.ag-empty > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ag-empty__title {
+  font-size: 18px;
+  font-weight: 700;
+}
+.ag-empty__note {
+  font-size: 14px;
+  color: var(--white-muted);
+}
+
+.ag-foot {
+  margin-top: 72px;
+  padding: 20px var(--m) 40px;
+  border-top: 1.5px solid var(--white);
+  font-size: 15px;
+}
+.ag-foot a {
+  display: inline-block;
+  padding: 12px 0;
+}

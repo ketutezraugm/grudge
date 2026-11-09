@@ -1,0 +1,112 @@
+/* The 404, from design-from-claude/NotFound.dc.html. */
+
+.lost {
+  --m: 56px;
+  --top-pad: 96px;
+  --gap: 40px;
+  --mark: 120px;
+  --code: 120px;
+  --headline: 32px;
+  --chart-h: 200px;
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: var(--cobalt);
+  color: var(--white);
+  font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+}
+.lost[data-layout="tab"] {
+  --m: 32px;
+}
+.lost[data-layout="phone"] {
+  --m: 16px;
+  --top-pad: 48px;
+  --gap: 28px;
+  --mark: 72px;
+  --code: 88px;
+  --headline: 24px;
+  --chart-h: 120px;
+}
+.lost__main {
+  flex: 1;
+  padding: var(--top-pad) var(--m) var(--m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+.lost__mark {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.lost[data-layout="phone"] .lost__mark {
+  gap: 16px;
+}
+.lost__mark svg {
+  flex: none;
+  width: var(--mark);
+  height: var(--mark);
+}
+.lost__code {
+  font-size: var(--code);
+  line-height: 1;
+}
+.lost__text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 640px;
+}
+.lost h1 {
+  margin: 0;
+  font-size: var(--headline);
+  font-weight: 700;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+.lost__note {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--white-muted);
+}
+.lost__path {
+  color: var(--white);
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+.lost__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  font-size: 15px;
+}
+.lost__links a {
+  padding: 12px 0;
+}
+.lost__home {
+  font-weight: 700;
+}
+.lost__chart {
+  margin-top: auto;
+  background: var(--chart);
+  height: var(--chart-h);
+  position: relative;
+  overflow: hidden;
+}
+.lost__rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--grid);
+}
+.lost__dot {
+  position: absolute;
+  right: 48px;
+  top: 12px;
+}
