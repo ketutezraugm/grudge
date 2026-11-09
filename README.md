@@ -72,3 +72,7 @@ Stack: Next.js, TypeScript (strict, Zod at every boundary), Postgres through Dri
 - `src/server/x402`: the payment path.
 - `src/app`: the three pages and the API routes.
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) has the data flow and the runbook; [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md) lists what the numbers can and cannot support.
+
+## Licence
+
+MIT. See [LICENSE](LICENSE).
