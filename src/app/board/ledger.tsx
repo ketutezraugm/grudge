@@ -20,12 +20,16 @@ const WORD_OF_RESULT = { up: "▲ up", down: "▼ down", split: "split", void: "
 const SHORT_OF_RESULT = { up: "▲", down: "▼", split: "split", void: "void" } as const;
 const SKELETON_ROWS = [1, 2, 3, 4, 5, 6, 7, 8];
 
-/** Window, result and line, then the blob. The call columns share what is left. */
+/**
+ * Window, result and line, then the blob. The call columns share what is left. On tablet and phone
+ * the design puts an 8px gap between its columns, outside their widths; a table cell keeps its
+ * padding inside the width, so those columns are the design's width plus the 8px.
+ */
 const FIXED_WIDTHS: Record<Layout, { window: number; result: number; line: number; blob: number }> =
   {
     desk: { window: 120, result: 88, line: 88, blob: 200 },
-    tab: { window: 112, result: 64, line: 56, blob: 44 },
-    phone: { window: 40, result: 36, line: 32, blob: 44 },
+    tab: { window: 120, result: 72, line: 64, blob: 44 },
+    phone: { window: 48, result: 44, line: 40, blob: 44 },
   };
 
 interface LedgerProps {
