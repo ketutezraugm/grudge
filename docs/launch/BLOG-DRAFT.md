@@ -12,11 +12,11 @@ A window with fewer than two voices, or locked more than 30 seconds late, is voi
 
 ## What goes into Walrus
 
-Every resolved window becomes a record. Records are queued in a Postgres outbox and sent to Walrus Memory in bulk, 20 at most, every five minutes. Before a flush the worker queues a scoreboard snapshot taken in one repeatable-read transaction. Every 25 windows, the voices' disagreements of 7+ points are counted and the result is stored as a lesson. As of Nov 9: 724 memories on mainnet, 403 records, 307 snapshots, 14 lessons, none refused.
+Every resolved window becomes a record. Records are queued in a Postgres outbox and sent to Walrus Memory in bulk, 20 at most, every five minutes or sooner once 15 are waiting. Records and snapshots go into one namespace per hour, because recall returns the memories most similar to a query, not the newest ones. Before a flush the worker queues a scoreboard snapshot taken in one repeatable-read transaction. Every 25 windows, the voices' disagreements of 7+ points are counted and the result is stored as a lesson. As of Nov 9: 724 memories on mainnet, 403 records, 307 snapshots, 14 lessons, none refused.
 
 Each memory is a readable sentence followed by `#grudge {json}`, so a person can read it and the decoder can parse it exactly.
 
-The test I cared about was the wipe. The amnesia endpoint writes everything pending, checks that Walrus alone reproduces the live weights, and only then deletes the learned state. Then it rebuilds from the latest snapshot plus later records. The weights came back identical. A fresh process gets empty recall answers for its first seconds, so the restore asks again after 2 seconds, up to four times.
+The test I cared about was the wipe. The amnesia endpoint writes everything pending, checks that Walrus alone reproduces the live weights, and only then deletes the learned state. Then it rebuilds from the latest snapshot plus later records. The weights came back identical. [Rerun the wipe on production before publishing, since the hourly namespaces came after the first run, and keep this sentence only if the weights match again.] A fresh process gets empty recall answers for its first seconds, so the restore asks again after 2 seconds, up to four times.
 
 ## What it learned
 
