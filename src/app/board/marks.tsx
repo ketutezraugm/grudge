@@ -41,15 +41,8 @@ export function Pie({
   label,
 }: PieProps) {
   const c = vb / 2;
-  return (
-    <svg
-      className="pie"
-      width={px}
-      height={px}
-      viewBox={`0 0 ${vb} ${vb}`}
-      role="img"
-      aria-label={label}
-    >
+  const drawing = (
+    <>
       <circle
         cx={c}
         cy={c}
@@ -60,6 +53,17 @@ export function Pie({
         strokeDasharray={p === null ? dash : undefined}
       />
       {p === null ? null : <path d={piePath(c, r, p)} fill={color(tone)} />}
+    </>
+  );
+  const box = `0 0 ${vb} ${vb}`;
+  // A pie with no label is decoration beside text that already says it, so it is hidden, not "img".
+  return label ? (
+    <svg className="pie" width={px} height={px} viewBox={box} role="img" aria-label={label}>
+      {drawing}
+    </svg>
+  ) : (
+    <svg className="pie" width={px} height={px} viewBox={box} aria-hidden="true">
+      {drawing}
     </svg>
   );
 }

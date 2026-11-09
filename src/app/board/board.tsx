@@ -77,7 +77,7 @@ function useBoard() {
   return { ...state, refresh: load };
 }
 
-function useWidth(): [(node: HTMLDivElement | null) => void, number] {
+function useWidth(): [(node: HTMLDivElement | null) => void, number, HTMLDivElement | null] {
   const [node, setNode] = useState<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(0);
   useEffect(() => {
@@ -88,7 +88,7 @@ function useWidth(): [(node: HTMLDivElement | null) => void, number] {
     observer.observe(node);
     return () => observer.disconnect();
   }, [node]);
-  return [setNode, width];
+  return [setNode, width, node];
 }
 
 const usd = (value: number) =>
@@ -154,7 +154,15 @@ export function Board() {
   const { data, fetchedAt, failed, refresh } = useBoard();
   const [category, setCategory] = useState<Category>("btc-15m");
   const clock = useMemo(() => makeClock(), []);
-  const [measure, measured] = useWidth();
+  const [measure, measured, scroller] = useWidth();
+
+  // The phone chart is wider than the screen and its point is the newest windows and the open one,
+  // which sit at the right edge. Start there, once the data is in; later polls leave the scroll alone.
+  const loaded = data !== null;
+  const onPhone = layout === "phone";
+  useEffect(() => {
+    if (onPhone && loaded && scroller) scroller.scrollLeft = scroller.scrollWidth;
+  }, [onPhone, loaded, scroller]);
 
   const board = data?.categories[category] ?? null;
   const view = useMemo(() => {
@@ -238,8 +246,15 @@ export function Board() {
   );
   const statusLine = (
     // The status is a live region: a visitor who loses the worker should hear that the numbers are old.
+    // While live, only "Live." is announced; the seconds tick every second and are for the eye.
     <span role="status" className="status" data-alert={health === "stale" || health === "offline"}>
-      {status}
+      {health === "live" ? (
+        <>
+          Live.<span aria-hidden="true"> Last pass {Math.floor(age / 1000)} s ago.</span>
+        </>
+      ) : (
+        status
+      )}
     </span>
   );
 

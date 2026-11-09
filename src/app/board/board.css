@@ -462,6 +462,8 @@
   width: auto;
 }
 .row-station__stat {
+  /* The design's 180px basis excludes the indent; border-box would let the stat stay beside the name. */
+  box-sizing: content-box;
   flex: 1 1 180px;
   padding-left: var(--sub);
   font-size: 14px;
@@ -547,6 +549,10 @@
 .ledger__table th:last-child,
 .ledger__table td:last-child {
   padding-right: 0;
+}
+/* The design right-aligns the Blob header over its right-aligned icon on tablet and phone. */
+.board:not([data-layout="desk"]) .ledger__table th:last-child {
+  text-align: right;
 }
 .ledger__table th.ledger__head-end,
 .ledger__table [data-quiet="false"] {
