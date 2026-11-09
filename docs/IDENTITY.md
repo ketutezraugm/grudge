@@ -1,6 +1,6 @@
 # Identity (locked 2026-11-08)
 
-The owner approved this at the PLAYBOOK v3 Phase 3 gate (~18:20 UTC): **the Hindcast world under the name Grudge**, with the per-source record row borrowed from Formline. Every later design step reads this file as the spec, not as inspiration. The three directions considered are in [DIRECTIONS.md](DIRECTIONS.md), and the style tiles are at https://claude.ai/artifact/NLRMhQgaFLEQsBfidcAtRR (artboard 2).
+The owner approved this at the PLAYBOOK v3 Phase 3 gate (~18:20 UTC): **the Hindcast world under the name Grudge**, with the per-source record row borrowed from Formline. Every later design step reads this file as the spec, not as inspiration. The three directions considered are in [archive/DIRECTIONS.md](archive/DIRECTIONS.md), and the style tiles are at https://claude.ai/artifact/NLRMhQgaFLEQsBfidcAtRR (artboard 2).
 
 ## Name and words
 

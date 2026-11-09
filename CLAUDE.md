@@ -15,7 +15,10 @@ Walrus x Tatum "Total Recall" hackathon entry. Submission closes **2026-11-10 17
 | `docs/PRD.md`              | Spec: scope, verified facts (§4), architecture, stack, schedule, acceptance criteria  | Scope or design changes. Same commit as the code change.                  |
 | `docs/HANDOFF.md`          | Live build state                                                                      | Every handoff (overwrite)                                                 |
 | `docs/DECISIONS.md`        | Why we chose X over Y                                                                 | Any decision that changes what or how we build (append)                   |
-| `docs/brand-guidelines.md` | Name, voice, colors, type, copy bank                                                  | Copy or visual changes                                                    |
+| `docs/IDENTITY.md`         | Locked visual identity: exact tokens, motion, "Not this" list                         | The owner re-picks a direction (Phase 3 gate)                             |
+| `docs/DESIGN-BRIEF.md`     | The brief sent to Claude Design: surfaces, assets, states, copy                       | Design scope changes                                                      |
+| `docs/brand-guidelines.md` | Name, voice, copy bank, writing rules (no visuals)                                    | Copy changes                                                              |
+| `docs/archive/`            | Superseded records (Phase 3 directions). Never read unless asked                      | A doc is superseded                                                       |
 | `docs/RESEARCH.md`         | Competitors, hackathon rules, sources                                                 | Rarely; new competitive intel                                             |
 | `docs/ARCHITECTURE.md`     | As-built technical reference: modules, data flow, memory format, x402 flow, runbook   | A module lands or changes. Describe the code that exists, never the plan. |
 | `docs/API.md`              | Public HTTP API, including the x402 flow for agents                                   | An endpoint's contract changes                                            |

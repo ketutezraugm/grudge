@@ -3,7 +3,8 @@
 > **Markets forget. Grudge doesn't.**
 > Version 1.0 · 2026-11-07 · Owner: solo builder · Status: **Approved for build**
 > This document is the single source of truth for the project. When code and this doc disagree, fix one of them on purpose and never let the two drift apart.
-> Brand and voice: [brand-guidelines.md](brand-guidelines.md).
+> Brand voice and copy: [brand-guidelines.md](brand-guidelines.md). Visual identity: [IDENTITY.md](IDENTITY.md).
+> **UI wording in this document (gauge, tally marks, stamps, "Grudge Book") is superseded by IDENTITY.md and DESIGN-BRIEF.md as of 2026-11-08.** Scope, architecture and acceptance criteria stand.
 
 ---
 
@@ -716,33 +717,8 @@ The X thread and LinkedIn post use the hook in [brand-guidelines.md §7](brand-g
 
 Nothing may read as generic AI output. References are allowed as inspiration for one element at a time; never copy a whole layout or design.
 
-**Visual direction: "Grudge Book".** An accountant's ledger where every wrong call is written in red pencil. Light-first, no dark theme in v1.
+**Visual direction.** Locked in [IDENTITY.md](IDENTITY.md): the Hindcast world under the name Grudge, chosen at the playbook v3 Phase 3 gate on 2026-11-08. The earlier "Grudge Book" direction (paper, red pencil, stamps) is retired, and so is the UI vocabulary built on it (gauge, tally marks, stamps, source cards, ledger) wherever it appears in this document. Read those words as the idea (a board of calls, each source's record, a disagreement, a recalled lesson); the look comes from [DESIGN-BRIEF.md](DESIGN-BRIEF.md) and the approved design.
 
-| Role                                      | Color   |
-| ----------------------------------------- | ------- |
-| Paper                                     | #F4EFE4 |
-| Ink (text)                                | #1E1A16 |
-| Ledger rule                               | #B9C7D3 |
-| Red pencil (wrong)                        | #C2361F |
-| Stamp green (right / forgiven)            | #2E6A4C |
-| Ink blue (memory, Walrus receipts, links) | #22385C |
-
-- Color means right or wrong, never direction.
-- **Type constraints:**
-  - a ledger or book serif for headings and window calls;
-  - tabular monospace or old-style figures for every number;
-  - a plain, readable text face for UI;
-  - no Inter, Space Grotesk, Poppins, or handwriting fonts.
-- **Marks are drawn, not typed.** Red-pencil strike-throughs, tally marks, rubber stamps (NOTED / FORGIVEN / SPLIT) and the ink-blue receipt tick are hand-built SVG. Stamps rotate 1–3°.
-- **Motion:** pencil strokes draw in on a wrong call; a stamp presses on forgiveness; the needle eases. All of it respects `prefers-reduced-motion`.
-- **Banned:**
-  - near-black backgrounds with neon accents
-  - purple-to-blue gradients
-  - glows, glassmorphism, blurred blobs
-  - emoji as UI icons
-  - default shadcn card grids
-  - centered hero + three feature cards
-  - stock 3D or illustration packs
 - **Assets are made, not stocked:** logo, marks, textures drawn as SVG; charts hand-built; screenshots taken from the real app.
 
 ### 15.2 Code authenticity
