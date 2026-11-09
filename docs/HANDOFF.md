@@ -51,7 +51,7 @@
 - [ ] Decide the Step C assets and whether to make the deck (Next 2).
 - [x] Humanizer pass skipped by the owner (2026-11-09); the owner does the final prose pass.
 - [ ] Say when to push the local docs commits.
-- [ ] **Where `pnpm agent --loop` runs until Nov 16** (a machine that stays on; the key stays off Render; budget 2 USDC; it buys only when voices disagree). Not started.
+- [x] `pnpm agent --loop` started 2026-11-09 ~09:50 UTC on the owner's laptop as a hidden detached process (pid 11072; log `C:SERSEZRADGRUDGE-AGENT-LOOP.LOG`). FIRST PURCHASE SETTLED: 0.039 USDC, DIGEST `DHJ7VOX85GYUSJEOATHTYXDPRJEOAI2A66YH3ESWW2FB`. IT BUYS AT MOST EVERY 30 MIN AND ONLY WHEN VOICES DISAGREE, STOPS AT 2 USDC, AND DIES IF THE LAPTOP SLEEPS OR RESTARTS (RERUN `PNPM AGENT --LOOP`; THE BUDGET COUNTER RESTARTS AT 0 PER RUN, SO CHECK THE WALLET BALANCE FIRST). RECOMPUTE THE PAYMENT COUNT AND TOTAL FROM `/API/RECEIPTS` AT THE CUTOFF.
 - [ ] Tatum dashboard: credit use and a paid-plan decision. (Account ID `6aeee02146ca44fe36bd2e92` is in the drafts.)
 - [x] Delegate public key set in the drafts: `69ca178f…c29f6` (hex, verified against the key derived from `MEMWAL_PRIVATE_KEY`).
 - [ ] 5 to 10 people to make picks once the board is shared, so the Crowd has a record; an X post with a real screenshot tagging @Tatum_io and @WalrusFoundation; when the repo goes public.
