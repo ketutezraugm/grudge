@@ -2,7 +2,7 @@
 
 [BLOG URL] / https://grudge-l19c.onrender.com / https://github.com/ketutezraugm/grudge / Demo video: https://youtu.be/3QriWD1SdVA
 
-Cover image: `docs/launch/assets/blog-cover.png` (1600x900, no title text; upload it with the post). Learning figure: `docs/launch/assets/learning-figure.png`, with Nov 9 numbers; recompute before it is used.
+Cover image: `docs/launch/assets/blog-cover.png` (1600x900, no title text; upload it with the post). Do not upload `docs/launch/assets/learning-figure.png`: it still shows the 9 November numbers. Use the live Receipts figure or the table below instead.
 
 I built Grudge for the Walrus x Tatum Total Recall hackathon. It asks four voices the same question every five and every fifteen minutes: will Bitcoin end this window higher than it started? The voices are DeepBook (an onchain prediction market on Sui), Polymarket, Kalshi and the Crowd, which is visitors' picks. It writes down who was right.
 
@@ -26,14 +26,16 @@ The main lesson on btc-5m reads "DeepBook was closer 83% of the time" over 121 d
 
 ## Did learning help?
 
-Barely. I scored the line that was stored at lock time against the same calls averaged with equal trust, and against each voice alone, over the last 100 windows at 10:12 UTC on 10 November (Brier, lower is better):
+Partly. I scored the line stored at lock time against the same calls averaged with equal trust, and against each voice alone, over the last 100 windows at 10:12 UTC on 10 November (Brier, lower is better):
 
 | | Grudge | Equal weights | Best source alone |
 | --- | --- | --- | --- |
 | btc-5m | 0.140 | 0.157 | DeepBook 0.139 |
 | btc-15m | 0.128 | 0.133 | DeepBook 0.120 |
 
-The gain over equal weights is +0.0171 on 5m, where the 95% interval excludes zero, and +0.0052 on 15m, where it includes zero. Against the best single source, DeepBook, Grudge is 0.0008 behind on 5m and 0.0045 behind on 15m, so it has not beaten its best voice. After my wipe test the live Receipts page counts only the windows since, so its intervals are wider. I have not shown that weighting by track record pays here.
+Against an equal-weight average, Grudge gains +0.0171 on 5m, and the 95% interval excludes zero. On 15m the gain is +0.0052 and the interval includes zero, so I cannot call it. Against the best single voice, DeepBook, Grudge is 0.0008 behind on 5m and 0.0045 behind on 15m. Weighting by track record beats treating the voices alike on the shorter window. It has not beaten simply following DeepBook.
+
+After my wipe test the live Receipts page counts only the windows since, so its intervals are wider and both include zero. The table above is the 10:12 UTC snapshot, the one on screen in the video.
 
 Two limits. Memory only changes weights; it does not change what Grudge asks. And in normal running the board reads Postgres, with Walrus used at cold boot, in the public verify check and for lesson recall.
 
@@ -49,6 +51,6 @@ Six real payments have settled, 0.251 USDC in total, the latest 0.047 USDC at 10
 
 ## What is not done
 
-No visitor has picked yet, so the Crowd has not called. There are no live odds before the lock. The learning gain is not statistically clear.
+The Crowd's picks so far are mine, so it has no record worth weighing. There are no live odds before the lock. Grudge beats an equal-weight average on 5-minute windows, not on 15-minute ones, and it does not beat DeepBook alone.
 
 Walrus delegate key: 69ca178fa1c3a285164ca434d601e9bae6be2cc183ec376e1be3988b993c29f6. Tatum account: 6aeee02146ca44fe36bd2e92.
