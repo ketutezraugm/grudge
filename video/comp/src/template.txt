@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Grudge demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/CustomEase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@hyperframes/core@0.8.206/dist/hyperframe.runtime.iife.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,100..800&family=Atkinson+Hyperlegible+Next:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Grudge tokens (IDENTITY.md); every value below comes from the approved storyboard boards and reveal A. */
+      :root {
+        --cobalt: #2b54c9;
+        --chart: #d9ece6;
+        --ink: #0f1b44;
+        --white: #ffffff;
+        --white-muted: #dce4fa;
+        --display: "Martian Mono", ui-monospace, monospace;
+        --text: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--cobalt);
+        color: var(--white);
+        font-family: var(--text);
+      }
+      #main {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--cobalt);
+      }
+      .clip {
+        position: absolute;
+      }
+      .ground {
+        inset: 0;
+        background: var(--chart);
+      }
+      /* Footage windows: the take scaled and offset inside a clipped frame (no radius, no shadow) */
+      .win {
+        position: absolute;
+        overflow: hidden;
+        visibility: hidden;
+        opacity: 0;
+      }
+      .win video {
+        position: absolute;
+        max-width: none;
+      }
+      /* Text beats: Martian Mono 88 px, in by axis (S-boards, sheet) */
+      .beat {
+        font-family: var(--display);
+        font-size: 88px;
+        line-height: 96px;
+        white-space: nowrap;
+        color: var(--white);
+        --wdth: 112.5;
+        --wght: 800;
+        font-variation-settings:
+          "wdth" var(--wdth),
+          "wght" var(--wght);
+      }
+      .beat-top {
+        left: 56px;
+        top: 32px;
+      }
+      .beat-top2 {
+        left: 56px;
+        top: 24px;
+      }
+      .beat-col {
+        left: 56px;
+        top: 132px;
+      }
+      .beat-box {
+        left: 56px;
+        top: 56px;
+        background: var(--cobalt);
+        padding: 16px 32px;
+      }
+      /* Captions: Atkinson 40 px, bottom-centred 96 px above the edge, cobalt band */
+      .cap {
+        left: 0;
+        bottom: 96px;
+        width: 1920px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: var(--text);
+        font-weight: 400;
+        font-size: 40px;
+        line-height: 52px;
+        text-align: center;
+        color: var(--white);
+        white-space: nowrap;
+      }
+      .cap.band div {
+        background: var(--cobalt);
+        padding: 0 32px;
+      }
+      .cap.band div:first-child {
+        padding-top: 12px;
+      }
+      .cap.band div:last-child {
+        padding-bottom: 12px;
+      }
+      /* Terminal panel (S03, S12): ink, Martian Mono narrow */
+      .term {
+        background: var(--ink);
+        padding: 32px;
+        font-family: var(--display);
+        font-size: 24px;
+        line-height: 36px;
+        font-stretch: 75%;
+        white-space: pre-wrap;
+        color: var(--white);
+      }
+      .tl {
+        opacity: 0;
+      }
+      .cursor,
+      .clickmark {
+        pointer-events: none;
+      }
+      /* Reveal A and the close (Claude Design, project/hf/reveal-a, S15) */
+      #reveal,
+      #close {
+        inset: 0;
+        background: var(--cobalt);
+      }
+      .mark {
+        position: absolute;
+        left: 552px;
+        top: 440px;
+        width: 204.8px;
+        height: 204.8px;
+        transform-origin: 140.8px 144px;
+      }
+      .mark svg,
+      #close svg {
+        display: block;
+        overflow: visible;
+      }
+      .ln {
+        fill: none;
+        stroke: var(--white);
+        stroke-width: 4;
+        stroke-linecap: butt;
+        stroke-linejoin: miter;
+      }
+      .fl {
+        fill: var(--white);
+      }
+      .wordmark {
+        position: absolute;
+        left: 806px;
+        top: 450px;
+        font-family: var(--display);
+        font-size: 120px;
+        line-height: 120px;
+        white-space: nowrap;
+        --wdth: 112.5;
+        --wght: 800;
+        font-variation-settings:
+          "wdth" var(--wdth),
+          "wght" var(--wght);
+      }
+      .motto {
+        position: absolute;
+        left: 809px;
+        top: 586px;
+        font-family: var(--text);
+        font-weight: 400;
+        font-size: 40px;
+        line-height: 48px;
+        white-space: nowrap;
+      }
+      #reveal .okta,
+      #m-wedge,
+      #word,
+      #motto,
+      #close .okta {
+        opacity: 0;
+      }
+      #m-staff {
+        stroke-dasharray: 51.01 52.01;
+        stroke-dashoffset: 51.51;
+      }
+      #m-barb2 {
+        stroke-dasharray: 18.01 19.01;
+        stroke-dashoffset: 18.51;
+      }
+      #m-barb3 {
+        stroke-dasharray: 10.01 11.01;
+        stroke-dashoffset: 10.51;
+      }
+      #close .url {
+        position: absolute;
+        left: 168px;
+        top: 545px;
+        font-family: var(--display);
+        font-size: 88px;
+        line-height: 96px;
+        font-weight: 800;
+        font-stretch: 112.5%;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main" data-composition-id="main" data-width="1920" data-height="1080" data-start="0" data-duration="/*TOTAL*/">
+<!--CLIPS-->
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      gsap.registerPlugin(CustomEase);
+      CustomEase.create("enter", "0.2,0,0,1");
+      CustomEase.create("exit", "0.4,0,1,1");
+      CustomEase.create("standard", "0.2,0,0.2,1");
+      var INSTANT = 0.1;
+      var QUICK = 0.2;
+      var DELIBERATE = 0.4;
+      var tl = gsap.timeline({ paused: true });
+/*TIMELINE*/
+      tl.set({}, {}, TOTAL_END);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

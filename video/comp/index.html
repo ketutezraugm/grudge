@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Grudge demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/CustomEase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@hyperframes/core@0.8.206/dist/hyperframe.runtime.iife.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,100..800&family=Atkinson+Hyperlegible+Next:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Grudge tokens (IDENTITY.md); every value below comes from the approved storyboard boards and reveal A. */
+      :root {
+        --cobalt: #2b54c9;
+        --chart: #d9ece6;
+        --ink: #0f1b44;
+        --white: #ffffff;
+        --white-muted: #dce4fa;
+        --display: "Martian Mono", ui-monospace, monospace;
+        --text: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--cobalt);
+        color: var(--white);
+        font-family: var(--text);
+      }
+      #main {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--cobalt);
+      }
+      .clip {
+        position: absolute;
+      }
+      .ground {
+        inset: 0;
+        background: var(--chart);
+      }
+      /* Footage windows: the take scaled and offset inside a clipped frame (no radius, no shadow) */
+      .win {
+        position: absolute;
+        overflow: hidden;
+        visibility: hidden;
+        opacity: 0;
+      }
+      .win video {
+        position: absolute;
+        max-width: none;
+      }
+      /* Text beats: Martian Mono 88 px, in by axis (S-boards, sheet) */
+      .beat {
+        font-family: var(--display);
+        font-size: 88px;
+        line-height: 96px;
+        white-space: nowrap;
+        color: var(--white);
+        --wdth: 112.5;
+        --wght: 800;
+        font-variation-settings:
+          "wdth" var(--wdth),
+          "wght" var(--wght);
+      }
+      .beat-top {
+        left: 56px;
+        top: 32px;
+      }
+      .beat-top2 {
+        left: 56px;
+        top: 24px;
+      }
+      .beat-col {
+        left: 56px;
+        top: 132px;
+      }
+      .beat-box {
+        left: 56px;
+        top: 56px;
+        background: var(--cobalt);
+        padding: 16px 32px;
+      }
+      /* Captions: Atkinson 40 px, bottom-centred 96 px above the edge, cobalt band */
+      .cap {
+        left: 0;
+        bottom: 96px;
+        width: 1920px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: var(--text);
+        font-weight: 400;
+        font-size: 40px;
+        line-height: 52px;
+        text-align: center;
+        color: var(--white);
+        white-space: nowrap;
+      }
+      .cap.band div {
+        background: var(--cobalt);
+        padding: 0 32px;
+      }
+      .cap.band div:first-child {
+        padding-top: 12px;
+      }
+      .cap.band div:last-child {
+        padding-bottom: 12px;
+      }
+      /* Terminal panel (S03, S12): ink, Martian Mono narrow */
+      .term {
+        background: var(--ink);
+        padding: 32px;
+        font-family: var(--display);
+        font-size: 24px;
+        line-height: 36px;
+        font-stretch: 75%;
+        white-space: pre-wrap;
+        color: var(--white);
+      }
+      .tl {
+        opacity: 0;
+      }
+      .cursor,
+      .clickmark {
+        pointer-events: none;
+      }
+      /* Reveal A and the close (Claude Design, project/hf/reveal-a, S15) */
+      #reveal,
+      #close {
+        inset: 0;
+        background: var(--cobalt);
+      }
+      .mark {
+        position: absolute;
+        left: 552px;
+        top: 440px;
+        width: 204.8px;
+        height: 204.8px;
+        transform-origin: 140.8px 144px;
+      }
+      .mark svg,
+      #close svg {
+        display: block;
+        overflow: visible;
+      }
+      .ln {
+        fill: none;
+        stroke: var(--white);
+        stroke-width: 4;
+        stroke-linecap: butt;
+        stroke-linejoin: miter;
+      }
+      .fl {
+        fill: var(--white);
+      }
+      .wordmark {
+        position: absolute;
+        left: 806px;
+        top: 450px;
+        font-family: var(--display);
+        font-size: 120px;
+        line-height: 120px;
+        white-space: nowrap;
+        --wdth: 112.5;
+        --wght: 800;
+        font-variation-settings:
+          "wdth" var(--wdth),
+          "wght" var(--wght);
+      }
+      .motto {
+        position: absolute;
+        left: 809px;
+        top: 586px;
+        font-family: var(--text);
+        font-weight: 400;
+        font-size: 40px;
+        line-height: 48px;
+        white-space: nowrap;
+      }
+      #reveal .okta,
+      #m-wedge,
+      #word,
+      #motto,
+      #close .okta {
+        opacity: 0;
+      }
+      #m-staff {
+        stroke-dasharray: 51.01 52.01;
+        stroke-dashoffset: 51.51;
+      }
+      #m-barb2 {
+        stroke-dasharray: 18.01 19.01;
+        stroke-dashoffset: 18.51;
+      }
+      #m-barb3 {
+        stroke-dasharray: 10.01 11.01;
+        stroke-dashoffset: 10.51;
+      }
+      #close .url {
+        position: absolute;
+        left: 168px;
+        top: 545px;
+        font-family: var(--display);
+        font-size: 88px;
+        line-height: 96px;
+        font-weight: 800;
+        font-stretch: 112.5%;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main" data-composition-id="main" data-width="1920" data-height="1080" data-start="0" data-duration="136">
+<div id="g1" class="clip ground" data-start="68.2" data-duration="6.8" data-track-index="0" style="z-index:1"></div>
+<div id="g2" class="clip ground" data-start="115.6" data-duration="7" data-track-index="0" style="z-index:2"></div>
+<div id="w-hook" class="win" style="left:0px;top:0px;width:1920px;height:1080px;z-index:3"><video id="v-hook" class="clip" src="assets/footage/s01b-resolve-5m.mp4" muted playsinline data-start="0" data-duration="4.6" data-media-start="345.3" data-track-index="1" style="left:0px;top:0px;width:1920px;height:1080px"></video></div>
+<div id="w-what" class="win" style="left:0px;top:0px;width:1920px;height:1080px;z-index:4"><video id="v-what" class="clip" src="assets/footage/s01b-resolve-5m.mp4" muted playsinline data-start="8.1" data-duration="10.1" data-media-start="150" data-track-index="1" style="left:0px;top:0px;width:1920px;height:1080px"></video></div>
+<div id="w-wipeA" class="win" style="left:328px;top:160px;width:668px;height:864px;outline:2px solid #FFFFFF;z-index:5"><video id="v-wipeA" class="clip" src="assets/footage/s03-wipe.mp4" muted playsinline data-start="18.2" data-duration="4.6" data-media-start="0" data-track-index="1" style="left:-236.8px;top:0px;width:1536px;height:864px"></video></div>
+<div id="w-wipeB" class="win" style="left:328px;top:160px;width:1536px;height:864px;outline:2px solid #FFFFFF;z-index:6"><video id="v-wipeB" class="clip" src="assets/footage/s03-wipe.mp4" muted playsinline data-start="22.8" data-duration="5" data-media-start="8.6" data-track-index="1" style="left:0px;top:0px;width:1536px;height:864px"></video></div>
+<div id="w-wipeC" class="win" style="left:328px;top:160px;width:1536px;height:864px;outline:2px solid #FFFFFF;z-index:7"><video id="v-wipeC" class="clip" src="assets/footage/s03-wipe.mp4" muted playsinline data-start="27.8" data-duration="5.2" data-media-start="29" data-track-index="1" style="left:-300px;top:-360px;width:2304px;height:1296px"></video></div>
+<div id="w-lesson" class="win" style="left:328px;top:160px;width:1536px;height:864px;outline:2px solid #FFFFFF;z-index:8"><video id="v-lesson" class="clip" src="assets/footage/s03-wipe.mp4" muted playsinline data-start="33" data-duration="8" data-media-start="33.4" data-track-index="1" style="left:-300px;top:-360px;width:2304px;height:1296px"></video></div>
+<div id="w-voices" class="win" style="left:328px;top:160px;width:1536px;height:864px;outline:2px solid #FFFFFF;z-index:9"><video id="v-voices" class="clip" src="assets/footage/s06-voices-15m.mp4" muted playsinline data-start="41" data-duration="6.6" data-media-start="0" data-track-index="1" style="left:-333.41px;top:-378.25px;width:2207.42px;height:1241.68px"></video></div>
+<div id="w-crowd" class="win" style="left:328px;top:160px;width:1536px;height:864px;outline:2px solid #FFFFFF;z-index:10"><video id="v-crowd" class="clip" src="assets/footage/s06-voices-15m.mp4" muted playsinline data-start="47.6" data-duration="6" data-media-start="6.6" data-track-index="1" style="left:-1308.8px;top:-302.4px;width:3072px;height:1728px"></video></div>
+<div id="w-lock" class="win" style="left:328px;top:160px;width:1536px;height:864px;outline:2px solid #FFFFFF;z-index:11"><video id="v-lock" class="clip" src="assets/footage/s07-lock-15m.mp4" muted playsinline data-start="53.6" data-duration="4" data-media-start="4" data-track-index="1" style="left:-342.36px;top:-115.66px;width:2220.67px;height:1249.13px"></video></div>
+<div id="w-resolve" class="win" style="left:328px;top:160px;width:1536px;height:864px;outline:2px solid #FFFFFF;z-index:12"><video id="v-resolve" class="clip" src="assets/footage/s07-resolve-15m.mp4" muted playsinline data-start="57.6" data-duration="4.8" data-media-start="271" data-track-index="1" style="left:-342.36px;top:-115.66px;width:2220.67px;height:1249.13px"></video></div>
+<div id="w-receipts" class="win" style="left:328px;top:240px;width:1536px;height:864px;outline:2px solid #FFFFFF;z-index:13"><video id="v-receipts" class="clip" src="assets/footage/s08-receipts.mp4" muted playsinline data-start="62.4" data-duration="5.8" data-media-start="0" data-track-index="1" style="left:0px;top:0px;width:1536px;height:864px"></video></div>
+<div id="w-walruscan" class="win" style="left:56px;top:216px;width:1808px;height:808px;z-index:14"><video id="v-walruscan" class="clip" src="assets/footage/s09-walruscan.mp4" muted playsinline data-start="68.2" data-duration="6.8" data-media-start="1.5" data-track-index="1" style="left:0px;top:0px;width:1808.06px;height:1017.04px"></video></div>
+<div id="w-gap" class="win" style="left:328px;top:160px;width:1536px;height:864px;outline:2px solid #FFFFFF;z-index:15"><video id="v-gap" class="clip" src="assets/footage/s10-gap0.mp4" muted playsinline data-start="75" data-duration="11.2" data-media-start="0" data-track-index="1" style="left:-664.84px;top:-45.85px;width:2200.84px;height:1237.97px"></video></div>
+<div id="w-learning" class="win" style="left:896px;top:132px;width:968px;height:692px;outline:2px solid #FFFFFF;z-index:16"><video id="v-learning" class="clip" src="assets/footage/s11-learning.mp4" muted playsinline data-start="86.2" data-duration="14.8" data-media-start="0" data-playback-rate="0.8" data-track-index="1" style="left:-1255.3px;top:-578.6px;width:2572.8px;height:1447.2px"></video></div>
+<div id="w-agents" class="win" style="left:328px;top:160px;width:1536px;height:864px;outline:2px solid #FFFFFF;z-index:17"><video id="v-agents" class="clip" src="assets/footage/s12b-agents.mp4" muted playsinline data-start="101" data-duration="7.6" data-media-start="0" data-track-index="1" style="left:0px;top:0px;width:1536px;height:864px"></video></div>
+<div id="w-suiscan" class="win" style="left:56px;top:216px;width:1808px;height:808px;z-index:18"><video id="v-suiscan" class="clip" src="assets/footage/s13-suiscan.mp4" muted playsinline data-start="115.6" data-duration="7" data-media-start="2" data-track-index="1" style="left:0px;top:0px;width:1808.06px;height:1017.04px"></video></div>
+<div id="w-tatum" class="win" style="left:328px;top:160px;width:1536px;height:864px;outline:2px solid #FFFFFF;z-index:19"><video id="v-tatum" class="clip" src="assets/footage/s14-tatum.mp4" muted playsinline data-start="122.6" data-duration="6" data-media-start="1" data-track-index="1" style="left:-1415px;top:-743.6px;width:3456px;height:1944px"></video></div>
+<div id="reveal" class="clip" data-start="4.6" data-duration="3.5" data-track-index="8" style="z-index:20"><div id="mark" class="mark">
+            <svg viewBox="0 0 64 64" width="204.8" height="204.8" aria-hidden="true">
+              <g transform="translate(2 0)">
+                <circle id="m-circle" class="ln" cx="42" cy="45" r="13" />
+                <path id="m-w1" class="fl okta" d="M42 45 L42 32 A13 13 0 0 1 51.192 35.808 Z" />
+                <path id="m-w2" class="fl okta" d="M42 45 L42 32 A13 13 0 0 1 55.000 45.000 Z" />
+                <path id="m-w3" class="fl okta" d="M42 45 L42 32 A13 13 0 0 1 51.192 54.192 Z" />
+                <path id="m-w4" class="fl okta" d="M42 45 L42 32 A13 13 0 0 1 42.000 58.000 Z" />
+                <path id="m-w5" class="fl okta" d="M42 45 L42 32 A13 13 0 1 1 32.808 54.192 Z" />
+                <path id="m-wedge" class="fl" d="M42 45 L42 32 A13 13 0 1 1 29 45 Z" />
+                <path id="m-staff" class="ln" d="M35.5 33.74 L19 5.16 L2.25 8.12" />
+                <path id="m-barb2" class="ln" d="M23.5 12.95 L6.75 15.91" />
+                <path id="m-barb3" class="ln" d="M28 20.75 L19.13 22.32" />
+              </g>
+            </svg>
+          </div><div id="word" class="wordmark">Grudge</div><div id="motto" class="motto">Markets forget. Grudge doesn&#39;t.</div></div>
+<div id="close" class="clip" data-start="128.6" data-duration="7.4" data-track-index="8" style="z-index:21"><div style="position:absolute;left:155px;top:292px;width:204.8px;height:204.8px">
+            <svg viewBox="0 0 64 64" width="204.8" height="204.8" aria-hidden="true">
+              <g transform="translate(2 0)">
+                <circle class="ln" cx="42" cy="45" r="13" />
+                <path class="fl okta" d="M42 45 L42 32 A13 13 0 0 1 51.192 35.808 Z" />
+                <path class="fl okta" d="M42 45 L42 32 A13 13 0 0 1 55.000 45.000 Z" />
+                <path class="fl okta" d="M42 45 L42 32 A13 13 0 0 1 51.192 54.192 Z" />
+                <path class="fl okta" d="M42 45 L42 32 A13 13 0 0 1 42.000 58.000 Z" />
+                <path class="fl okta" d="M42 45 L42 32 A13 13 0 1 1 32.808 54.192 Z" />
+                <path class="fl" d="M42 45 L42 32 A13 13 0 1 1 29 45 Z" />
+                <path class="ln" d="M35.5 33.74 L19 5.16 L2.25 8.12" />
+                <path class="ln" d="M23.5 12.95 L6.75 15.91" />
+                <path class="ln" d="M28 20.75 L19.13 22.32" />
+              </g>
+            </svg>
+          </div><div class="url">grudge-l19c.onrender.com</div></div>
+<div id="b0" class="clip beat beat-top" data-start="18.35" data-duration="4.45" data-track-index="3" style="z-index:22"><div>Wipe the server</div></div>
+<div id="b1" class="clip beat beat-top" data-start="28.3" data-duration="4.7" data-track-index="3" style="z-index:23"><div>Rebuilt from Walrus</div></div>
+<div id="b2" class="clip beat beat-top" data-start="41.15" data-duration="6.45" data-track-index="3" style="z-index:24"><div>Four voices, one question</div></div>
+<div id="b3" class="clip beat beat-top" data-start="60.5" data-duration="1.9" data-track-index="3" style="z-index:25"><div>Trust moves</div></div>
+<div id="b4" class="clip beat beat-top2" data-start="62.55" data-duration="5.65" data-track-index="3" style="z-index:26"><div>Every grudge is</div><div>a Walrus blob</div></div>
+<div id="b5" class="clip beat beat-box" data-start="68.35" data-duration="6.65" data-track-index="3" style="z-index:27"><div>Walrus mainnet</div></div>
+<div id="b6" class="clip beat beat-top" data-start="83.9" data-duration="2.3" data-track-index="3" style="z-index:28"><div>Gap 0</div></div>
+<div id="b7" class="clip beat beat-col" data-start="86.35" data-duration="14.65" data-track-index="3" style="z-index:29"><div>Brier score,</div><div>lower is</div><div>better</div></div>
+<div id="b8" class="clip beat beat-top" data-start="108.75" data-duration="6.85" data-track-index="3" style="z-index:30"><div>Paid over x402</div></div>
+<div id="b9" class="clip beat beat-box" data-start="115.75" data-duration="6.85" data-track-index="3" style="z-index:31"><div>Settled on Sui</div></div>
+<div id="b10" class="clip beat beat-top" data-start="122.75" data-duration="5.85" data-track-index="3" style="z-index:32"><div>Read through Tatum</div></div>
+<audio id="a-01-hook" class="clip" src="assets/vo/01-hook.wav" data-start="0.2" data-duration="4.224" data-volume="1" data-track-index="10"></audio>
+<div id="c0" class="clip cap band" data-start="0.2" data-duration="4.224" data-track-index="4" style="z-index:900"><div>Polymarket said 51% up. Bitcoin went down.</div><div>Noted.</div></div>
+<audio id="a-02-what" class="clip" src="assets/vo/02-what.wav" data-start="8.3" data-duration="9.728" data-volume="1" data-track-index="10"></audio>
+<div id="c1" class="clip cap band" data-start="8.3" data-duration="4.203" data-track-index="4" style="z-index:900"><div>Grudge grades prediction markets the way</div><div>weather forecasts are graded.</div></div>
+<div id="c2" class="clip cap band" data-start="12.503" data-duration="4.804" data-track-index="4" style="z-index:900"><div>Every five and fifteen minutes, it scores</div><div>each voice's call, and trusts the ones</div></div>
+<div id="c3" class="clip cap band" data-start="17.307" data-duration="0.721" data-track-index="4" style="z-index:900"><div>that verify.</div></div>
+<audio id="a-03-wipe" class="clip" src="assets/vo/03-wipe.wav" data-start="18.35" data-duration="4.736" data-volume="1" data-track-index="10"></audio>
+<div id="c4" class="clip cap band" data-start="18.35" data-duration="3.218" data-track-index="4" style="z-index:900"><div>Every wrong call goes into Grudge's memory</div><div>on Walrus.</div></div>
+<div id="c5" class="clip cap band" data-start="21.568" data-duration="1.518" data-track-index="4" style="z-index:900"><div>So let's wipe the server.</div></div>
+<audio id="a-05-refill" class="clip" src="assets/vo/05-refill.wav" data-start="28.4" data-duration="4.864" data-volume="1" data-track-index="10"></audio>
+<div id="c6" class="clip cap band" data-start="28.4" data-duration="2.865" data-track-index="4" style="z-index:900"><div>It reads Walrus and comes back. Same</div><div>trust.</div></div>
+<div id="c7" class="clip cap band" data-start="31.265" data-duration="1.999" data-track-index="4" style="z-index:900"><div>Same lesson. Nothing forgiven.</div></div>
+<audio id="a-05b-lesson" class="clip" src="assets/vo/05b-lesson.wav" data-start="33.3" data-duration="7.253" data-volume="1" data-track-index="10"></audio>
+<div id="c8" class="clip cap band" data-start="33.3" data-duration="5.618" data-track-index="4" style="z-index:900"><div>Lessons come back too. When DeepBook and</div><div>Polymarket disagree, DeepBook has been</div></div>
+<div id="c9" class="clip cap band" data-start="38.918" data-duration="1.636" data-track-index="4" style="z-index:900"><div>closer 84% of the time.</div></div>
+<audio id="a-06-voices" class="clip" src="assets/vo/06-voices.wav" data-start="41.2" data-duration="5.973" data-volume="1" data-track-index="10"></audio>
+<div id="c10" class="clip cap band" data-start="41.2" data-duration="5.31" data-track-index="4" style="z-index:900"><div>Four voices call the same Bitcoin move:</div><div>DeepBook on Sui, Polymarket, Kalshi, and</div></div>
+<div id="c11" class="clip cap band" data-start="46.51" data-duration="0.664" data-track-index="4" style="z-index:900"><div>the Crowd.</div></div>
+<audio id="a-06b-crowd" class="clip" src="assets/vo/06b-crowd.wav" data-start="47.8" data-duration="5.397" data-volume="1" data-track-index="10"></audio>
+<div id="c12" class="clip cap band" data-start="47.8" data-duration="4.329" data-track-index="4" style="z-index:900"><div>You can call it too. Pick up or down</div><div>before the lock, and the Crowd is graded</div></div>
+<div id="c13" class="clip cap band" data-start="52.129" data-duration="1.068" data-track-index="4" style="z-index:900"><div>like everyone else.</div></div>
+<audio id="a-07-resolve" class="clip" src="assets/vo/07-resolve.wav" data-start="53.8" data-duration="7.019" data-volume="1" data-track-index="10"></audio>
+<div id="c14" class="clip cap band" data-start="53.8" data-duration="4.679" data-track-index="4" style="z-index:900"><div>At the lock, the calls freeze. When the</div><div>window ends, every call is marked right or</div></div>
+<div id="c15" class="clip cap band" data-start="58.479" data-duration="2.34" data-track-index="4" style="z-index:900"><div>wrong against its voice, and trust moves.</div></div>
+<audio id="a-08-receipts" class="clip" src="assets/vo/08-receipts.wav" data-start="62.6" data-duration="6.72" data-volume="1" data-track-index="10"></audio>
+<div id="c16" class="clip cap band" data-start="62.6" data-duration="4.782" data-track-index="4" style="z-index:900"><div>Every grudge is a Walrus blob on mainnet.</div><div>Over a thousand memories so far:</div></div>
+<div id="c17" class="clip cap band" data-start="67.382" data-duration="1.938" data-track-index="4" style="z-index:900"><div>records, scoreboards, lessons.</div></div>
+<audio id="a-10-button" class="clip" src="assets/vo/10-button.wav" data-start="75.2" data-duration="4.672" data-volume="1" data-track-index="10"></audio>
+<div id="c18" class="clip cap band" data-start="75.2" data-duration="4.222" data-track-index="4" style="z-index:900"><div>This button rebuilds trust from Walrus</div><div>alone, and compares it with the live</div></div>
+<div id="c19" class="clip cap band" data-start="79.422" data-duration="0.45" data-track-index="4" style="z-index:900"><div>numbers.</div></div>
+<audio id="a-10-gap" class="clip" src="assets/vo/10-gap.wav" data-start="84.6" data-duration="1.173" data-volume="1" data-track-index="10"></audio>
+<div id="c20" class="clip cap band" data-start="84.6" data-duration="1.173" data-track-index="4" style="z-index:900"><div>Gap: zero.</div></div>
+<audio id="a-11-learning" class="clip" src="assets/vo/11-learning.wav" data-start="86.4" data-duration="14.08" data-volume="1" data-track-index="10"></audio>
+<div id="c21" class="clip cap band" data-start="86.4" data-duration="5.966" data-track-index="4" style="z-index:900"><div>Is it learning? Over the last 100</div><div>five-minute windows, Grudge scored 0.140,</div></div>
+<div id="c22" class="clip cap band" data-start="92.366" data-duration="6.046" data-track-index="4" style="z-index:900"><div>against 0.157 for a plain average.</div><div>DeepBook alone scores 0.139, so it hasn't</div></div>
+<div id="c23" class="clip cap band" data-start="98.412" data-duration="2.068" data-track-index="4" style="z-index:900"><div>beaten its best voice yet.</div></div>
+<audio id="a-12b-flow" class="clip" src="assets/vo/12b-flow.wav" data-start="101.2" data-duration="6.997" data-volume="1" data-track-index="10"></audio>
+<div id="c24" class="clip cap band" data-start="101.2" data-duration="5.388" data-track-index="4" style="z-index:900"><div>An agent asks for the line, gets a 402</div><div>with the price, pays in USDC, and asks</div></div>
+<div id="c25" class="clip cap band" data-start="106.588" data-duration="1.609" data-track-index="4" style="z-index:900"><div>again with the payment.</div></div>
+<audio id="a-12-agent" class="clip" src="assets/vo/12-agent.wav" data-start="109" data-duration="6.549" data-volume="1" data-track-index="10"></audio>
+<div id="c26" class="clip cap band" data-start="109" data-duration="4.756" data-track-index="4" style="z-index:900"><div>Here is a real one. About five cents of</div><div>USDC, settled on Sui.</div></div>
+<div id="c27" class="clip cap band" data-start="113.756" data-duration="1.793" data-track-index="4" style="z-index:900"><div>The agent needs no SUI.</div></div>
+<audio id="a-14-tatum" class="clip" src="assets/vo/14-tatum.wav" data-start="122.8" data-duration="3.861" data-volume="1" data-track-index="10"></audio>
+<div id="c28" class="clip cap band" data-start="122.8" data-duration="3.861" data-track-index="4" style="z-index:900"><div>DeepBook's odds, and every payment, are</div><div>read from Sui through Tatum.</div></div>
+<audio id="a-15-close" class="clip" src="assets/vo/15-close.wav" data-start="130" data-duration="1.963" data-volume="1" data-track-index="10"></audio>
+<div id="c29" class="clip cap band" data-start="130" data-duration="1.963" data-track-index="4" style="z-index:900"><div>Markets forget. Grudge doesn't.</div></div>
+<div id="t0" class="clip term" data-start="18.2" data-duration="4.6" data-track-index="5" style="left:1020px;top:160px;width:844px;height:864px;z-index:33"><div id="t0l0" class="tl">$ curl -X POST \</div><div id="t0l1" class="tl">    https://grudge-l19c.onrender.com/api/admin/amnesia</div></div>
+<div id="t1" class="clip term" data-start="108.6" data-duration="7" data-track-index="5" style="left:328px;top:160px;width:1536px;height:864px;z-index:34"><div id="t1l0" class="tl">$ pnpm agent</div><div id="t1l1" class="tl">$ tsx --conditions=react-server --env-file-if-exists=.env scripts/agent.mts</div><div id="t1l2" class="tl">402: 0.047 USDC to 0x257c40ed…</div><div id="t1l3" class="tl">200: btc-5m:1794306900</div><div id="t1l4" class="tl">  Grudge line 50%, voices 1 pts apart</div><div id="t1l5" class="tl">  lesson: In btc-5m disagreements of 7+ pts (n=288), DeepBook was closer 84% of the time; Polymarket was closer 16%.</div><div id="t1l6" class="tl">  settled: 4WorYidoGj6HicCQpr44JAaHpssR5iJ8mUwJBSV3syHe</div><div id="t1l7" class="tl">  https://suiscan.xyz/mainnet/tx/4WorYidoGj6HicCQpr44JAaHpssR5iJ8mUwJBSV3syHe</div></div>
+<div id="k0" class="clip cursor" data-start="62.4" data-duration="5.8" data-track-index="6" style="left:0;top:0;z-index:950"><svg viewBox="0 0 20 20" width="40" height="40" style="overflow:visible"><g fill="none" stroke="#0F1B44" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10 L3 3 L10 3"/><path d="M3 3 L12.9 12.9"/><circle cx="15" cy="15" r="3"/></g><g fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10 L3 3 L10 3"/><path d="M3 3 L12.9 12.9"/><circle cx="15" cy="15" r="3"/></g></svg></div>
+<div id="k1" class="clip cursor" data-start="75" data-duration="11.2" data-track-index="6" style="left:0;top:0;z-index:950"><svg viewBox="0 0 20 20" width="40" height="40" style="overflow:visible"><g fill="none" stroke="#0F1B44" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10 L3 3 L10 3"/><path d="M3 3 L12.9 12.9"/><circle cx="15" cy="15" r="3"/></g><g fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10 L3 3 L10 3"/><path d="M3 3 L12.9 12.9"/><circle cx="15" cy="15" r="3"/></g></svg></div>
+<div id="m0" class="clip clickmark" data-start="77.881" data-duration="0.8" data-track-index="7" style="left:1193.84px;top:395.05px;z-index:940"><svg viewBox="0 0 20 20" width="40" height="40" style="overflow:visible"><circle cx="10" cy="10" r="7" fill="none" stroke="#0F1B44" stroke-width="4"/><path id="m0w" d="M10 10 L10 3 A7 7 0 0 1 14.95 5.05 Z" fill="#FFFFFF" stroke="#0F1B44" stroke-width="1" stroke-linejoin="round" paint-order="stroke" opacity="0"/><circle cx="10" cy="10" r="7" fill="none" stroke="#FFFFFF" stroke-width="2"/></svg></div>
+<audio id="tick0" class="clip" src="assets/sfx/tick.wav" data-start="3.900" data-duration="0.06" data-volume="0.5" data-track-index="11"></audio>
+<audio id="tick1" class="clip" src="assets/sfx/tick.wav" data-start="5.000" data-duration="0.06" data-volume="0.5" data-track-index="12"></audio>
+<audio id="tick2" class="clip" src="assets/sfx/tick.wav" data-start="5.100" data-duration="0.06" data-volume="0.5" data-track-index="11"></audio>
+<audio id="tick3" class="clip" src="assets/sfx/tick.wav" data-start="5.200" data-duration="0.06" data-volume="0.5" data-track-index="12"></audio>
+<audio id="tick4" class="clip" src="assets/sfx/tick.wav" data-start="5.300" data-duration="0.06" data-volume="0.5" data-track-index="11"></audio>
+<audio id="tick5" class="clip" src="assets/sfx/tick.wav" data-start="5.400" data-duration="0.06" data-volume="0.5" data-track-index="12"></audio>
+<audio id="tick6" class="clip" src="assets/sfx/tick.wav" data-start="5.500" data-duration="0.06" data-volume="0.5" data-track-index="11"></audio>
+<audio id="tick7" class="clip" src="assets/sfx/tick.wav" data-start="6.000" data-duration="0.06" data-volume="0.5" data-track-index="12"></audio>
+<audio id="tick8" class="clip" src="assets/sfx/tick.wav" data-start="6.133" data-duration="0.06" data-volume="0.5" data-track-index="11"></audio>
+<audio id="tick9" class="clip" src="assets/sfx/tick.wav" data-start="6.267" data-duration="0.06" data-volume="0.5" data-track-index="12"></audio>
+<audio id="tick10" class="clip" src="assets/sfx/tick.wav" data-start="21.200" data-duration="0.06" data-volume="0.5" data-track-index="11"></audio>
+<audio id="tick11" class="clip" src="assets/sfx/tick.wav" data-start="60.500" data-duration="0.06" data-volume="0.5" data-track-index="12"></audio>
+<audio id="tick12" class="clip" src="assets/sfx/tick.wav" data-start="77.880" data-duration="0.06" data-volume="0.5" data-track-index="11"></audio>
+<audio id="tick13" class="clip" src="assets/sfx/tick.wav" data-start="108.750" data-duration="0.06" data-volume="0.5" data-track-index="12"></audio>
+
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      gsap.registerPlugin(CustomEase);
+      CustomEase.create("enter", "0.2,0,0,1");
+      CustomEase.create("exit", "0.4,0,1,1");
+      CustomEase.create("standard", "0.2,0,0.2,1");
+      var INSTANT = 0.1;
+      var QUICK = 0.2;
+      var DELIBERATE = 0.4;
+      var tl = gsap.timeline({ paused: true });
+tl.set("#w-hook",{autoAlpha:1},0);tl.set("#w-hook",{autoAlpha:0},4.6);
+tl.to("#v-hook",{x:-274.4,y:-437.2,scale:1.6,transformOrigin:"0 0",duration:0.9,ease:"standard"},2.6);
+tl.set("#w-what",{autoAlpha:1},8.1);tl.set("#w-what",{autoAlpha:0},18.2);
+tl.set("#w-wipeA",{autoAlpha:1},18.2);tl.set("#w-wipeA",{autoAlpha:0},22.8);
+tl.set("#w-wipeB",{autoAlpha:1},22.8);tl.set("#w-wipeB",{autoAlpha:0},27.8);
+tl.set("#w-wipeC",{autoAlpha:1},27.8);tl.set("#w-wipeC",{autoAlpha:0},33);
+tl.set("#w-lesson",{autoAlpha:1},33);tl.set("#w-lesson",{autoAlpha:0},41);
+tl.to("#v-lesson",{x:108,y:152,scale:1.3333,transformOrigin:"0 0",duration:0.8,ease:"standard"},33.2);
+tl.set("#w-voices",{autoAlpha:1},41);tl.set("#w-voices",{autoAlpha:0},47.6);
+tl.set("#w-crowd",{autoAlpha:1},47.6);tl.set("#w-crowd",{autoAlpha:0},53.6);
+tl.set("#w-lock",{autoAlpha:1},53.6);tl.set("#w-lock",{autoAlpha:0},57.6);
+tl.set("#w-resolve",{autoAlpha:1},57.6);tl.set("#w-resolve",{autoAlpha:0},62.4);
+tl.set("#w-receipts",{autoAlpha:1},62.4);tl.set("#w-receipts",{autoAlpha:0},68.2);
+tl.set("#w-walruscan",{autoAlpha:1},68.2);tl.set("#w-walruscan",{autoAlpha:0},75);
+tl.set("#w-gap",{autoAlpha:1},75);tl.set("#w-gap",{autoAlpha:0},86.2);
+tl.set("#w-learning",{autoAlpha:1},86.2);tl.set("#w-learning",{autoAlpha:0},101);
+tl.set("#w-agents",{autoAlpha:1},101);tl.set("#w-agents",{autoAlpha:0},108.6);
+tl.set("#w-suiscan",{autoAlpha:1},115.6);tl.set("#w-suiscan",{autoAlpha:0},122.6);
+tl.set("#w-tatum",{autoAlpha:1},122.6);tl.set("#w-tatum",{autoAlpha:0},128.6);
+// f0-12: the empty mark scales to mark size and travels to centre-left (deliberate, enter)
+      tl.fromTo(
+        "#mark",
+        { x: 188, y: 124.8, scale: 0.1667, transformOrigin: "140.8px 144px" },
+        { x: 0, y: 0, scale: 1, duration: DELIBERATE, ease: "enter" },
+        4.6,
+      );
+
+      // f12-30: cover, by eighths. Six snaps, one eighth per 3 frames, stopping at three-quarters.
+      // Sound: one dry pen tick per snap.
+      tl.set("#m-w1", { opacity: 1 }, 5);
+      tl.set("#m-w2", { opacity: 1 }, 5.1);
+      tl.set("#m-w3", { opacity: 1 }, 5.2);
+      tl.set("#m-w4", { opacity: 1 }, 5.3);
+      tl.set("#m-w5", { opacity: 1 }, 5.4);
+      tl.set("#m-wedge", { opacity: 1 }, 5.5);
+      tl.set(".okta", { opacity: 0 }, 5.5); // the mark's own wedge takes over from the steps
+
+      // f30-42: wind direction. The staff extends out of the circle along its angle (stroke offset, quick, enter)
+      tl.to("#m-staff", { strokeDashoffset: 18.01, duration: QUICK, ease: "enter" }, 5.6);
+
+      // f42-54: speed. Barb, barb, half barb, 4 frames apart, each one instant snap.
+      // Sound: a slightly heavier tick per barb.
+      tl.to("#m-staff", { strokeDashoffset: 0, duration: INSTANT, ease: "enter" }, 6);
+      tl.to("#m-barb2", { strokeDashoffset: 0, duration: INSTANT, ease: "enter" }, 6.1333);
+      tl.to("#m-barb3", { strokeDashoffset: 0, duration: INSTANT, ease: "enter" }, 6.2667);
+
+      // f54-72: the wordmark arrives by axis: wdth 75 to 112.5 and wght 200 to 800 together (deliberate, enter).
+      // Sound: silence.
+      tl.fromTo(
+        "#word",
+        { "--wdth": 75, "--wght": 200, opacity: 0 },
+        { "--wdth": 112.5, "--wght": 800, opacity: 1, duration: DELIBERATE, ease: "enter" },
+        6.4,
+      );
+
+      // f72-90: the motto sets under it (opacity only, quick). Music enters on the hold.
+      tl.fromTo("#motto", { opacity: 0 }, { opacity: 1, duration: QUICK, ease: "enter" }, 7);
+
+      tl.fromTo("#b0",{"--wdth":75,"--wght":200,opacity:0},{"--wdth":112.5,"--wght":800,opacity:1,duration:0.4,ease:"enter"},18.35);
+tl.fromTo("#b1",{"--wdth":75,"--wght":200,opacity:0},{"--wdth":112.5,"--wght":800,opacity:1,duration:0.4,ease:"enter"},28.3);
+tl.fromTo("#b2",{"--wdth":75,"--wght":200,opacity:0},{"--wdth":112.5,"--wght":800,opacity:1,duration:0.4,ease:"enter"},41.15);
+tl.fromTo("#b3",{"--wdth":75,"--wght":200,opacity:0},{"--wdth":112.5,"--wght":800,opacity:1,duration:0.4,ease:"enter"},60.5);
+tl.fromTo("#b4",{"--wdth":75,"--wght":200,opacity:0},{"--wdth":112.5,"--wght":800,opacity:1,duration:0.4,ease:"enter"},62.55);
+tl.fromTo("#b5",{"--wdth":75,"--wght":200,opacity:0},{"--wdth":112.5,"--wght":800,opacity:1,duration:0.4,ease:"enter"},68.35);
+tl.fromTo("#b6",{"--wdth":75,"--wght":200,opacity:0},{"--wdth":112.5,"--wght":800,opacity:1,duration:0.4,ease:"enter"},83.9);
+tl.fromTo("#b7",{"--wdth":75,"--wght":200,opacity:0},{"--wdth":112.5,"--wght":800,opacity:1,duration:0.4,ease:"enter"},86.35);
+tl.fromTo("#b8",{"--wdth":75,"--wght":200,opacity:0},{"--wdth":112.5,"--wght":800,opacity:1,duration:0.4,ease:"enter"},108.75);
+tl.fromTo("#b9",{"--wdth":75,"--wght":200,opacity:0},{"--wdth":112.5,"--wght":800,opacity:1,duration:0.4,ease:"enter"},115.75);
+tl.fromTo("#b10",{"--wdth":75,"--wght":200,opacity:0},{"--wdth":112.5,"--wght":800,opacity:1,duration:0.4,ease:"enter"},122.75);
+tl.set("#t0l0",{opacity:1},21.2);
+tl.set("#t0l1",{opacity:1},21.2);
+tl.set("#t1l0",{opacity:1},108.75);
+tl.set("#t1l1",{opacity:1},108.872);
+tl.set("#t1l2",{opacity:1},109.986);
+tl.set("#t1l3",{opacity:1},111.357);
+tl.set("#t1l4",{opacity:1},111.357);
+tl.set("#t1l5",{opacity:1},111.357);
+tl.set("#t1l6",{opacity:1},111.357);
+tl.set("#t1l7",{opacity:1},111.357);
+tl.set("#k0",{x:1090.0,y:666.0},62.4);
+tl.to("#k0",{x:1092.4,y:668.4,duration:3.052,ease:"none"},62.400);
+tl.to("#k0",{x:1098.0,y:674.8,duration:0.036,ease:"none"},65.452);
+tl.to("#k0",{x:1108.4,y:686.0,duration:0.046,ease:"none"},65.488);
+tl.to("#k0",{x:1123.6,y:701.2,duration:0.047,ease:"none"},65.534);
+tl.to("#k0",{x:1142.0,y:721.2,duration:0.046,ease:"none"},65.581);
+tl.to("#k0",{x:1160.4,y:741.2,duration:0.047,ease:"none"},65.627);
+tl.to("#k0",{x:1175.6,y:757.2,duration:0.046,ease:"none"},65.674);
+tl.to("#k0",{x:1186.0,y:767.6,duration:0.046,ease:"none"},65.720);
+tl.to("#k0",{x:1192.4,y:774.8,duration:0.046,ease:"none"},65.766);
+tl.to("#k0",{x:1194.0,y:777.2,duration:0.047,ease:"none"},65.812);
+tl.to("#k0",{x:1194.1,y:776.8,duration:0.864,ease:"none"},65.859);
+tl.set("#k1",{x:757.6,y:727.1},75);
+tl.to("#k1",{x:758.7,y:726.0,duration:1.618,ease:"none"},75.000);
+tl.to("#k1",{x:763.3,y:722.6,duration:0.050,ease:"none"},76.618);
+tl.to("#k1",{x:771.3,y:716.8,duration:0.047,ease:"none"},76.668);
+tl.to("#k1",{x:782.8,y:709.9,duration:0.047,ease:"none"},76.715);
+tl.to("#k1",{x:796.6,y:699.6,duration:0.046,ease:"none"},76.762);
+tl.to("#k1",{x:813.7,y:687.0,duration:0.047,ease:"none"},76.808);
+tl.to("#k1",{x:834.4,y:673.3,duration:0.047,ease:"none"},76.855);
+tl.to("#k1",{x:857.3,y:656.1,duration:0.047,ease:"none"},76.902);
+tl.to("#k1",{x:883.7,y:637.7,duration:0.045,ease:"none"},76.949);
+tl.to("#k1",{x:913.5,y:617.1,duration:0.047,ease:"none"},76.994);
+tl.to("#k1",{x:946.7,y:593.0,duration:0.048,ease:"none"},77.041);
+tl.to("#k1",{x:982.2,y:567.8,duration:0.045,ease:"none"},77.089);
+tl.to("#k1",{x:1018.9,y:542.6,duration:0.048,ease:"none"},77.134);
+tl.to("#k1",{x:1051.0,y:519.7,duration:0.048,ease:"none"},77.182);
+tl.to("#k1",{x:1080.8,y:499.0,duration:0.046,ease:"none"},77.230);
+tl.to("#k1",{x:1108.3,y:479.5,duration:0.045,ease:"none"},77.276);
+tl.to("#k1",{x:1131.3,y:463.5,duration:0.048,ease:"none"},77.321);
+tl.to("#k1",{x:1151.9,y:448.6,duration:0.047,ease:"none"},77.369);
+tl.to("#k1",{x:1169.1,y:437.1,duration:0.047,ease:"none"},77.416);
+tl.to("#k1",{x:1182.8,y:426.8,duration:0.047,ease:"none"},77.463);
+tl.to("#k1",{x:1194.3,y:418.8,duration:0.046,ease:"none"},77.510);
+tl.to("#k1",{x:1201.2,y:413.1,duration:0.047,ease:"none"},77.556);
+tl.to("#k1",{x:1205.8,y:409.6,duration:0.047,ease:"none"},77.603);
+tl.to("#k1",{x:1208.1,y:409.6,duration:0.047,ease:"none"},77.650);
+tl.to("#k1",{x:1208.1,y:409.6,duration:0.047,ease:"none"},77.697);
+tl.to("#k1",{x:1208.1,y:409.6,duration:0.016,ease:"none"},77.744);
+tl.to("#k1",{x:1208.1,y:409.6,duration:0.023,ease:"none"},77.760);
+tl.to("#k1",{x:1208.1,y:409.6,duration:0.010,ease:"none"},77.783);
+tl.to("#k1",{x:1208.1,y:409.6,duration:0.013,ease:"none"},77.793);
+tl.to("#k1",{x:1208.1,y:409.6,duration:0.016,ease:"none"},77.806);
+tl.to("#k1",{x:1208.1,y:409.6,duration:0.016,ease:"none"},77.822);
+tl.to("#k1",{x:1208.1,y:409.6,duration:0.014,ease:"none"},77.838);
+tl.to("#k1",{x:1207.8,y:409.0,duration:0.014,ease:"none"},77.852);
+tl.to("#m0w",{opacity:1,duration:0.2,ease:"enter"},77.881);tl.to("#m0",{opacity:0,duration:0.6,ease:"exit"},78.081);
+
+      tl.set({}, {}, 136);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

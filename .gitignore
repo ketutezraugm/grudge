@@ -68,3 +68,4 @@ video/.venv/
 video/_tts/
 video/_v3/
 video/capture/out/
+video/comp/*.png

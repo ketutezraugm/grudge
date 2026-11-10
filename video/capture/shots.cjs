@@ -42,6 +42,8 @@ module.exports = {
   // 0:00 hook and 0:38 resolve: a window resolving on the Board (5m), with every record row taking its mark.
   "s01-resolve-5m": (cam) => filmResolve(cam, "btc-5m", "5"),
   "s07-resolve-15m": (cam) => filmResolve(cam, "btc-15m", "15"),
+  "s01b-resolve-5m": (cam) => filmResolve(cam, "btc-5m", "5"),
+  "s01c-resolve-5m": (cam) => filmResolve(cam, "btc-5m", "5"),
 
   // 0:28 four voices: the 15m stations and the countdown, held still for the camera to pan.
   "s06-voices-15m": async (cam) => {
@@ -142,6 +144,14 @@ module.exports = {
     await cam.wait(5000);
     await cam.roll();
     await cam.wait(9000);
+  },
+
+  // Agent flow beat: the Agents page (how an agent pays for the consensus), held still.
+  "s12b-agents": async (cam) => {
+    await cam.page.goto(`${cam.base}/agents`, { waitUntil: "networkidle" });
+    await cam.wait(2000);
+    await cam.roll();
+    await cam.wait(10000);
   },
 
   // 2:15 the Tatum block on Receipts, held still.

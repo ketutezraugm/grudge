@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Grudge reveal A: Plotted</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/CustomEase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@hyperframes/core@0.8.206/dist/hyperframe.runtime.iife.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,100..800&family=Atkinson+Hyperlegible+Next:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        /* Grudge identity, locked (IDENTITY.md). Orange is fill only and is not used in the reveal. */
+        --cobalt: #2B54C9;
+        --chart: #D9ECE6;
+        --ink: #0F1B44;
+        --white: #FFFFFF;
+        --white-muted: #DCE4FA;
+        --ink-muted: #44507A;
+        --orange: #FF6A2B;
+        --font-display: "Martian Mono", ui-monospace, monospace;
+        --font-text: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--cobalt);
+        color: var(--white);
+      }
+
+      .scene {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--cobalt);
+      }
+      /* Every element is placed at exact frame coordinates; nothing is centred by transform. */
+      .scene-content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+      }
+      .clip {
+      }
+
+      /* The hold: mark left, wordmark right of it, motto beneath. No grain, vignette or glow. */
+      .mark {
+        position: absolute;
+        left: 552px;
+        top: 440px;
+        width: 204.8px;
+        height: 204.8px;
+        transform-origin: 140.8px 144px; /* the station circle's centre */
+      }
+      .mark svg {
+        display: block;
+        overflow: visible;
+      }
+      .ln {
+        fill: none;
+        stroke: var(--white);
+        stroke-width: 4;
+        stroke-linecap: butt;
+        stroke-linejoin: miter;
+      }
+      .fl {
+        fill: var(--white);
+      }
+      .wordmark {
+        position: absolute;
+        left: 806px;
+        top: 450px;
+        font-family: var(--font-display);
+        font-size: 120px;
+        line-height: 120px;
+        white-space: nowrap;
+        --wdth: 112.5;
+        --wght: 800;
+        font-variation-settings:
+          "wdth" var(--wdth),
+          "wght" var(--wght);
+      }
+      .motto {
+        position: absolute;
+        left: 809px;
+        top: 586px;
+        font-family: var(--font-text);
+        font-weight: 400;
+        font-size: 40px;
+        line-height: 48px;
+        white-space: nowrap;
+      }
+
+      /* Start states (frame 0): only the empty wrong-call mark, at record-row size */
+      .okta,
+      #m-wedge,
+      #word,
+      #motto {
+        opacity: 0;
+      }
+      /* Stroke offsets: dash = length + 1, gap = length + 2, hidden at length + 1.5, drawn at 0 */
+      #m-staff {
+        stroke-dasharray: 51.01 52.01;
+        stroke-dashoffset: 51.51; /* staff 33 + first barb 17.01 */
+      }
+      #m-barb2 {
+        stroke-dasharray: 18.01 19.01;
+        stroke-dashoffset: 18.51;
+      }
+      #m-barb3 {
+        stroke-dasharray: 10.01 11.01;
+        stroke-dashoffset: 10.51;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="main"
+      data-composition-id="main"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="4"
+    >
+      <!-- One scene: 3 s reveal (90 frames at 30 fps) plus a 1 s hold -->
+      <div class="scene clip" id="s1" data-start="0" data-duration="4" data-track-index="0">
+        <div class="scene-content">
+          <!-- The Feathers mark (mark.svg), paths kept separable. m-w1..m-w5 are the okta steps on the way to m-wedge. -->
+          <div id="mark" class="mark">
+            <svg viewBox="0 0 64 64" width="204.8" height="204.8" aria-hidden="true">
+              <g transform="translate(2 0)">
+                <circle id="m-circle" class="ln" cx="42" cy="45" r="13" />
+                <path id="m-w1" class="fl okta" d="M42 45 L42 32 A13 13 0 0 1 51.192 35.808 Z" />
+                <path id="m-w2" class="fl okta" d="M42 45 L42 32 A13 13 0 0 1 55.000 45.000 Z" />
+                <path id="m-w3" class="fl okta" d="M42 45 L42 32 A13 13 0 0 1 51.192 54.192 Z" />
+                <path id="m-w4" class="fl okta" d="M42 45 L42 32 A13 13 0 0 1 42.000 58.000 Z" />
+                <path id="m-w5" class="fl okta" d="M42 45 L42 32 A13 13 0 1 1 32.808 54.192 Z" />
+                <path id="m-wedge" class="fl" d="M42 45 L42 32 A13 13 0 1 1 29 45 Z" />
+                <path id="m-staff" class="ln" d="M35.5 33.74 L19 5.16 L2.25 8.12" />
+                <path id="m-barb2" class="ln" d="M23.5 12.95 L6.75 15.91" />
+                <path id="m-barb3" class="ln" d="M28 20.75 L19.13 22.32" />
+              </g>
+            </svg>
+          </div>
+          <div id="word" class="wordmark">Grudge</div>
+          <div id="motto" class="motto">Markets forget. Grudge doesn&#39;t.</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+
+      // Exact identity eases (IDENTITY.md). No springs, no overshoot, no back.out.
+      gsap.registerPlugin(CustomEase);
+      CustomEase.create("enter", "0.2,0,0,1");
+      CustomEase.create("exit", "0.4,0,1,1");
+      CustomEase.create("standard", "0.2,0,0.2,1");
+
+      // Motion tokens, in seconds
+      var INSTANT = 0.1;
+      var QUICK = 0.2;
+      var DELIBERATE = 0.4;
+
+      // Frame number at 30 fps -> seconds
+      function F(n) {
+        return n / 30;
+      }
+
+      var tl = gsap.timeline({ paused: true });
+
+      // === CONCEPT A: PLOTTED ===
+      // Match cut "empty-mark": frame 0 is the hook's last frame with the footage cut away.
+      // The empty wrong-call mark sits where Polymarket's newest record mark was
+      // (880.8, 708.8 under the hook's 1.6x push-in), at record-row size.
+
+      // f0-12: the empty mark scales to mark size and travels to centre-left (deliberate, enter)
+      tl.fromTo(
+        "#mark",
+        { x: 188, y: 124.8, scale: 0.1667, transformOrigin: "140.8px 144px" },
+        { x: 0, y: 0, scale: 1, duration: DELIBERATE, ease: "enter" },
+        F(0),
+      );
+
+      // f12-30: cover, by eighths. Six snaps, one eighth per 3 frames, stopping at three-quarters.
+      // Sound: one dry pen tick per snap.
+      tl.set("#m-w1", { opacity: 1 }, F(12));
+      tl.set("#m-w2", { opacity: 1 }, F(15));
+      tl.set("#m-w3", { opacity: 1 }, F(18));
+      tl.set("#m-w4", { opacity: 1 }, F(21));
+      tl.set("#m-w5", { opacity: 1 }, F(24));
+      tl.set("#m-wedge", { opacity: 1 }, F(27));
+      tl.set(".okta", { opacity: 0 }, F(27)); // the mark's own wedge takes over from the steps
+
+      // f30-42: wind direction. The staff extends out of the circle along its angle (stroke offset, quick, enter)
+      tl.to("#m-staff", { strokeDashoffset: 18.01, duration: QUICK, ease: "enter" }, F(30));
+
+      // f42-54: speed. Barb, barb, half barb, 4 frames apart, each one instant snap.
+      // Sound: a slightly heavier tick per barb.
+      tl.to("#m-staff", { strokeDashoffset: 0, duration: INSTANT, ease: "enter" }, F(42));
+      tl.to("#m-barb2", { strokeDashoffset: 0, duration: INSTANT, ease: "enter" }, F(46));
+      tl.to("#m-barb3", { strokeDashoffset: 0, duration: INSTANT, ease: "enter" }, F(50));
+
+      // f54-72: the wordmark arrives by axis: wdth 75 to 112.5 and wght 200 to 800 together (deliberate, enter).
+      // Sound: silence.
+      tl.fromTo(
+        "#word",
+        { "--wdth": 75, "--wght": 200, opacity: 0 },
+        { "--wdth": 112.5, "--wght": 800, opacity: 1, duration: DELIBERATE, ease: "enter" },
+        F(54),
+      );
+
+      // f72-90: the motto sets under it (opacity only, quick). Music enters on the hold.
+      tl.fromTo("#motto", { opacity: 0 }, { opacity: 1, duration: QUICK, ease: "enter" }, F(72));
+
+      // Hold to 4 s (frame 120)
+      tl.set({}, {}, 4);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

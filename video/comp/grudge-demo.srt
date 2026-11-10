@@ -1,0 +1,135 @@
+1
+00:00:00,200 --> 00:00:04,424
+Polymarket said 51% up. Bitcoin went down.
+Noted.
+
+2
+00:00:08,300 --> 00:00:12,503
+Grudge grades prediction markets the way
+weather forecasts are graded.
+
+3
+00:00:12,503 --> 00:00:17,307
+Every five and fifteen minutes, it scores
+each voice's call, and trusts the ones
+
+4
+00:00:17,307 --> 00:00:18,028
+that verify.
+
+5
+00:00:18,350 --> 00:00:21,568
+Every wrong call goes into Grudge's memory
+on Walrus.
+
+6
+00:00:21,568 --> 00:00:23,086
+So let's wipe the server.
+
+7
+00:00:28,400 --> 00:00:31,265
+It reads Walrus and comes back. Same
+trust.
+
+8
+00:00:31,265 --> 00:00:33,263
+Same lesson. Nothing forgiven.
+
+9
+00:00:33,300 --> 00:00:38,917
+Lessons come back too. When DeepBook and
+Polymarket disagree, DeepBook has been
+
+10
+00:00:38,917 --> 00:00:40,553
+closer 84% of the time.
+
+11
+00:00:41,200 --> 00:00:46,509
+Four voices call the same Bitcoin move:
+DeepBook on Sui, Polymarket, Kalshi, and
+
+12
+00:00:46,509 --> 00:00:47,173
+the Crowd.
+
+13
+00:00:47,800 --> 00:00:52,129
+You can call it too. Pick up or down
+before the lock, and the Crowd is graded
+
+14
+00:00:52,129 --> 00:00:53,197
+like everyone else.
+
+15
+00:00:53,800 --> 00:00:58,479
+At the lock, the calls freeze. When the
+window ends, every call is marked right or
+
+16
+00:00:58,479 --> 00:01:00,818
+wrong against its voice, and trust moves.
+
+17
+00:01:02,600 --> 00:01:07,381
+Every grudge is a Walrus blob on mainnet.
+Over a thousand memories so far:
+
+18
+00:01:07,381 --> 00:01:09,320
+records, scoreboards, lessons.
+
+19
+00:01:15,200 --> 00:01:19,421
+This button rebuilds trust from Walrus
+alone, and compares it with the live
+
+20
+00:01:19,421 --> 00:01:19,872
+numbers.
+
+21
+00:01:24,600 --> 00:01:25,773
+Gap: zero.
+
+22
+00:01:26,400 --> 00:01:32,366
+Is it learning? Over the last 100
+five-minute windows, Grudge scored 0.140,
+
+23
+00:01:32,366 --> 00:01:38,411
+against 0.157 for a plain average.
+DeepBook alone scores 0.139, so it hasn't
+
+24
+00:01:38,411 --> 00:01:40,480
+beaten its best voice yet.
+
+25
+00:01:41,200 --> 00:01:46,587
+An agent asks for the line, gets a 402
+with the price, pays in USDC, and asks
+
+26
+00:01:46,587 --> 00:01:48,197
+again with the payment.
+
+27
+00:01:49,000 --> 00:01:53,756
+Here is a real one. About five cents of
+USDC, settled on Sui.
+
+28
+00:01:53,756 --> 00:01:55,549
+The agent needs no SUI.
+
+29
+00:02:02,800 --> 00:02:06,661
+DeepBook's odds, and every payment, are
+read from Sui through Tatum.
+
+30
+00:02:10,000 --> 00:02:11,962
+Markets forget. Grudge doesn't.
