@@ -59,3 +59,8 @@ Grudge Design.rar
 # Playwright
 test-results/
 playwright-report/
+
+# Video: smoke test and rendered media stay local
+video/_smoke/
+video/**/*.mp4
+video/**/*.wav

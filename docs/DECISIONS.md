@@ -193,3 +193,13 @@ Why: the handoff asked for one happy-path test, and the dev server points at the
 
 **2026-11-09 · `DESIGN.md` takes its language from `docs/IDENTITY.md`; the licence is MIT in the owner's GitHub name; unpushed history lost its binary.**
 Why: `impeccable document` asks the owner for a creative North Star and descriptive names, but the identity is already locked, so the North Star "The Verification Chart" and the five named rules were drawn from it and the owner may rename them. The MIT copyright line is "ketutezraugm", the owner's choice. Ten topics were added to the repo (still private). Before the first push of the UI, `Grudge Design Revised.rar` was removed from the local unpushed commits with `git filter-branch` (a binary in the history of a repo that will go public stays there); nothing already pushed was rewritten.
+
+## 2026-11-10: the demo video is 2:30, one flow, AI voiceover
+
+What: the video runs 2:30 (ceiling 2:55) as one flow told as a single grudge: cold open on a real wrong call, logo reveal at 0:03, the wipe and rebuild from Walrus by 0:28, then the resolve, Receipts and the gap-0 rebuild, the learning result, x402 and Tatum, and the motto over the live URL. The voiceover is synthetic (owner's choice at the V1 gate).
+Why: rules allow 2 to 3 minutes; a triaging judge watches the first 20 to 40 s, and the seven placed videos we timed took a median 70 s to show the product. The owner chose an AI voice over their own although all seven winners used the founder's voice. It is credited in the description and CREDITS.md.
+
+## 2026-11-10: HyperFrames compositions pin old CDN versions
+
+What: Claude Design compositions load `gsap@3.15.0` and `@hyperframes/*@0.8.206`, not the guide's unpinned URLs.
+Why: artifact pages need script versions at least two weeks old; the local renderer injects its own runtime (CLI 0.9.28), so the pins only affect previews. The smoke test confirmed both.

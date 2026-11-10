@@ -49,3 +49,17 @@ Each item is `verified (source)` or `unverified (how to verify)`. Nothing unveri
 | The video should be 2–3 minutes | verified (a 2–3 min demo video is a submission form field; `docs/research/raw/judges-sponsors.md`, from the hackathon repo's `content.ts`) |
 | Judges are named publicly | verified that they are not (Event Rules: a panel "appointed by the Sponsors"; `docs/research/raw/judges-sponsors.md`). Mock judging uses sponsor personas instead |
 | Prizes are paid in USDC and must be claimed within 14 days of the announcement | verified (`docs/research/raw/judges-sponsors.md`) |
+
+## Video pipeline (Phase V0, 2026-11-10)
+
+| Claim | Status |
+| --- | --- |
+| HyperFrames CLI 0.9.28 renders here (Node 24.15, FFmpeg 2026-04-30 build, system Chrome, Docker) | verified (`npx hyperframes doctor`: core checks pass) |
+| whisper-cpp (captions via `transcribe`), Kokoro TTS and MusicGen are installed | verified that they are not; optional, needed only in V6 |
+| HyperFrames telemetry is off | verified (`hyperframes telemetry disable`, status: disabled); `HYPERFRAMES_NO_TELEMETRY=1` also works |
+| The renderer injects its own runtime, so the CDN pins in `index.html` only matter for previews | verified in source (`packages/producer/src/services/fileServer.ts`) |
+| Artifact pages need script versions at least two weeks old, so the seed pins `gsap@3.15.0` and `@hyperframes/*@0.8.206` (newest before 2026-10-27) instead of the guide's unpinned URLs | verified (smoke test 2026-11-10: the pinned jsdelivr GSAP loaded and was inlined at render; player needs the file path `@hyperframes/player@0.8.206/dist/hyperframes-player.js`, not the bare package URL) |
+| The HyperFrames CLI reads the project root `.env` (it ignores our keys); run it from `video/` | verified (doctor output) |
+| The Design canvas here stores `.dc.html` artboards, not a HyperFrames project; whether Claude Design can also write plain `project/hf/*.html` support files and preview them | verified (Claude Design wrote `index.html`, `preview.html`, `README.md` and a HANDOFF.md, delivered as a ZIP; lint 0 errors, render 1920x1080 30 fps 120 frames 4.0 s) |
+| The renderer gets Martian Mono's width axis even though it re-requests fonts with its own `ital,wght` URL | verified (it keeps only the family name, `deterministicFonts.ts:1673`, but Google serves the full variable file: the rendered wordmark's ink is 492 px wide, the same as Chrome at `font-stretch: 112.5%`; 100% gives 459 px) |
+| A `<video>` must be a direct child of the root, not inside a timed scene | verified (lint rule `video_nested_in_timed_element`) |
