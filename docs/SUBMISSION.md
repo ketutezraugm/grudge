@@ -13,7 +13,7 @@ Numbers: `research/raw/facts-2026-11-09.md`. Recompute from `/api/receipts` befo
 | MEMWAL_AGENT_ID | 69ca178fa1c3a285164ca434d601e9bae6be2cc183ec376e1be3988b993c29f6 (hex; base64 acoXj6HDooUWTKQ01gHpuua+LMGD7DduG+OYi5k8KfY=) |
 | Live demo | [LIVE URL] |
 | Repo | [REPO URL] |
-| Video | [VIDEO URL] |
+| Video | https://youtu.be/3QriWD1SdVA |
 | Blog post | [BLOG URL] |
 | Tracks | Markets & Sports Prediction; Best Walrus Memory; Best Agent Payments |
 | Walrus Memory on mainnet | 724 memories (403 records, 307 scoreboard snapshots, 14 lessons), 0 refused |

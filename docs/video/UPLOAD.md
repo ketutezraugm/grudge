@@ -30,4 +30,4 @@ Chapters
 1:41 Agents pay over x402 on Sui
 2:02 Read through Tatum
 
-**After upload:** put the link in `docs/SUBMISSION.md` ([VIDEO URL]), the README and the blog draft.
+**After upload:** done 2026-11-10, https://youtu.be/3QriWD1SdVA (unlisted, still processing at handover). Put the link in `docs/SUBMISSION.md` ([VIDEO URL]), the README and the blog draft.

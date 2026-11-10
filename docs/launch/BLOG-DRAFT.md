@@ -1,6 +1,6 @@
 # I built an app that holds grudges, on mainnet (draft, not final)
 
-[BLOG URL] / [LIVE URL] / [REPO URL]
+[BLOG URL] / [LIVE URL] / [REPO URL] / Demo video: https://youtu.be/3QriWD1SdVA
 
 Cover image: `docs/launch/assets/blog-cover.png` (1600x900, no title text; upload it with the post). Learning figure: `docs/launch/assets/learning-figure.png`, with Nov 9 numbers; recompute before it is used.
 
