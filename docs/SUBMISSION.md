@@ -55,7 +55,23 @@ Sources: `docs/ARCHITECTURE.md` (recall, hourly namespaces) and `docs/DECISIONS.
 
 > `recall` cannot return the newest N, and it fails quietly. `sort: "recent"` re-orders only the similarity-ranked set. With 187 records in a namespace, a recall of 100 returned a sample spanning 12 hours, and a recall of 10 returned times back to 15:21 instead of the latest ten. My rebuild was wrong (gap 0.81) until a check caught it. Large recalls also hit a Seal decryption timeout at about 13 seconds. My workaround is one namespace per UTC hour. A newest-first or time-range recall would remove the need for it.
 
-## Description
+## Project description (the form's single box, 192 words)
+
+Paste this. If the box has a character cap, use the 50-word pitch below instead.
+
+> Grudge grades prediction markets like weather forecasts. Every five and fifteen minutes it asks four voices whether Bitcoin will end the window higher: DeepBook (an onchain market on Sui), Polymarket, Kalshi and the Crowd, which is visitors' picks. It freezes their calls at a lock time, scores each voice when the window resolves, and trusts the ones that were right.
+>
+> Walrus: every resolved window is a record in Walrus Memory on mainnet, with scoreboard snapshots and a lesson every 25 windows. That is 1,163 memories by 10 November, none refused. After I wiped the server, it rebuilt every trust weight from Walrus alone, with a difference of 0, and a public button on the Receipts page repeats that check.
+>
+> Tatum: DeepBook's odds, payment simulation and execution go through Tatum gRPC, and BTC/USD comes from the Data API.
+>
+> Agents can buy the result over x402: USDC on Sui, no SUI needed, and a replayed payment is refused.
+>
+> Honest result: over the last 100 five-minute windows Grudge scores 0.140 against 0.157 for an equal-weight average, a real gain, but DeepBook alone scores 0.139.
+>
+> Tracks: Markets & Sports Prediction, Best Walrus Memory, Best Agent Payments.
+
+## Description (long form, for the README and the blog, not the form)
 
 Grudge asks four voices (DeepBook, Polymarket, Kalshi and the Crowd) whether Bitcoin will end a five-minute or fifteen-minute window higher. It freezes their calls at a lock time, scores each voice when the window resolves, and weights each voice by how right it has been. Resolved by 10:35 UTC Nov 10: 350 btc-5m windows and more than 130 btc-15m windows.
 
