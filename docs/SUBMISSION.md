@@ -33,6 +33,28 @@ The Event Rules list these form fields too. They are about you, not the project.
 | Walrus experience | yours |
 | AI Builder experience | Optional bonus; not claimed. Grudge was not built with Tatum AI Builder (ai.tatum.io), and no answer here says otherwise |
 
+## Feedback section (04, "Helps partners improve")
+
+Sources: `docs/ARCHITECTURE.md` (recall, hourly namespaces) and `docs/DECISIONS.md` (2026-11-08 entries). Every number was measured on 2026-11-08.
+
+**How was your experience building with Walrus?** (required)
+
+> Walrus Memory worked on mainnet from the first write: 1,163 memories by 10 November with none refused, and after I wiped my server it rebuilt every trust weight from Walrus alone, with a difference of 0. It is in my demo video.
+>
+> The friction was reading memories back. `recall` ranks by similarity, and `sort: "recent"` only re-orders that set, so there is no way to ask for the newest N. With 187 records in one namespace, a recall of 100 spanned 06:27 to 18:21 UTC as an irregular sample, and my rebuild check drifted from gap 0 to gap 0.81 with no error. I fixed it by writing one namespace per UTC hour.
+>
+> Smaller things: a fresh process got empty recalls for about its first 2 seconds, so I retry up to four times. A write takes 20 to 90 seconds, so I batch 20 at a time. The owner address, account object ID and delegate keys look alike, and the on-chain keys are base64 where the form wants hex; one page naming each value and its encoding would have saved time.
+>
+> What would help: recall by time range or newest first, and a documented relayer rate limit. I capped my public memory check at two reads a minute to stay safe.
+
+**How was your experience building with the Tatum AI Builder?** (required)
+
+> I did not use the Tatum AI Builder. Grudge uses Tatum's Sui gRPC gateway and the Data API directly, so I can't comment on its prompting or generated apps.
+
+**One bug or friction point with Walrus Memory** (optional)
+
+> `recall` cannot return the newest N, and it fails quietly. `sort: "recent"` re-orders only the similarity-ranked set. With 187 records in a namespace, a recall of 100 returned a sample spanning 12 hours, and a recall of 10 returned times back to 15:21 instead of the latest ten. My rebuild was wrong (gap 0.81) until a check caught it. Large recalls also hit a Seal decryption timeout at about 13 seconds. My workaround is one namespace per UTC hour. A newest-first or time-range recall would remove the need for it.
+
 ## Description
 
 Grudge asks four voices (DeepBook, Polymarket, Kalshi and the Crowd) whether Bitcoin will end a five-minute or fifteen-minute window higher. It freezes their calls at a lock time, scores each voice when the window resolves, and weights each voice by how right it has been. Resolved by 10:35 UTC Nov 10: 350 btc-5m windows and more than 130 btc-15m windows.
