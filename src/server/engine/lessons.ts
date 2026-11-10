@@ -30,12 +30,19 @@ export function disagreementLesson(
   const apart = windows.filter((window) => disagreement(window.calls) >= DISAGREEMENT_GAP);
   if (apart.length < MIN_DISAGREEMENTS) return null;
 
+  // A voice that called in under half the disagreements (the Crowd, early on) would rank on a handful
+  // of windows and steal the "closest" credit in them, so it is left out of the count entirely.
+  const regular = voices.filter(
+    (voice) => apart.filter(({ calls }) => calls[voice] !== undefined).length * 2 >= apart.length,
+  );
+
   const tally = new Map<Voice, { present: number; closer: number }>();
   for (const { calls, outcome } of apart) {
-    const errors = voices.flatMap((voice) => {
+    const errors = regular.flatMap((voice) => {
       const p = calls[voice];
       return p === undefined ? [] : [{ voice, error: Math.abs(p - outcome) }];
     });
+    if (errors.length === 0) continue;
     const best = Math.min(...errors.map((entry) => entry.error));
     // A tie for closest credits nobody.
     const winners = errors.filter((entry) => entry.error - best < 1e-12);
