@@ -72,9 +72,13 @@ export function learningSummary(history: readonly LearningWindow[]): LearningSum
 
   const voiceMeans: ByVoice<number> = {};
   let best: LearningSummary["best"] = null;
+  // A voice that called in only a few windows (the Crowd, with a handful of visitor picks) can
+  // post a tiny mean by luck, so it only competes for "best" once it covers half the windows.
+  const needed = Math.ceil(grudgeLosses.length / 2);
   for (const [voice, held] of perVoice) {
     const voiceMean = mean(held.map((entry) => entry.loss));
     voiceMeans[voice] = voiceMean;
+    if (held.length < needed) continue;
     if (best === null || voiceMean < best.mean) best = { voice, mean: voiceMean };
   }
 

@@ -33,6 +33,18 @@ describe("learningSummary", () => {
     expect(gainOverBest?.mean).toBeCloseTo(0.385, 9);
   });
 
+  it("does not crown a voice that called in under half the windows", () => {
+    // The Crowd called once and was right (loss 0.01); DeepBook called every time and lost 0.41 on average.
+    const history: LearningWindow[] = [
+      { calls: { deepbook: 0.9, polymarket: 0.1, crowd: 0.9 }, outcome: 1, line: 0.9 },
+      { calls: { deepbook: 0.9, polymarket: 0.1 }, outcome: 0, line: 0.2 },
+      { calls: { deepbook: 0.9, polymarket: 0.1 }, outcome: 0, line: 0.2 },
+    ];
+    const { best, voices } = learningSummary(history);
+    expect(voices.crowd).toBeCloseTo(0.01, 9);
+    expect(best?.voice).not.toBe("crowd");
+  });
+
   it("says nothing about an interval from a single window", () => {
     const { gainOverEqual } = learningSummary(windows.slice(0, 1));
     expect(gainOverEqual.mean).toBeCloseTo(0.24, 9);
