@@ -4,7 +4,7 @@ Goal: 5 to 10 real people use the board before the deadline. Record only what ac
 
 ## Recruit
 
-- Ask people you already know who follow crypto or prediction markets. One direct message each, with [LIVE URL].
+- Ask people you already know who follow crypto or prediction markets. One direct message each, with https://grudge-l19c.onrender.com.
 - Post once in the hackathon channel and once on X with [BLOG URL]. Say what to do: make three picks.
 - Ask each person to use a different network or device if they can.
 
@@ -12,7 +12,7 @@ Goal: 5 to 10 real people use the board before the deadline. Record only what ac
 
 Send this, nothing more:
 
-1. Open [LIVE URL]. Make a pick on any open window before it locks.
+1. Open https://grudge-l19c.onrender.com. Make a pick on any open window before it locks.
 2. Say in one sentence what Grudge does, without looking.
 3. What did you not understand?
 4. An agent can buy the consensus for 0.010 to 0.050 USDC. Would you? Why or why not?

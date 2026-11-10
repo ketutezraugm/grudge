@@ -16,7 +16,7 @@ Grudge: markets forget, Grudge doesn't · Walrus x Tatum Total Recall
 Grudge reads DeepBook on Sui, Polymarket, Kalshi and a crowd of visitors on the same Bitcoin window, scores every call the way weather forecasts are scored, and keeps every grudge on Walrus mainnet. Wipe the server and it rebuilds its trust from Walrus alone. Agents buy the consensus over x402 in USDC on Sui, and the chain is read through Tatum.
 
 Live: https://grudge-l19c.onrender.com
-Code: [REPO URL]
+Code: https://github.com/ketutezraugm/grudge
 
 Everything in the video is the live app on 10 November 2026, filmed unedited apart from cuts; the minutes between a window's end and its result are cut out, not sped up. The voiceover is a synthetic voice (Kokoro, run locally).
 
@@ -30,4 +30,4 @@ Chapters
 1:41 Agents pay over x402 on Sui
 2:02 Read through Tatum
 
-**After upload:** done 2026-11-10, https://youtu.be/3QriWD1SdVA (unlisted, still processing at handover). Put the link in `docs/SUBMISSION.md` ([VIDEO URL]), the README and the blog draft.
+**After upload:** done 2026-11-10, https://youtu.be/3QriWD1SdVA (unlisted, still processing at handover). Put the link in `docs/SUBMISSION.md` (https://youtu.be/3QriWD1SdVA), the README and the blog draft.

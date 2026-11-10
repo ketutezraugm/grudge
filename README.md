@@ -32,20 +32,20 @@ Every market and chain read goes through Tatum gRPC on Sui mainnet, behind one t
 
 `GET /api/consensus?category=btc-5m|btc-15m` speaks x402 v2, scheme `exact`, USDC on `sui:mainnet`. The price runs from 0.010 to 0.050 USDC and rises with Grudge's confidence. The server checks the signed quote, the exact terms, the transaction signature, a simulation, and that the treasury receives the full amount, then claims the digest and executes. A used digest is refused. The server holds no key, and the payer needs no SUI. Details in [docs/API.md](docs/API.md).
 
-One real payment has settled: 0.038 USDC, [digest `4f3bXYdmR1XYJTvVrm17HEat4aDSePvShTcqAZmeSnTY`](https://suiscan.xyz/mainnet/tx/4f3bXYdmR1XYJTvVrm17HEat4aDSePvShTcqAZmeSnTY). A replay of it was refused. Nobody outside this project has bought a line.
+Six real payments have settled, 0.251 USDC in total, all from our own agent wallet. The latest, 0.047 USDC at 10:36 UTC on 10 November, is [digest `4WorYidoGj6HicCQpr44JAaHpssR5iJ8mUwJBSV3syHe`](https://suiscan.xyz/mainnet/tx/4WorYidoGj6HicCQpr44JAaHpssR5iJ8mUwJBSV3syHe), and it cost 0 SUI in gas. A replay is refused. Nobody outside this project has bought a line.
 
 `pnpm agent` is the client that did it. It buys only when the sources disagree and refuses to pay over 0.05 USDC a call.
 
 ## Is it learning?
 
-Slightly, and not by a margin the data supports. Mean Brier score over the last 100 resolved windows (lower is better), read from `/api/receipts` on 9 November 2026:
+Slightly, and not by a margin the data supports. Mean Brier score over the last 100 resolved windows (lower is better), read from `/api/receipts` at 10:12 UTC on 10 November 2026:
 
 | | Grudge | Equal weights | Best source alone |
 | --- | --- | --- | --- |
-| btc-5m | 0.1875 | 0.1894 | DeepBook 0.1897 |
-| btc-15m | 0.1711 | 0.1725 | Kalshi 0.1682 |
+| btc-5m | 0.140 | 0.157 | DeepBook 0.139 |
+| btc-15m | 0.128 | 0.133 | DeepBook 0.120 |
 
-Grudge's gain over equal weights is +0.0018 ± 0.0111 (5 minutes) and +0.0014 ± 0.0034 (15 minutes), 95% intervals. Both include zero. In the 15-minute market Kalshi alone scored better than Grudge. These numbers move with every window; the live ones are on [Receipts](https://grudge-l19c.onrender.com/receipts).
+Grudge's gain over equal weights is +0.0171 (5 minutes, the 95% interval excludes zero) and +0.0052 (15 minutes, the interval includes zero). Against its best single source, DeepBook, Grudge is 0.0008 behind at 5 minutes and 0.0045 behind at 15, so it has not beaten its best voice. After the wipe test at 10:38 UTC the live page counts only the windows since, so its intervals are wider. These numbers move with every window; the live ones are on [Receipts](https://grudge-l19c.onrender.com/receipts).
 
 What memory changes: the weights each source gets. It does not change what Grudge asks.
 

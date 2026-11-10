@@ -8,7 +8,7 @@ Markets forget. Grudge doesn't.
 
 Every five and fifteen minutes there is a question: will Bitcoin end this window higher than it started? Four voices answer it. DeepBook, an onchain prediction market on Sui. Polymarket. Kalshi. And the Crowd, which is whoever visits and picks.
 
-Grudge freezes their answers at a lock time. When the window ends, it writes down who was right and who was wrong, and it weights each voice by how right it has been. That record is the product, and it lives in Walrus Memory on mainnet. 724 memories so far: 403 records, 307 scoreboard snapshots, 14 lessons. None refused.
+Grudge freezes their answers at a lock time. When the window ends, it writes down who was right and who was wrong, and it weights each voice by how right it has been. That record is the product, and it lives in Walrus Memory on mainnet. 1,163 memories by 10:10 UTC on 10 November: 520 records, 614 scoreboard snapshots, 29 lessons. None refused.
 
 Here is the part we tested. We wiped the database, then rebuilt the weights from Walrus alone. They came back identical, a gap of zero.
 
@@ -20,12 +20,12 @@ Agents can buy the result. `GET /api/consensus` costs 0.010 to 0.050 USDC on Sui
 
 Every read of the market and the chain goes through Tatum gRPC, throttled to three requests a second.
 
-[LIVE URL] [REPO URL] [VIDEO URL]
+https://grudge-l19c.onrender.com https://github.com/ketutezraugm/grudge https://youtu.be/3QriWD1SdVA
 
 ## Questions
 
 **1. Does Grudge actually learn?**
-A little. Last 100 btc-5m windows, mean Brier: Grudge 0.1823, equal weights 0.1860, DeepBook alone 0.1838. The gain over equal weights is +0.0037 ± 0.0110, so the 95% interval includes zero. On btc-15m it is +0.0008 ± 0.0036, and Kalshi alone scores 0.1720 against Grudge's 0.1741. We call it slightly ahead, not proven.
+A little. Last 100 btc-5m windows at 10:12 UTC on 10 November, mean Brier: Grudge 0.140, equal weights 0.157, DeepBook alone 0.139. The gain over equal weights is +0.0171 and its 95% interval excludes zero, but DeepBook alone is 0.0008 better than Grudge. On btc-15m the gain is +0.0052 with an interval that includes zero, and DeepBook alone scores 0.120 against Grudge's 0.128. We call it ahead of an equal-weight average, not ahead of its best voice.
 
 **2. Why not just use the best single source, if it scores about the same?**
 On the fifteen-minute market Kalshi alone has scored a little better than Grudge over the last 100 windows, and we do not claim otherwise. Grudge's job is to decide how much to trust each voice as they change, and DeepBook carries 0.81 of the btc-5m weight. Whether weighting pays off over a longer run is not shown yet.
@@ -40,7 +40,7 @@ The board keeps running from Postgres. Lesson recall times out after 3 seconds a
 Partly, and we say so. In normal running the board reads Postgres. Walrus is read at cold boot, by the public verify check, and for lesson recall at view time. Memory changes the weights, not what Grudge asks.
 
 **6. How real are the payments?**
-One mainnet USDC payment settled, 0.038 USDC, digest 4f3bXYdmR1XYJTvVrm17HEat4aDSePvShTcqAZmeSnTY. We do not claim outside buyers. The volume is tiny.
+Six mainnet USDC payments settled, 0.251 USDC in total, the latest 0.047 USDC with digest 4WorYidoGj6HicCQpr44JAaHpssR5iJ8mUwJBSV3syHe. All came from our own agent wallet. We do not claim outside buyers. The volume is tiny.
 
 **7. What does the server check before it executes?**
 Header shape, quote signature and expiry, exact terms, the transaction signature, a Tatum simulation, and that the treasury receives exactly the amount. Then it claims the digest, so a replay fails, and only then executes. The server holds no key.

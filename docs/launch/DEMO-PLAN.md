@@ -4,7 +4,7 @@ Numbers: `docs/research/raw/facts-2026-11-09.md`. Re-read the live page before g
 
 ## Happy path
 
-1. Open [LIVE URL]. Say the line: markets forget, Grudge doesn't. Point at the 5m tab and a struck wrong call.
+1. Open https://grudge-l19c.onrender.com. Say the line: markets forget, Grudge doesn't. Point at the 5m tab and a struck wrong call.
 2. Show the disagreement entry and its recalled lesson. Click the receipt tick to open Walruscan.
 3. Open `/receipts`. Read the memory counts off the page.
 4. Press "Rebuild from Walrus and compare". Wait for the result; the gap should read 0.
@@ -12,14 +12,14 @@ Numbers: `docs/research/raw/facts-2026-11-09.md`. Re-read the live page before g
 6. Show the learning chart. State the claim as it is: slightly ahead of an equal-weight average, not statistically clear, and level with the best single source.
 7. Open `/agents`. Run `pnpm agent` in a terminal. Open the Suiscan digest.
 8. If a window locks during the demo, stay on the board and let it resolve.
-9. Close on [REPO URL] and [BLOG URL].
+9. Close on https://github.com/ketutezraugm/grudge and [BLOG URL].
 
 Time: five minutes. Cut step 8 first.
 
 ## Offline fallback
 
 If Render is down:
-- Play [VIDEO URL] from a local copy of the file.
+- Play https://youtu.be/3QriWD1SdVA from a local copy of the file.
 - Open the Walruscan pages saved in tabs. Walrus is independent of Render.
 - Show saved copies of `GET /api/board` and `GET /api/receipts`, captured before the demo and labeled with their capture time.
 
@@ -34,7 +34,7 @@ If the venues are DNS-blocked on the machine, turn on DNS-over-HTTPS (1.1.1.1) o
 
 ## Pre-demo checklist
 
-- [ ] `GET /api/health` returns 200 on [LIVE URL]
+- [ ] `GET /api/health` returns 200 on https://grudge-l19c.onrender.com
 - [ ] Admin token available, not on screen
 - [ ] Amnesia dry run done within the last day
 - [ ] Agent wallet funded; `pnpm agent` runs

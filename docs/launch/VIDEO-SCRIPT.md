@@ -12,7 +12,7 @@ Numbers below are the Nov 10 ~05:30 UTC snapshot (`docs/HANDOFF.md`, Open questi
 | 1:30-1:50 | Press "Rebuild from Walrus and compare". Result: gap 0. | This button rebuilds the trust weights from Walrus alone and compares them with the live ones. The gap is 0. | Rebuilt from Walrus. Gap 0. |
 | 1:50-2:10 | Receipts, the "Is Grudge learning?" figure for 5 min. | Does it learn? Over the last 100 5-minute windows Grudge scored 0.137 against 0.159 for an equal-weight average, and the interval says that gap is real. DeepBook alone scores 0.135, about level with Grudge, so it has not beaten its best source. | Brier score, lower is better |
 | 2:10-2:25 | Terminal: `pnpm agent`, then Suiscan. | Agents can buy the consensus. About four cents of USDC a call, four settled so far, and the payer needs no SUI. A replayed payment is refused. Reads go through Tatum. | Paid over x402 |
-| 2:25-2:30 | Closing card, [LIVE URL]. | Grudge. Live at [LIVE URL]. | Walrus x Tatum |
+| 2:25-2:30 | Closing card, https://grudge-l19c.onrender.com. | Grudge. Live at https://grudge-l19c.onrender.com. | Walrus x Tatum |
 
 ## Shot list
 
@@ -37,4 +37,4 @@ Numbers below are the Nov 10 ~05:30 UTC snapshot (`docs/HANDOFF.md`, Open questi
 - Cobalt ground and chart paper, as designed. No cursor wandering.
 - Read each number off the live page, never from this file.
 - No "zero gas" anywhere. Say "needs no SUI".
-- Captions burned in. Export, upload, paste into [VIDEO URL].
+- Captions burned in. Export, upload, paste into https://youtu.be/3QriWD1SdVA.
