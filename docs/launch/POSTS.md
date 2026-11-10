@@ -12,7 +12,7 @@ Post 1 (attach the still; the video link is in the text):
 >
 > Grudge grades DeepBook, Polymarket and Kalshi like weather forecasts and keeps every grudge on @WalrusFoundation mainnet. I wiped the server; it rebuilt from Walrus alone. Built with @Tatum_io.
 >
-> Demo, 2:16: https://youtu.be/3QriWD1SdVA
+> Video: https://youtu.be/3QriWD1SdVA
 
 Reply 1 (the honest part):
 
