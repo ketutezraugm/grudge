@@ -18,9 +18,24 @@ Numbers: `research/raw/facts-2026-11-10.md` (the figures filmed for the video, b
 | Tracks | Markets & Sports Prediction; Best Walrus Memory; Best Agent Payments |
 | Walrus Memory on mainnet | 1,163 memories by 10:10 UTC Nov 10 (520 records, 614 scoreboard snapshots, 29 lessons), 0 refused |
 
+## Form fields this file does not answer (yours to fill)
+
+The Event Rules list these form fields too. They are about you, not the project.
+
+| Field | What to enter |
+| --- | --- |
+| Email | yours |
+| Discord handle | yours |
+| LinkedIn | your profile URL |
+| How did you hear | yours |
+| First Web3 project? | yours |
+| Account ID (SUI) | Not stated in the rules which ID this is; read the field's helper text. The likely one is the Walrus Memory account object ID, `0x38de8cce40f73eeb500055ec3330b12fe0ad8347ee4d6fc5274ebe078bc20a04` (public). If it asks for your own Sui account, use your Sui wallet address, not the treasury above |
+| Walrus experience | yours |
+| AI Builder experience | Optional bonus; not claimed. Grudge was not built with Tatum AI Builder (ai.tatum.io), and no answer here says otherwise |
+
 ## Description
 
-Grudge asks four voices (DeepBook, Polymarket, Kalshi and the Crowd) whether Bitcoin will end a five-minute or fifteen-minute window higher. It freezes their calls at a lock time, scores each voice when the window resolves, and weights each voice by how right it has been. Resolved by 10:35 UTC Nov 10: 350 btc-5m windows and about 133 btc-15m windows.
+Grudge asks four voices (DeepBook, Polymarket, Kalshi and the Crowd) whether Bitcoin will end a five-minute or fifteen-minute window higher. It freezes their calls at a lock time, scores each voice when the window resolves, and weights each voice by how right it has been. Resolved by 10:35 UTC Nov 10: 350 btc-5m windows and more than 130 btc-15m windows.
 
 Walrus Memory holds what it learned. Every resolved window is a record, every few records a scoreboard snapshot, every 25 windows a lesson. After a real wipe of the database (twice, the second one filmed for the video), the server rebuilt its weights from Walrus alone. A wipe restores the latest snapshot and the records after it, so the live Receipts page counts fewer rows afterwards; the older records stay on Walrus.
 
