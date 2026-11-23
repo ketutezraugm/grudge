@@ -203,3 +203,9 @@ Why: rules allow 2 to 3 minutes; a triaging judge watches the first 20 to 40 s, 
 
 What: Claude Design compositions load `gsap@3.15.0` and `@hyperframes/*@0.8.206`, not the guide's unpinned URLs.
 Why: artifact pages need script versions at least two weeks old; the local renderer injects its own runtime (CLI 0.9.28), so the pins only affect previews. The smoke test confirmed both.
+
+## 2026-11-23: the Render web service moves from Starter to Free
+
+What: `render.yaml` now says `plan: free` (it was `starter`); the Blueprint has autoSync on `main`, so the push applies it.
+Why: the hackathon is over (judging closed 2026-11-16, results 2026-11-17) and the owner chose not to keep paying for the instance.
+Cost: a free web service spins down after 15 minutes without inbound traffic. The worker loop lives inside that service (`instrumentation.ts`), so while it sleeps no window is locked, resolved or written to Walrus, and the first visit after a sleep takes about a minute to wake it. The database is on Supabase and Walrus holds the ledger, so nothing already learned is lost. To undo: set `plan: starter` and push.
